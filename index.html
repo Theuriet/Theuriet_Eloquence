@@ -70,50 +70,50 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 <body>
 <header>
  <div class="top"><div class="brand">THEURIET ÉLOQUENCE</div><div class="avatar">TE</div></div>
- <h1>Bienvenue dans ton espace.</h1>
- <div class="tagline">Lire mieux. Prononcer correctement. Penser rapidement. Parler avec aisance.</div>
+ <h1 id="heroTitle">Bienvenue dans ton espace.</h1>
+ <div class="tagline" id="heroTagline">Lire mieux. Prononcer correctement. Penser rapidement. Parler avec aisance.</div>
 </header>
 <main>
  <section id="home" class="page active">
-  <div class="section-head"><h2>Ma progression</h2><span class="sub">Cette séance</span></div>
+  <div class="section-head"><h2 id="secProg">Ma progression</h2><span class="sub" id="secProgSub">Cette séance</span></div>
   <div class="progress-card">
-   <div class="progress-top"><div><strong>Objectif quotidien</strong><div class="sub">30 minutes d'entraînement</div></div><div class="percent" id="percent">0%</div></div>
+   <div class="progress-top"><div><strong id="goalTitle">Objectif quotidien</strong><div class="sub" id="goalSub">30 minutes d'entraînement</div></div><div class="percent" id="percent">0%</div></div>
    <div class="track"><div class="fill" id="progressFill"></div></div>
-   <div class="stats"><span id="doneCount">0 / 5 exercices terminés</span><span>Pas à pas, chaque jour.</span></div>
+   <div class="stats"><span id="doneCount">0 / 5 exercices terminés</span><span id="paceNote">Pas à pas, chaque jour.</span></div>
   </div>
-  <div class="section-head"><h2>Les espaces d'entraînement</h2><span class="sub">6 modules</span></div>
+  <div class="section-head"><h2 id="secSpaces">Les espaces d'entraînement</h2><span class="sub" id="secSpacesSub">6 modules</span></div>
   <div class="grid">
-   <button class="module" onclick="openModule('lecture')"><span class="emoji">📖</span><strong>Lecture</strong><small>Lire avec fluidité et assurance.</small></button>
-   <button class="module" onclick="openModule('prononciation')"><span class="emoji">🗣️</span><strong>Prononciation</strong><small>Travailler les sons et l'articulation.</small></button>
-   <button class="module" onclick="openModule('vitesse')"><span class="emoji">⏱️</span><strong>Vitesse de lecture</strong><small>Lire plus naturellement, sans précipitation.</small></button>
-   <button class="module" onclick="openModule('vocabulaire')"><span class="emoji">📚</span><strong>Vocabulaire</strong><small>Découvrir et employer de nouveaux mots.</small></button>
-   <button class="module" onclick="openModule('expression')"><span class="emoji">🎙️</span><strong>Expression orale</strong><small>Organiser ses idées et s'exprimer.</small></button>
-   <button class="module" onclick="openModule('comprehension')"><span class="emoji">🧠</span><strong>Compréhension</strong><small>Comprendre, retenir et reformuler.</small></button>
+   <button class="module" onclick="openModule('lecture')"><span class="emoji">📖</span><strong id="mod-lecture-t">Lecture</strong><small id="mod-lecture-s">Lire avec fluidité et assurance.</small></button>
+   <button class="module" onclick="openModule('prononciation')"><span class="emoji">🗣️</span><strong id="mod-pron-t">Prononciation</strong><small id="mod-pron-s">Travailler les sons et l'articulation.</small></button>
+   <button class="module" onclick="openModule('vitesse')"><span class="emoji">⏱️</span><strong id="mod-vitesse-t">Vitesse de lecture</strong><small id="mod-vitesse-s">Lire plus naturellement, sans précipitation.</small></button>
+   <button class="module" onclick="openModule('vocabulaire')"><span class="emoji">📚</span><strong id="mod-vocab-t">Vocabulaire</strong><small id="mod-vocab-s">Découvrir et employer de nouveaux mots.</small></button>
+   <button class="module" onclick="openModule('expression')"><span class="emoji">🎙️</span><strong id="mod-expr-t">Expression orale</strong><small id="mod-expr-s">Organiser ses idées et s'exprimer.</small></button>
+   <button class="module" onclick="openModule('comprehension')"><span class="emoji">🧠</span><strong id="mod-comp-t">Compréhension</strong><small id="mod-comp-s">Comprendre, retenir et reformuler.</small></button>
   </div>
-  <div class="section-head"><h2>Ma séance du jour</h2><span class="sub">30 minutes</span></div>
+  <div class="section-head"><h2 id="secSession">Ma séance du jour</h2><span class="sub">30 minutes</span></div>
   <div class="session">
-   <div class="sub">Coche chaque exercice lorsque tu l'as terminé.</div>
-   <label class="task"><input type="checkbox" class="daily"><span>Reconnaissance des mots — 5 min</span></label>
-   <label class="task"><input type="checkbox" class="daily"><span>Articulation et diction — 5 min</span></label>
-   <label class="task"><input type="checkbox" class="daily"><span>Lecture à voix haute — 10 min</span></label>
-   <label class="task"><input type="checkbox" class="daily"><span>Compréhension et vocabulaire — 5 min</span></label>
-   <label class="task"><input type="checkbox" class="daily"><span>Expression orale — 5 min</span></label>
-   <button class="action" onclick="resetDay()">Réinitialiser ma séance</button>
+   <div class="sub" id="sessionHint">Coche chaque exercice lorsque tu l'as terminé.</div>
+   <label class="task"><input type="checkbox" class="daily"><span id="task-0">Reconnaissance des mots — 5 min</span></label>
+   <label class="task"><input type="checkbox" class="daily"><span id="task-1">Articulation et diction — 5 min</span></label>
+   <label class="task"><input type="checkbox" class="daily"><span id="task-2">Lecture à voix haute — 10 min</span></label>
+   <label class="task"><input type="checkbox" class="daily"><span id="task-3">Compréhension et vocabulaire — 5 min</span></label>
+   <label class="task"><input type="checkbox" class="daily"><span id="task-4">Expression orale — 5 min</span></label>
+   <button class="action" id="resetDayBtn" onclick="resetDay()">Réinitialiser ma séance</button>
   </div>
-  <p class="notice">Tes coches et ton historique sont enregistrés sur cet appareil.</p>
+  <p class="notice" id="localNotice">Tes coches et ton historique sont enregistrés sur cet appareil.</p>
  </section>
 
  <section id="modulePage" class="page">
-  <button class="back" onclick="showPage('home')">← Retour à l'accueil</button>
-  <div class="panel"><div class="sub">MODULE D'ENTRAÎNEMENT</div><h2 id="moduleTitle">Lecture</h2><p id="moduleDesc"></p></div>
-  <div class="panel"><strong>Ce que nous allons travailler</strong><p id="moduleDetail"></p></div>
-  <div class="panel"><strong>Accès direct</strong><p>Ouvre la bibliothèque pour lire un texte ou lance l'atelier d'exercices interactifs.</p><button onclick="openLibraryTab()">Aller à la Bibliothèque</button> <button onclick="openExercisesTab()">Faire les exercices</button></div>
+  <button class="back" id="backHomeBtn" onclick="showPage('home')">← Retour à l'accueil</button>
+  <div class="panel"><div class="sub" id="modBadge">MODULE D'ENTRAÎNEMENT</div><h2 id="moduleTitle">Lecture</h2><p id="moduleDesc"></p></div>
+  <div class="panel"><strong id="modWorkLabel">Ce que nous allons travailler</strong><p id="moduleDetail"></p></div>
+  <div class="panel"><strong id="modDirectLabel">Accès direct</strong><p id="modDirectText">Ouvre la bibliothèque pour lire un texte ou lance l'atelier d'exercices interactifs.</p><button id="goLibBtn" onclick="openLibraryTab()">Aller à la Bibliothèque</button> <button id="goExBtn" onclick="openExercisesTab()">Faire les exercices</button></div>
  </section>
 
  <section id="exercisesPage" class="page">
-  <div class="section-head"><h2>Exercices interactifs</h2><span class="sub">Étape 4</span></div>
+  <div class="section-head"><h2 id="exPageTitle">Exercices interactifs</h2><span class="sub">Étape 4</span></div>
   <div class="panel">
-   <div class="sub">CHOISIR L'EXERCICE</div>
+   <div class="sub" id="exChooseSub">CHOISIR L'EXERCICE</div>
    <div class="tabs">
     <button class="tab active" id="ex-reco" onclick="setExercise('reco')">Reconnaissance</button>
     <button class="tab" id="ex-pron" onclick="setExercise('pron')">Prononciation</button>
@@ -126,43 +126,43 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
  </section>
 
  <section id="statsPage" class="page">
-  <div class="section-head"><h2>Progression & Historique</h2><span class="sub">Étape 5</span></div>
+  <div class="section-head"><h2 id="statsPageTitle">Progression & Historique</h2><span class="sub">Étape 5</span></div>
   <div class="panel">
    <h2 id="statsPercent">0% de la séance</h2>
    <p id="statsText">Tu n'as pas encore coché d'exercice aujourd'hui. Commence par une petite étape !</p>
    <div class="kpi-grid">
-    <div class="kpi"><span class="sub">Régularité (7 jours)</span><strong id="kpiDays">0 / 6 jours</strong></div>
-    <div class="kpi"><span class="sub">Jours actifs enregistrés</span><strong id="kpiTotalDays">0 jour</strong></div>
-    <div class="kpi"><span class="sub">Dernière vitesse lecture</span><strong id="kpiWpm">—</strong></div>
-    <div class="kpi"><span class="sub">Exercices pratiqués</span><strong id="kpiActivities">0</strong></div>
+    <div class="kpi"><span class="sub" id="kpiDaysLbl">Régularité (7 jours)</span><strong id="kpiDays">0 / 6 jours</strong></div>
+    <div class="kpi"><span class="sub" id="kpiTotalLbl">Jours actifs enregistrés</span><strong id="kpiTotalDays">0 jour(s)</strong></div>
+    <div class="kpi"><span class="sub" id="kpiWpmLbl">Dernière vitesse lecture</span><strong id="kpiWpm">—</strong></div>
+    <div class="kpi"><span class="sub" id="kpiActLbl">Exercices pratiqués</span><strong id="kpiActivities">0</strong></div>
    </div>
   </div>
   <div class="panel">
-   <strong>Historique récent sur cet appareil</strong>
+   <strong id="histBoxTitle">Historique récent sur cet appareil</strong>
    <div id="historyList" style="margin-top:8px"></div>
-   <button class="btn-danger" onclick="clearHistory()">Effacer l'historique</button>
+   <button class="btn-danger" id="clearHistBtn" onclick="clearHistory()">Effacer l'historique</button>
   </div>
-  <div class="panel"><strong>Ton objectif</strong><p>30 minutes par jour, 6 jours par semaine. La reconnaissance visuelle et la prononciation naturelle priment sur la vitesse forcée.</p></div>
+  <div class="panel"><strong id="goalBoxTitle">Ton objectif</strong><p id="goalBoxText">30 minutes par jour, 6 jours par semaine. La reconnaissance visuelle et la prononciation naturelle priment sur la vitesse forcée.</p></div>
  </section>
 
  <section id="libraryPage" class="page">
-  <div class="section-head"><h2>Bibliothèque & Lecteur</h2><span class="sub" id="dayLabel">Mise à jour quotidienne</span></div>
+  <div class="section-head"><h2 id="libPageTitle">Bibliothèque & Lecteur</h2><span class="sub" id="dayLabel">Mise à jour quotidienne</span></div>
   <div class="panel">
    <div class="daily-banner">
     <span id="dailyPickText">Texte du jour sélectionné automatiquement.</span>
-    <button onclick="selectDailyText()">Ouvrir le texte du jour</button>
+    <button id="openDailyBtn" onclick="selectDailyText()">Ouvrir le texte du jour</button>
    </div>
    <div class="sub" id="sourceStatus">Source : locale</div>
-   <div class="sub" style="margin-top:8px">CHOISIR UN TEXTE</div>
+   <div class="sub" id="chooseTextSub" style="margin-top:8px">CHOISIR UN TEXTE</div>
    <div class="tabs" id="textSelector"></div>
-   <div class="sub">MODE DE LECTURE</div>
+   <div class="sub" id="readModeSub">MODE DE LECTURE</div>
    <div class="tabs">
     <button class="tab active" id="mode-libre" onclick="setMode('libre')">Lecture libre</button>
     <button class="tab" id="mode-guide" onclick="setMode('guide')">Lecture guidée (groupes)</button>
     <button class="tab" id="mode-chrono" onclick="setMode('chrono')">Lecture chronométrée</button>
    </div>
    <div id="guidePaceBar" style="display:none;margin-bottom:10px">
-    <div class="sub">RYTHME DE GUIDAGE (SANS PRÉCIPITATION)</div>
+    <div class="sub" id="paceSub">RYTHME DE GUIDAGE (SANS PRÉCIPITATION)</div>
     <div class="tabs" style="margin-top:6px">
      <button class="tab" id="pace-slow" onclick="setGuidePace(2500)">Posé (2,5 s)</button>
      <button class="tab active" id="pace-normal" onclick="setGuidePace(1800)">Normal (1,8 s)</button>
@@ -173,73 +173,222 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
    <div class="sub" id="readerMeta"></div>
    <div class="reader-box" id="readerContent"></div>
    <div class="timer-bar" id="chronoControls" style="display:none">
-    <div>Chrono : <strong id="chronoDisplay">00:00</strong> | Vitesse : <strong id="wpmDisplay">0 mots/min</strong></div>
+    <div><span id="chronoLbl">Chrono</span> : <strong id="chronoDisplay">00:00</strong> | <span id="speedLbl">Vitesse</span> : <strong id="wpmDisplay">0 mots/min</strong></div>
     <div>
-     <button onclick="startChrono()">Démarrer</button>
-     <button onclick="stopChrono()">Terminer</button>
+     <button id="startChronoBtn" onclick="startChrono()">Démarrer</button>
+     <button id="stopChronoBtn" onclick="stopChrono()">Terminer</button>
     </div>
    </div>
-   <button onclick="openExercisesTab()">Pratiquer sur ce texte → Exercices</button>
+   <button id="libToExBtn" onclick="openExercisesTab()">Pratiquer sur ce texte → Exercices</button>
   </div>
   <div class="panel add-box">
-   <strong>+ Ajouter un texte sur cet appareil</strong>
-   <p>Enregistre un nouveau texte directement sur ton téléphone.</p>
+   <strong id="addTextTitle">+ Ajouter un texte sur cet appareil</strong>
+   <p id="addTextDesc">Enregistre un nouveau texte directement sur ton téléphone.</p>
    <input type="text" id="newTitle" placeholder="Titre du texte">
    <input type="text" id="newCategory" placeholder="Catégorie (ex. Récit, Discours, Réflexion)">
    <textarea id="newBody" rows="3" placeholder="Écris ton texte ici..."></textarea>
-   <button onclick="addCustomText()">Enregistrer ce texte</button>
+   <button id="saveCustomTextBtn" onclick="addCustomText()">Enregistrer ce texte</button>
    <div id="customTextsManager" style="margin-top:14px"></div>
   </div>
  </section>
 
  <section id="settingsPage" class="page">
-  <div class="section-head"><h2>Paramètres & Fiabilité</h2><span class="sub">Étape 6</span></div>
-  <div class="panel"><strong>Durée quotidienne</strong><p>30 minutes (6 jours / semaine)</p></div>
-  <div class="panel"><strong>Langue d'apprentissage</strong><p>Français</p></div>
-  <div class="panel"><strong>Règle de lecture</strong><p>Priorité à la reconnaissance visuelle des mots et à la fluidité naturelle, sans précipitation.</p></div>
+  <div class="section-head"><h2 id="setPageTitle">Paramètres & Fiabilité</h2><span class="sub">Étape 6</span></div>
   <div class="panel">
-   <strong>Sauvegarde locale sur cet appareil</strong>
-   <p>Tes coches, textes personnels et historiques sont conservés localement dans ton navigateur, y compris hors ligne.</p>
-   <button class="btn-danger" onclick="resetAllLocalData()">Réinitialiser toutes les données locales</button>
+   <strong id="langSettingTitle">Langue d'apprentissage (Bilingue FR / EN)</strong>
+   <p id="langSettingDesc">Choisis la langue de travail selon ton besoin : français ou anglais (idéal pour pratiquer avec des textes d'inspiration biblique).</p>
+   <div class="tabs" style="margin-top:8px">
+    <button class="tab active" id="lang-fr" onclick="setAppLang('fr')">Français</button>
+    <button class="tab" id="lang-en" onclick="setAppLang('en')">English</button>
+   </div>
+  </div>
+  <div class="panel"><strong id="durSettingTitle">Durée quotidienne</strong><p id="durSettingDesc">30 minutes (6 jours / semaine)</p></div>
+  <div class="panel"><strong id="ruleSettingTitle">Règle de lecture</strong><p id="ruleSettingDesc">Priorité à la reconnaissance visuelle des mots et à la fluidité naturelle, sans précipitation.</p></div>
+  <div class="panel">
+   <strong id="saveSettingTitle">Sauvegarde locale sur cet appareil</strong>
+   <p id="saveSettingDesc">Tes coches, textes personnels et historiques sont conservés localement dans ton navigateur, y compris hors ligne.</p>
+   <button class="btn-danger" id="resetAllBtn" onclick="resetAllLocalData()">Réinitialiser toutes les données locales</button>
    <div class="feedback" id="settingsFeedback"></div>
   </div>
  </section>
 </main>
 <nav class="bottom">
- <button class="selected" onclick="showPage('home',this)"><b>⌂</b>Accueil</button>
- <button id="navLib" onclick="showPage('libraryPage',this)"><b>▤</b>Bibliothèque</button>
- <button id="navEx" onclick="showPage('exercisesPage',this)"><b>✎</b>Exercices</button>
- <button id="navStats" onclick="showPage('statsPage',this)"><b>▥</b>Progression</button>
- <button onclick="showPage('settingsPage',this)"><b>⚙</b>Paramètres</button>
+ <button class="selected" id="navHome" onclick="showPage('home',this)"><b>⌂</b><span>Accueil</span></button>
+ <button id="navLib" onclick="showPage('libraryPage',this)"><b>▤</b><span>Bibliothèque</span></button>
+ <button id="navEx" onclick="showPage('exercisesPage',this)"><b>✎</b><span>Exercices</span></button>
+ <button id="navStats" onclick="showPage('statsPage',this)"><b>▥</b><span>Progression</span></button>
+ <button id="navSet" onclick="showPage('settingsPage',this)"><b>⚙</b><span>Paramètres</span></button>
 </nav>
 <script>
-const modules={
- lecture:["Lecture","Développer une lecture plus fluide, précise et naturelle.","Lecture à voix haute, reconnaissance des groupes de mots, respect de la ponctuation et textes progressifs."],
- prononciation:["Prononciation","Améliorer l'articulation et prononcer les mots avec assurance.","Sons difficiles, syllabes, enchaînements, liaisons et diction posée."],
- vitesse:["Vitesse de lecture","Automatiser la reconnaissance des mots sans forcer ta vitesse.","Mesure des mots correctement lus par minute, sans précipitation ni retours incessants."],
- vocabulaire:["Vocabulaire","Enrichir ton vocabulaire et employer les mots dans tes propres phrases.","Nouveaux mots, définitions claires, synonymes et exemples concrets."],
- expression:["Expression orale","Organiser rapidement tes idées et parler avec clarté.","Prises de parole d'une à trois minutes, structuration des idées et éloquence."],
- comprehension:["Compréhension","Comprendre un texte, en dégager l'idée principale et l'expliquer.","Reformulation avec tes propres mots, idées clés et restitution claire."]
+const i18n={
+ fr:{
+  htmlLang:'fr',
+  heroTitle:'Bienvenue dans ton espace.',
+  heroTagline:'Lire mieux. Prononcer correctement. Penser rapidement. Parler avec aisance.',
+  secProg:'Ma progression',secProgSub:'Cette séance',goalTitle:'Objectif quotidien',goalSub:"30 minutes d'entraînement",
+  paceNote:'Pas à pas, chaque jour.',secSpaces:"Les espaces d'entraînement",secSpacesSub:'6 modules',
+  modLectureT:'Lecture',modLectureS:'Lire avec fluidité et assurance.',
+  modPronT:'Prononciation',modPronS:"Travailler les sons et l'articulation.",
+  modVitesseT:'Vitesse de lecture',modVitesseS:'Lire plus naturellement, sans précipitation.',
+  modVocabT:'Vocabulaire',modVocabS:'Découvrir et employer de nouveaux mots.',
+  modExprT:'Expression orale',modExprS:"Organiser ses idées et s'exprimer.",
+  modCompT:'Compréhension',modCompS:'Comprendre, retenir et reformuler.',
+  secSession:'Ma séance du jour',sessionHint:"Coche chaque exercice lorsque tu l'as terminé.",
+  tasks:['Reconnaissance des mots — 5 min','Articulation et diction — 5 min','Lecture à voix haute — 10 min','Compréhension et vocabulaire — 5 min','Expression orale — 5 min'],
+  resetDayBtn:'Réinitialiser ma séance',
+  localNotice:'Tes coches et ton historique sont enregistrés sur cet appareil.',
+  backHomeBtn:"← Retour à l'accueil",modBadge:"MODULE D'ENTRAÎNEMENT",modWorkLabel:'Ce que nous allons travailler',
+  modDirectLabel:'Accès direct',modDirectText:"Ouvre la bibliothèque pour lire un texte ou lance l'atelier d'exercices interactifs.",
+  goLibBtn:'Aller à la Bibliothèque',goExBtn:'Faire les exercices',
+  exPageTitle:'Exercices interactifs',exChooseSub:"CHOISIR L'EXERCICE",
+  exTabs:{reco:'Reconnaissance',pron:'Prononciation',vocab:'Vocabulaire',comp:'Compréhension',oral:'Expression'},
+  statsPageTitle:'Progression & Historique',kpiDaysLbl:'Régularité (7 jours)',kpiTotalLbl:'Jours actifs enregistrés',
+  kpiWpmLbl:'Dernière vitesse lecture',kpiActLbl:'Exercices pratiqués',histBoxTitle:'Historique récent sur cet appareil',
+  clearHistBtn:"Effacer l'historique",goalBoxTitle:'Ton objectif',
+  goalBoxText:'30 minutes par jour, 6 jours par semaine. La reconnaissance visuelle et la prononciation naturelle priment sur la vitesse forcée.',
+  libPageTitle:'Bibliothèque & Lecteur',openDailyBtn:'Ouvrir le texte du jour',
+  dailyPickPrefix:'Texte du jour : « ',dailyPickSuffix:' »',
+  chooseTextSub:'CHOISIR UN TEXTE',readModeSub:'MODE DE LECTURE',
+  modes:{libre:'Lecture libre',guide:'Lecture guidée (groupes)',chrono:'Lecture chronométrée'},
+  paceSub:'RYTHME DE GUIDAGE (SANS PRÉCIPITATION)',
+  paces:{slow:'Posé (2,5 s)',normal:'Normal (1,8 s)',fluid:'Fluide (1,3 s)'},
+  chronoLbl:'Chrono',speedLbl:'Vitesse',wpmUnit:'mots/min',startChronoBtn:'Démarrer',stopChronoBtn:'Terminer',
+  libToExBtn:'Pratiquer sur ce texte → Exercices',
+  addTextTitle:'+ Ajouter un texte sur cet appareil',addTextDesc:'Enregistre un nouveau texte directement sur ton téléphone.',
+  phTitle:'Titre du texte',phCat:'Catégorie (ex. Récit, Discours, Réflexion)',phBody:'Écris ton texte ici...',
+  saveCustomTextBtn:'Enregistrer ce texte',
+  setPageTitle:'Paramètres & Fiabilité',langSettingTitle:"Langue d'apprentissage (Bilingue FR / EN)",
+  langSettingDesc:"Choisis la langue de travail selon ton besoin : français ou anglais (idéal pour pratiquer avec des textes d'inspiration biblique).",
+  durSettingTitle:'Durée quotidienne',durSettingDesc:'30 minutes (6 jours / semaine)',
+  ruleSettingTitle:'Règle de lecture',ruleSettingDesc:'Priorité à la reconnaissance visuelle des mots et à la fluidité naturelle, sans précipitation.',
+  saveSettingTitle:'Sauvegarde locale sur cet appareil',
+  saveSettingDesc:'Tes coches, textes personnels et historiques sont conservés localement dans ton navigateur, y compris hors ligne.',
+  resetAllBtn:'Réinitialiser toutes les données locales',
+  nav:{home:'Accueil',lib:'Bibliothèque',ex:'Exercices',stats:'Progression',set:'Paramètres'},
+  speechLang:'fr-FR',
+  doneFmt:(n)=>`${n} / 5 exercices terminés`,
+  statsZero:"Tu n'as pas encore coché d'exercice aujourd'hui. Commence par une petite étape !",
+  statsFull:'Bravo ! Tu as terminé ta séance du jour.',
+  statsPart:(n)=>`Tu as terminé ${n} exercice(s) sur 5. Continue à ton rythme.`,
+  catLabel:'Catégorie',modeLabel:'Mode',
+  delBtn:'Supprimer',savedLocalSub:'TEXTES ENREGISTRÉS SUR L\'APPAREIL'
+ },
+ en:{
+  htmlLang:'en',
+  heroTitle:'Welcome to your space.',
+  heroTagline:'Read better. Pronounce clearly. Think swiftly. Speak with confidence.',
+  secProg:'My progress',secProgSub:'Current session',goalTitle:'Daily goal',goalSub:'30 minutes of practice',
+  paceNote:'Step by step, every day.',secSpaces:'Practice spaces',secSpacesSub:'6 modules',
+  modLectureT:'Reading',modLectureS:'Read with fluency and assurance.',
+  modPronT:'Pronunciation',modPronS:'Practice sounds and clear articulation.',
+  modVitesseT:'Reading speed',modVitesseS:'Read naturally without rushing.',
+  modVocabT:'Vocabulary',modVocabS:'Discover and use new words.',
+  modExprT:'Speaking',modExprS:'Organize ideas and speak clearly.',
+  modCompT:'Comprehension',modCompS:'Understand, retain, and restate.',
+  secSession:"Today's session",sessionHint:'Check off each exercise as you complete it.',
+  tasks:['Word recognition — 5 min','Articulation & diction — 5 min','Reading aloud — 10 min','Comprehension & vocabulary — 5 min','Speaking practice — 5 min'],
+  resetDayBtn:'Reset my session',
+  localNotice:'Your checkmarks and history are saved on this device.',
+  backHomeBtn:'← Back to home',modBadge:'TRAINING MODULE',modWorkLabel:'What we will practice',
+  modDirectLabel:'Direct access',modDirectText:'Open the library to read a text or launch interactive exercises.',
+  goLibBtn:'Go to Library',goExBtn:'Open exercises',
+  exPageTitle:'Interactive exercises',exChooseSub:'CHOOSE AN EXERCISE',
+  exTabs:{reco:'Recognition',pron:'Pronunciation',vocab:'Vocabulary',comp:'Comprehension',oral:'Speaking'},
+  statsPageTitle:'Progress & History',kpiDaysLbl:'Consistency (7 days)',kpiTotalLbl:'Active days recorded',
+  kpiWpmLbl:'Last reading speed',kpiActLbl:'Activities logged',histBoxTitle:'Recent history on this device',
+  clearHistBtn:'Clear history',goalBoxTitle:'Your goal',
+  goalBoxText:'30 minutes a day, 6 days a week. Visual word recognition and natural pronunciation come before forced speed.',
+  libPageTitle:'Library & Reader',openDailyBtn:"Open today's text",
+  dailyPickPrefix:"Today's text: « ",dailyPickSuffix:' »',
+  chooseTextSub:'CHOOSE A TEXT',readModeSub:'READING MODE',
+  modes:{libre:'Free reading',guide:'Guided reading (chunks)',chrono:'Timed reading'},
+  paceSub:'GUIDANCE PACE (NO RUSHING)',
+  paces:{slow:'Calm (2.5 s)',normal:'Normal (1.8 s)',fluid:'Fluent (1.3 s)'},
+  chronoLbl:'Timer',speedLbl:'Speed',wpmUnit:'words/min',startChronoBtn:'Start',stopChronoBtn:'Finish',
+  libToExBtn:'Practice on this text → Exercises',
+  addTextTitle:'+ Add a text on this device',addTextDesc:'Save a new text directly on your phone.',
+  phTitle:'Text title',phCat:'Category (e.g. Scripture, Speech, Reflection)',phBody:'Write your text here...',
+  saveCustomTextBtn:'Save this text',
+  setPageTitle:'Settings & Reliability',langSettingTitle:'Learning language (Bilingual FR / EN)',
+  langSettingDesc:'Switch between French and English anytime (great for practicing with scripture-inspired passages).',
+  durSettingTitle:'Daily duration',durSettingDesc:'30 minutes (6 days / week)',
+  ruleSettingTitle:'Reading rule',ruleSettingDesc:'Priority on visual word recognition and natural fluency without rushing.',
+  saveSettingTitle:'Local storage on this device',
+  saveSettingDesc:'Your checkmarks, custom texts, and history stay locally on your browser, including offline.',
+  resetAllBtn:'Reset all local data',
+  nav:{home:'Home',lib:'Library',ex:'Exercises',stats:'Progress',set:'Settings'},
+  speechLang:'en-US',
+  doneFmt:(n)=>`${n} / 5 exercises completed`,
+  statsZero:'No exercises checked yet today. Start with one small step!',
+  statsFull:"Great job! You completed today's session.",
+  statsPart:(n)=>`You completed ${n} of 5 exercises. Keep going at your pace.`,
+  catLabel:'Category',modeLabel:'Mode',
+  delBtn:'Delete',savedLocalSub:'TEXTS SAVED ON DEVICE'
+ }
 };
 
-const baseTexts=[
- {id:"t1",category:"Réflexion & Discipline",title:"La constance plutôt que la précipitation",chunks:["Lire avec aisance","ne consiste pas à courir","sur chaque ligne.","C'est d'abord reconnaître","les mots calmement,","puis laisser la voix","suivre le sens","de la phrase."]},
- {id:"t2",category:"Expression & Parole",title:"Parler avec clarté et assurance",chunks:["Une parole claire","commence par une pensée","bien ordonnée.","Avant de répondre,","prends un instant","pour respirer,","choisir tes mots","et articuler sans hâte."]},
- {id:"t3",category:"Récit & Culture",title:"Le chemin de la vallée",chunks:["Au lever du jour,","la lumière dorée","effleurait les collines.","Sur le sentier étroit,","chaque pas comptait","pour avancer en sécurité","vers le village","au fond de la vallée."]}
-];
+const modulesByLang={
+ fr:{
+  lecture:["Lecture","Développer une lecture plus fluide, précise et naturelle.","Lecture à voix haute, reconnaissance des groupes de mots, respect de la ponctuation et textes progressifs."],
+  prononciation:["Prononciation","Améliorer l'articulation et prononcer les mots avec assurance.","Sons difficiles, syllabes, enchaînements, liaisons et diction posée."],
+  vitesse:["Vitesse de lecture","Automatiser la reconnaissance des mots sans forcer ta vitesse.","Mesure des mots correctement lus par minute, sans précipitation ni retours incessants."],
+  vocabulaire:["Vocabulaire","Enrichir ton vocabulaire et employer les mots dans tes propres phrases.","Nouveaux mots, définitions claires, synonymes et exemples concrets."],
+  expression:["Expression orale","Organiser rapidement tes idées et parler avec clarté.","Prises de parole d'une à trois minutes, structuration des idées et éloquence."],
+  comprehension:["Compréhension","Comprendre un texte, en dégager l'idée principale et l'expliquer.","Reformulation avec tes propres mots, idées clés et restitution claire."]
+ },
+ en:{
+  lecture:["Reading","Build smoother, clearer, and more confident reading.","Reading aloud, grouping words naturally, respecting punctuation, and steady practice."],
+  prononciation:["Pronunciation","Improve articulation and speak words with assurance.","Syllables, word endings, stress, and calm diction."],
+  vitesse:["Reading speed","Automate word recognition without forcing speed.","Measure words read per minute calmly, without rushing or constant backtracking."],
+  vocabulaire:["Vocabulary","Expand your vocabulary and use words in your own sentences.","Key words, clear meanings, and practical examples."],
+  expression:["Speaking","Organize ideas quickly and speak with clarity.","One- to three-minute talks, structured points, and poise."],
+  comprehension:["Comprehension","Understand a passage, find its main idea, and explain it.","Restating in your own words, key points, and clear summary."]
+ }
+};
 
-const vocabBank=[
- {word:"aisance",def:"Facilité naturelle et assurance dans un mouvement ou une parole.",ex:"Il s'exprime avec aisance devant le groupe."},
- {word:"clarté",def:"Qualité de ce qui est net, facile à comprendre sans ambiguïté.",ex:"La clarté de ton propos aide l'auditoire à te suivre."},
- {word:"constance",def:"Stabilité et régularité dans l'effort au fil du temps.",ex:"La constance quotidienne produit des progrès solides."},
- {word:"articuler",def:"Prononcer nettement les sons et les syllabes d'un mot.",ex:"Prends le temps d'articuler la fin de chaque phrase."}
-];
+const baseTextsByLang={
+ fr:[
+  {id:"t1_fr",lang:"fr",category:"Méditation & Sagesse",title:"La constance plutôt que la précipitation",chunks:["Lire avec aisance","ne consiste pas à courir","sur chaque ligne.","C'est d'abord reconnaître","les mots calmement,","puis laisser la voix","suivre le sens","de la phrase."]},
+  {id:"t2_fr",lang:"fr",category:"Parole & Sagesse",title:"Paroles posées et cœur attentif",chunks:["Une parole claire","commence par une pensée","bien ordonnée.","Avant de répondre,","prends un instant","pour respirer,","choisir tes mots","et articuler sans hâte."]},
+  {id:"t3_fr",lang:"fr",category:"Récit & Espérance",title:"Le chemin de la vallée",chunks:["Au lever du jour,","la lumière dorée","effleurait les collines.","Sur le sentier étroit,","chaque pas comptait","pour avancer en sécurité","vers le village","au fond de la vallée."]}
+ ],
+ en:[
+  {id:"t1_en",lang:"en",category:"Scripture & Wisdom",title:"Steady Steps and Quiet Strength",chunks:["Quiet confidence","grows through steady practice","day by day.","Listen carefully,","speak with clarity,","and let each word","carry a clear","and honest thought."]},
+  {id:"t2_en",lang:"en",category:"Scripture & Guidance",title:"A Lamp Along the Path",chunks:["A word of wisdom","brings light to the path","ahead of you.","Pause before speaking,","breathe calmly,","choose plain words,","and pronounce every syllable","with care."]},
+  {id:"t3_en",lang:"en",category:"Scripture & Hope",title:"Patience in Every Season",chunks:["In every season,","patient effort bears fruit","in due time.","Stay faithful","to small daily steps","and speak with calm","assurance."]}
+ ]
+};
 
-const speechPrompts=[
- "Explique comment la régularité aide à mieux s'exprimer.",
- "Décris une habitude simple qui t'aide à garder ton calme.",
- "Présente l'idée centrale du texte comme si tu parlais à un ami."
-];
+const vocabByLang={
+ fr:[
+  {word:"aisance",def:"Facilité naturelle et assurance dans un mouvement ou une parole.",ex:"Il s'exprime avec aisance devant le groupe."},
+  {word:"clarté",def:"Qualité de ce qui est net, facile à comprendre sans ambiguïté.",ex:"La clarté de ton propos aide l'auditoire à te suivre."},
+  {word:"constance",def:"Stabilité et régularité dans l'effort au fil du temps.",ex:"La constance quotidienne produit des progrès solides."},
+  {word:"articuler",def:"Prononcer nettement les sons et les syllabes d'un mot.",ex:"Prends le temps d'articuler la fin de chaque phrase."}
+ ],
+ en:[
+  {word:"steadfast",def:"Resolute, loyal, and steady in purpose over time.",ex:"A steadfast habit helps you grow in English."},
+  {word:"clarity",def:"The quality of being easy to understand and clear.",ex:"Speak with clarity so listeners follow easily."},
+  {word:"wisdom",def:"Sound judgment and practical insight in speech and action.",ex:"Wisdom listens first and answers calmly."},
+  {word:"articulate",def:"To pronounce words and ideas distinctly and clearly.",ex:"Articulate each ending sound without rushing."}
+ ]
+};
+
+const promptsByLang={
+ fr:[
+  "Explique comment la régularité aide à mieux s'exprimer.",
+  "Décris une habitude simple qui t'aide à garder ton calme.",
+  "Présente l'idée centrale du texte comme si tu parlais à un ami."
+ ],
+ en:[
+  "Explain in simple English how daily consistency builds confidence.",
+  "Share the main lesson of this passage in your own words.",
+  "Describe a calm habit that helps you speak more clearly."
+ ]
+};
+
+let appLang='fr';
+try{const savedLang=localStorage.getItem('te_lang');if(savedLang==='fr'||savedLang==='en')appLang=savedLang;}catch(e){}
 
 let externalTexts=[];
 let currentExercise='reco';
@@ -278,13 +427,7 @@ function logActivity(label,wpmVal){
  const list=getHistoryData();
  const now=new Date();
  const timeStr=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
- const entry={
-  date:getTodayKey(),
-  time:timeStr,
-  label,
-  wpm:typeof wpmVal==='number'?wpmVal:null
- };
- list.unshift(entry);
+ list.unshift({date:getTodayKey(),time:timeStr,label,wpm:typeof wpmVal==='number'?wpmVal:null});
  saveHistoryData(list);
  renderStatsHistory();
 }
@@ -312,21 +455,21 @@ function renderStatsHistory(){
  const kpiTotalDays=document.getElementById('kpiTotalDays');
  const kpiWpm=document.getElementById('kpiWpm');
  const kpiActivities=document.getElementById('kpiActivities');
- if(kpiDays)kpiDays.textContent=last7Count+' / 6 jours';
- if(kpiTotalDays)kpiTotalDays.textContent=activeDaysSet.size+' jour(s)';
- if(kpiWpm)kpiWpm.textContent=lastWpmItem ? lastWpmItem.wpm+' mots/min' : '—';
+ if(kpiDays)kpiDays.textContent=last7Count+' / 6 '+(appLang==='en'?'days':'jours');
+ if(kpiTotalDays)kpiTotalDays.textContent=activeDaysSet.size+(appLang==='en'?' day(s)':' jour(s)');
+ if(kpiWpm)kpiWpm.textContent=lastWpmItem ? lastWpmItem.wpm+' '+i18n[appLang].wpmUnit : '—';
  if(kpiActivities)kpiActivities.textContent=String(list.length);
 
  const box=document.getElementById('historyList');
  if(!box)return;
  if(!list.length){
-  box.innerHTML='<p class="sub">Aucune activité enregistrée pour le moment. Coche un exercice ou lance un chronomètre.</p>';
+  box.innerHTML='<p class="sub">'+(appLang==='en'?'No activity logged yet.':'Aucune activité enregistrée pour le moment.')+'</p>';
   return;
  }
  box.innerHTML=list.slice(0,12).map(item=>`
   <div class="history-item">
    <strong>${item.date}</strong> <span class="sub">(${item.time})</span><br>
-   <span>${item.label}${typeof item.wpm==='number'?' • <strong>'+item.wpm+' mots/min</strong>':''}</span>
+   <span>${item.label}${typeof item.wpm==='number'?' • <strong>'+item.wpm+' '+i18n[appLang].wpmUnit+'</strong>':''}</span>
   </div>
  `).join('');
 }
@@ -335,10 +478,12 @@ function getCustomTexts(){
  try{return JSON.parse(localStorage.getItem('te_custom_texts')||'[]');}catch(e){return[];}
 }
 function getPoolTexts(){
- return externalTexts.length ? externalTexts : baseTexts;
+ const filteredExt=externalTexts.filter(t=>!t.lang || t.lang===appLang);
+ return filteredExt.length ? filteredExt : baseTextsByLang[appLang];
 }
 function getAllTexts(){
- return [...getPoolTexts(),...getCustomTexts()];
+ const customForLang=getCustomTexts().filter(t=>!t.lang || t.lang===appLang);
+ return [...getPoolTexts(),...customForLang];
 }
 
 function getDayIndex(){
@@ -349,7 +494,7 @@ function getDayIndex(){
  return dayOfYear % pool.length;
 }
 
-let dailyText=baseTexts[getDayIndex()];
+let dailyText=baseTextsByLang[appLang][0];
 let currentText=dailyText, currentMode='libre', guideIndex=0, guideTimer=null;
 let chronoInterval=null, chronoSeconds=0, chronoRunning=false;
 
@@ -357,9 +502,10 @@ function refreshDailyPick(){
  const pool=getPoolTexts();
  dailyText=pool[getDayIndex()];
  currentText=dailyText;
- const d=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+ const locale=appLang==='en'?'en-US':'fr-FR';
+ const d=new Date().toLocaleDateString(locale,{weekday:'long',day:'numeric',month:'long'});
  document.getElementById('dayLabel').textContent=d;
- document.getElementById('dailyPickText').textContent='Texte du jour : « '+dailyText.title+' »';
+ document.getElementById('dailyPickText').textContent=i18n[appLang].dailyPickPrefix+dailyText.title+i18n[appLang].dailyPickSuffix;
 }
 
 async function loadExternalTexts(){
@@ -370,7 +516,7 @@ async function loadExternalTexts(){
   if(Array.isArray(data)&&data.length>0){
    externalTexts=data.filter(item=>item&&item.title&&Array.isArray(item.chunks)&&item.chunks.length>0);
    if(externalTexts.length>0){
-    document.getElementById('sourceStatus').textContent='Source : fichier externe textes.json ('+externalTexts.length+' textes)';
+    document.getElementById('sourceStatus').textContent=(appLang==='en'?'Source: textes.json ('+externalTexts.length+' texts)':'Source : fichier externe textes.json ('+externalTexts.length+' textes)');
     refreshDailyPick();
     renderSelector();
     renderReader();
@@ -378,8 +524,119 @@ async function loadExternalTexts(){
    }
   }
  }catch(e){
-  document.getElementById('sourceStatus').textContent='Source : textes intégrés (mode hors ligne ou repli)';
+  document.getElementById('sourceStatus').textContent=(appLang==='en'?'Source: built-in texts (offline fallback)':'Source : textes intégrés (mode hors ligne ou repli)');
  }
+}
+
+function applyLanguageUI(){
+ const t=i18n[appLang];
+ document.documentElement.lang=t.htmlLang;
+ document.getElementById('lang-fr').classList.toggle('active',appLang==='fr');
+ document.getElementById('lang-en').classList.toggle('active',appLang==='en');
+ document.getElementById('heroTitle').textContent=t.heroTitle;
+ document.getElementById('heroTagline').textContent=t.heroTagline;
+ document.getElementById('secProg').textContent=t.secProg;
+ document.getElementById('secProgSub').textContent=t.secProgSub;
+ document.getElementById('goalTitle').textContent=t.goalTitle;
+ document.getElementById('goalSub').textContent=t.goalSub;
+ document.getElementById('paceNote').textContent=t.paceNote;
+ document.getElementById('secSpaces').textContent=t.secSpaces;
+ document.getElementById('secSpacesSub').textContent=t.secSpacesSub;
+ document.getElementById('mod-lecture-t').textContent=t.modLectureT;
+ document.getElementById('mod-lecture-s').textContent=t.modLectureS;
+ document.getElementById('mod-pron-t').textContent=t.modPronT;
+ document.getElementById('mod-pron-s').textContent=t.modPronS;
+ document.getElementById('mod-vitesse-t').textContent=t.modVitesseT;
+ document.getElementById('mod-vitesse-s').textContent=t.modVitesseS;
+ document.getElementById('mod-vocab-t').textContent=t.modVocabT;
+ document.getElementById('mod-vocab-s').textContent=t.modVocabS;
+ document.getElementById('mod-expr-t').textContent=t.modExprT;
+ document.getElementById('mod-expr-s').textContent=t.modExprS;
+ document.getElementById('mod-comp-t').textContent=t.modCompT;
+ document.getElementById('mod-comp-s').textContent=t.modCompS;
+ document.getElementById('secSession').textContent=t.secSession;
+ document.getElementById('sessionHint').textContent=t.sessionHint;
+ t.tasks.forEach((txt,idx)=>{const el=document.getElementById('task-'+idx);if(el)el.textContent=txt;});
+ document.getElementById('resetDayBtn').textContent=t.resetDayBtn;
+ document.getElementById('localNotice').textContent=t.localNotice;
+ document.getElementById('backHomeBtn').textContent=t.backHomeBtn;
+ document.getElementById('modBadge').textContent=t.modBadge;
+ document.getElementById('modWorkLabel').textContent=t.modWorkLabel;
+ document.getElementById('modDirectLabel').textContent=t.modDirectLabel;
+ document.getElementById('modDirectText').textContent=t.modDirectText;
+ document.getElementById('goLibBtn').textContent=t.goLibBtn;
+ document.getElementById('goExBtn').textContent=t.goExBtn;
+ document.getElementById('exPageTitle').textContent=t.exPageTitle;
+ document.getElementById('exChooseSub').textContent=t.exChooseSub;
+ document.getElementById('ex-reco').textContent=t.exTabs.reco;
+ document.getElementById('ex-pron').textContent=t.exTabs.pron;
+ document.getElementById('ex-vocab').textContent=t.exTabs.vocab;
+ document.getElementById('ex-comp').textContent=t.exTabs.comp;
+ document.getElementById('ex-oral').textContent=t.exTabs.oral;
+ document.getElementById('statsPageTitle').textContent=t.statsPageTitle;
+ document.getElementById('kpiDaysLbl').textContent=t.kpiDaysLbl;
+ document.getElementById('kpiTotalLbl').textContent=t.kpiTotalLbl;
+ document.getElementById('kpiWpmLbl').textContent=t.kpiWpmLbl;
+ document.getElementById('kpiActLbl').textContent=t.kpiActLbl;
+ document.getElementById('histBoxTitle').textContent=t.histBoxTitle;
+ document.getElementById('clearHistBtn').textContent=t.clearHistBtn;
+ document.getElementById('goalBoxTitle').textContent=t.goalBoxTitle;
+ document.getElementById('goalBoxText').textContent=t.goalBoxText;
+ document.getElementById('libPageTitle').textContent=t.libPageTitle;
+ document.getElementById('openDailyBtn').textContent=t.openDailyBtn;
+ document.getElementById('chooseTextSub').textContent=t.chooseTextSub;
+ document.getElementById('readModeSub').textContent=t.readModeSub;
+ document.getElementById('mode-libre').textContent=t.modes.libre;
+ document.getElementById('mode-guide').textContent=t.modes.guide;
+ document.getElementById('mode-chrono').textContent=t.modes.chrono;
+ document.getElementById('paceSub').textContent=t.paceSub;
+ document.getElementById('pace-slow').textContent=t.paces.slow;
+ document.getElementById('pace-normal').textContent=t.paces.normal;
+ document.getElementById('pace-fluid').textContent=t.paces.fluid;
+ document.getElementById('chronoLbl').textContent=t.chronoLbl;
+ document.getElementById('speedLbl').textContent=t.speedLbl;
+ document.getElementById('startChronoBtn').textContent=t.startChronoBtn;
+ document.getElementById('stopChronoBtn').textContent=t.stopChronoBtn;
+ document.getElementById('libToExBtn').textContent=t.libToExBtn;
+ document.getElementById('addTextTitle').textContent=t.addTextTitle;
+ document.getElementById('addTextDesc').textContent=t.addTextDesc;
+ document.getElementById('newTitle').placeholder=t.phTitle;
+ document.getElementById('newCategory').placeholder=t.phCat;
+ document.getElementById('newBody').placeholder=t.phBody;
+ document.getElementById('saveCustomTextBtn').textContent=t.saveCustomTextBtn;
+ document.getElementById('setPageTitle').textContent=t.setPageTitle;
+ document.getElementById('langSettingTitle').textContent=t.langSettingTitle;
+ document.getElementById('langSettingDesc').textContent=t.langSettingDesc;
+ document.getElementById('durSettingTitle').textContent=t.durSettingTitle;
+ document.getElementById('durSettingDesc').textContent=t.durSettingDesc;
+ document.getElementById('ruleSettingTitle').textContent=t.ruleSettingTitle;
+ document.getElementById('ruleSettingDesc').textContent=t.ruleSettingDesc;
+ document.getElementById('saveSettingTitle').textContent=t.saveSettingTitle;
+ document.getElementById('saveSettingDesc').textContent=t.saveSettingDesc;
+ document.getElementById('resetAllBtn').textContent=t.resetAllBtn;
+ document.querySelector('#navHome span').textContent=t.nav.home;
+ document.querySelector('#navLib span').textContent=t.nav.lib;
+ document.querySelector('#navEx span').textContent=t.nav.ex;
+ document.querySelector('#navStats span').textContent=t.nav.stats;
+ document.querySelector('#navSet span').textContent=t.nav.set;
+}
+
+function setAppLang(lang){
+ if(lang!=='fr'&&lang!=='en')return;
+ appLang=lang;
+ try{localStorage.setItem('te_lang',appLang);}catch(e){}
+ foundWords.clear();
+ pronIndex=0;
+ promptIndex=0;
+ applyLanguageUI();
+ refreshDailyPick();
+ update(true);
+ renderSelector();
+ renderReader();
+ renderExercise();
+ renderStatsHistory();
+ const fb=document.getElementById('settingsFeedback');
+ if(fb)fb.textContent=appLang==='en'?'Language switched to English.':'Langue réglée sur le français.';
 }
 
 function selectDailyText(){
@@ -392,7 +649,7 @@ function selectDailyText(){
 }
 
 function openModule(key){
- const m=modules[key];
+ const m=modulesByLang[appLang][key];
  document.getElementById('moduleTitle').textContent=m[0];
  document.getElementById('moduleDesc').textContent=m[1];
  document.getElementById('moduleDetail').textContent=m[2];
@@ -450,10 +707,10 @@ function renderCustomTextsManager(){
   wrap.innerHTML='';
   return;
  }
- wrap.innerHTML='<div class="sub" style="margin-bottom:6px">TEXTES ENREGISTRÉS SUR L\'APPAREIL</div>'+custom.map(t=>`
+ wrap.innerHTML='<div class="sub" style="margin-bottom:6px">'+i18n[appLang].savedLocalSub+'</div>'+custom.map(t=>`
   <div class="custom-row">
    <div><strong>${t.title}</strong> <span class="sub">(${t.category})</span></div>
-   <button class="btn-danger btn-sm" onclick="deleteCustomText('${t.id}')">Supprimer</button>
+   <button class="btn-danger btn-sm" onclick="deleteCustomText('${t.id}')">${i18n[appLang].delBtn}</button>
   </div>
  `).join('');
 }
@@ -471,11 +728,11 @@ function deleteCustomText(id){
 
 function addCustomText(){
  const title=document.getElementById('newTitle').value.trim();
- const category=document.getElementById('newCategory').value.trim()||'Texte personnel';
+ const category=document.getElementById('newCategory').value.trim()||(appLang==='en'?'Personal text':'Texte personnel');
  const body=document.getElementById('newBody').value.trim();
  if(!title||!body)return;
  const chunks=body.split(/(?<=[.!?])\s+|\n+/).map(s=>s.trim()).filter(Boolean);
- const item={id:'c_'+Date.now(),category,title,chunks:chunks.length?chunks:[body]};
+ const item={id:'c_'+Date.now(),lang:appLang,category,title,chunks:chunks.length?chunks:[body]};
  const list=getCustomTexts();
  list.push(item);
  localStorage.setItem('te_custom_texts',JSON.stringify(list));
@@ -487,7 +744,7 @@ function addCustomText(){
  renderSelector();
  renderReader();
  renderExercise();
- logActivity('Ajout d’un texte : '+item.title);
+ logActivity((appLang==='en'?'Added text: ':'Ajout d’un texte : ')+item.title);
 }
 
 function setGuidePace(ms){
@@ -516,7 +773,7 @@ function stopGuide(){
 function renderReader(){
  stopGuide();
  document.getElementById('readerTitle').textContent=currentText.title;
- document.getElementById('readerMeta').textContent='Catégorie : '+currentText.category+' • Mode : '+currentMode;
+ document.getElementById('readerMeta').textContent=i18n[appLang].catLabel+' : '+currentText.category+' • '+i18n[appLang].modeLabel+' : '+currentMode;
  const box=document.getElementById('readerContent');
  if(currentMode==='libre'){
   box.textContent=currentText.chunks.join(' ');
@@ -567,22 +824,22 @@ function toggleSpeechTimer(){
  const fb=document.getElementById('speechFeedback');
  if(speechRunning){
   stopSpeechTimer();
-  if(fb)fb.textContent='Prise de parole mise en pause. Respire et reprends quand tu es prêt.';
+  if(fb)fb.textContent=appLang==='en'?'Paused. Breathe and resume when ready.':'Prise de parole mise en pause. Respire et reprends quand tu es prêt.';
   return;
  }
  if(speechRemaining<=0)speechRemaining=speechTargetSec;
  speechRunning=true;
  updateSpeechButton();
- if(fb)fb.textContent='Parle à voix haute calmement, en suivant ton plan en 3 temps.';
+ if(fb)fb.textContent=appLang==='en'?'Speak aloud calmly following your 3-part outline.':'Parle à voix haute calmement, en suivant ton plan en 3 temps.';
  speechInterval=setInterval(()=>{
   speechRemaining--;
   const el=document.getElementById('speechClock');
   if(el)el.textContent=formatClock(Math.max(speechRemaining,0));
   if(speechRemaining<=0){
    stopSpeechTimer();
-   logActivity('Prise de parole chronométrée ('+Math.round(speechTargetSec/60)+' min)');
+   logActivity((appLang==='en'?'Timed speaking: ':'Prise de parole chronométrée (')+Math.round(speechTargetSec/60)+(appLang==='en'?' min':' min)');
    const doneFb=document.getElementById('speechFeedback');
-   if(doneFb)doneFb.textContent='Temps écoulé ! Bien joué pour cette prise de parole.';
+   if(doneFb)doneFb.textContent=appLang==='en'?'Time is up! Well done.':'Temps écoulé ! Bien joué pour cette prise de parole.';
   }
  },1000);
 }
@@ -604,7 +861,7 @@ function resetSpeechTimer(){
 
 function updateSpeechButton(){
  const btn=document.getElementById('speechToggleBtn');
- if(btn)btn.textContent=speechRunning?'Pause':'Démarrer';
+ if(btn)btn.textContent=speechRunning?(appLang==='en'?'Pause':'Pause'):(appLang==='en'?'Start':'Démarrer');
 }
 
 function normalizeWord(w){
@@ -612,8 +869,9 @@ function normalizeWord(w){
 }
 
 function buildReferenceWordSet(){
- const prompt=speechPrompts[promptIndex % speechPrompts.length]||'';
- const refText=(currentText.chunks||[]).join(' ')+' '+prompt+' '+vocabBank.map(v=>v.word).join(' ');
+ const listPrompts=promptsByLang[appLang];
+ const prompt=listPrompts[promptIndex % listPrompts.length]||'';
+ const refText=(currentText.chunks||[]).join(' ')+' '+prompt+' '+vocabByLang[appLang].map(v=>v.word).join(' ');
  const tokens=refText.split(/\s+/).map(normalizeWord).filter(w=>w.length>=3);
  return new Set(tokens);
 }
@@ -621,7 +879,7 @@ function buildReferenceWordSet(){
 function renderAnnotatedTranscript(transcript){
  const cleanText=(transcript||'').trim();
  if(!cleanText){
-  const info=speechDiagMsg || 'Aucune parole détectée (optionnel, fonctionne selon connexion/navigateur).';
+  const info=speechDiagMsg || (appLang==='en'?'No speech detected yet (optional, depends on network/browser).':'Aucune parole détectée (optionnel, fonctionne selon connexion/navigateur).');
   return `<span class="sub">${info}</span>`;
  }
  const refSet=buildReferenceWordSet();
@@ -632,29 +890,29 @@ function renderAnnotatedTranscript(transcript){
   if(!norm)return tok;
   if(norm.length>=4 && !refSet.has(norm)){
    flaggedCount++;
-   return `<span class="word-miss" title="Mot à vérifier à l'écoute">${tok}</span>`;
+   return `<span class="word-miss">${tok}</span>`;
   }
   return `<span class="word-ok">${tok}</span>`;
  });
  const note=flaggedCount>0
-  ? `<div class="sub" style="margin-top:8px">Points surlignés (${flaggedCount}) : mots absents du texte/thème de référence ou transcrits différemment. Vérifie à l'écoute si c'est une articulation à soigner ou un autre mot choisi.</div>`
-  : `<div class="sub" style="margin-top:8px">Tous les mots longs reconnus correspondent au vocabulaire ou au thème travaillé.</div>`;
+  ? `<div class="sub" style="margin-top:8px">${appLang==='en'?'Highlighted words ('+flaggedCount+'): outside the reference text/topic or spelled differently. Check by listening.':'Points surlignés ('+flaggedCount+') : mots absents du texte/thème de référence ou transcrits différemment. Vérifie à l\'écoute.'}</div>`
+  : `<div class="sub" style="margin-top:8px">${appLang==='en'?'Recognized words match the current text or topic.':'Tous les mots longs reconnus correspondent au vocabulaire ou au thème travaillé.'}</div>`;
  return `<div>${htmlTokens.join(' ')}</div>${note}`;
 }
 
 function startLiveSpeechRecognition(){
  const SR=window.SpeechRecognition || window.webkitSpeechRecognition;
  if(!SR){
-  speechDiagMsg="Transcription directe indisponible ici. L'enregistrement audio et l'écoute fonctionnent hors ligne.";
+  speechDiagMsg=appLang==='en'?'Live transcript unavailable here. Audio recording & playback work offline.':'Transcription directe indisponible ici. L\'enregistrement audio et l\'écoute fonctionnent hors ligne.';
   return;
  }
  try{
   stopLiveSpeechRecognition();
   speechRecognizer=new SR();
-  speechRecognizer.lang='fr-FR';
+  speechRecognizer.lang=i18n[appLang].speechLang;
   speechRecognizer.continuous=true;
   speechRecognizer.interimResults=true;
-  speechDiagMsg='Écoute vocale active...';
+  speechDiagMsg=appLang==='en'?'Listening...':'Écoute vocale active...';
   let finalAccum=spokenTranscript ? spokenTranscript+' ' : '';
   speechRecognizer.onresult=event=>{
    let interim='';
@@ -671,14 +929,14 @@ function startLiveSpeechRecognition(){
    if(box)box.innerHTML=renderAnnotatedTranscript(spokenTranscript);
   };
   speechRecognizer.onerror=e=>{
-   const code=(e && e.error) ? e.error : 'hors-ligne';
-   speechDiagMsg="Transcription non active ("+code+"). Écoute ton enregistrement audio enregistré en local.";
+   const code=(e && e.error) ? e.error : 'offline';
+   speechDiagMsg=(appLang==='en'?'Live transcript inactive (':'Transcription non active (')+code+(appLang==='en'?'). Listen to your local recording.':'). Écoute ton enregistrement audio enregistré en local.');
    const box=document.getElementById('liveTranscriptBox');
    if(box && !spokenTranscript)box.innerHTML=renderAnnotatedTranscript('');
   };
   speechRecognizer.start();
  }catch(e){
-  speechDiagMsg="Transcription directe non démarrée. L'audio reste disponible.";
+  speechDiagMsg=appLang==='en'?'Live transcript could not start. Audio remains available.':'Transcription directe non démarrée. L\'audio reste disponible.';
  }
 }
 
@@ -699,13 +957,13 @@ function clearAudioRecording(){
  spokenTranscript='';
  speechDiagMsg='';
  isRecording=false;
- recStatusMsg='Enregistrement supprimé.';
+ recStatusMsg=appLang==='en'?'Recording deleted.':'Enregistrement supprimé.';
  renderExercise();
 }
 
 async function toggleAudioRecording(){
  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder==='undefined'){
-  recStatusMsg="L'enregistrement vocal n'est pas disponible sur ce navigateur.";
+  recStatusMsg=appLang==='en'?'Audio recording is not supported on this browser.':"L'enregistrement vocal n'est pas disponible sur ce navigateur.";
   renderExercise();
   return;
  }
@@ -733,19 +991,19 @@ async function toggleAudioRecording(){
    const blob=new Blob(audioChunks,{type:mediaRecorder.mimeType||'audio/webm'});
    audioUrl=URL.createObjectURL(blob);
    isRecording=false;
-   recStatusMsg='Enregistrement prêt. Écoute-toi puis supprime-le quand tu as fini.';
-   logActivity('Enregistrement vocal & auto-écoute');
+   recStatusMsg=appLang==='en'?'Recording ready. Listen to yourself and delete when done.':'Enregistrement prêt. Écoute-toi puis supprime-le quand tu as fini.';
+   logActivity(appLang==='en'?'Voice recording & playback':'Enregistrement vocal & auto-écoute');
    renderExercise();
   };
   mediaRecorder.start();
   isRecording=true;
-  recStatusMsg='Enregistrement en cours... Parle clairement à voix haute.';
+  recStatusMsg=appLang==='en'?'Recording in progress... Speak clearly aloud.':'Enregistrement en cours... Parle clairement à voix haute.';
   renderExercise();
   startLiveSpeechRecognition();
  }catch(err){
   isRecording=false;
   stopLiveSpeechRecognition();
-  recStatusMsg="Micro non autorisé ou indisponible. Vérifie les permissions du navigateur.";
+  recStatusMsg=appLang==='en'?'Microphone permission denied or unavailable.':"Micro non autorisé ou indisponible. Vérifie les permissions du navigateur.";
   renderExercise();
  }
 }
@@ -755,77 +1013,76 @@ function renderExercise(){
  if(!area)return;
  if(currentExercise==='reco'){
   const words=getUniqueWords();
-  const target=words[0]||'lire';
+  const target=words[0]||(appLang==='en'?'read':'lire');
   area.innerHTML=`
-   <h3>Reconnaissance visuelle des mots</h3>
-   <p>Repère et clique sur le mot cible dans la liste ci-dessous sans te presser : <strong>« ${target} »</strong></p>
+   <h3>${appLang==='en'?'Visual word recognition':'Reconnaissance visuelle des mots'}</h3>
+   <p>${appLang==='en'?'Spot and tap the target word calmly:':'Repère et clique sur le mot cible dans la liste ci-dessous sans te presser :'} <strong>« ${target} »</strong></p>
    <div>${words.map(w=>`<button class="word-chip ${foundWords.has(w)?'found':''}" onclick="checkReco('${w}','${target}')">${w}</button>`).join('')}</div>
-   <div class="feedback" id="recoFeedback">Mots validés : ${foundWords.size}</div>
+   <div class="feedback" id="recoFeedback">${appLang==='en'?'Words matched:':'Mots validés :'} ${foundWords.size}</div>
   `;
  } else if(currentExercise==='pron'){
   const chunk=currentText.chunks[pronIndex % currentText.chunks.length]||'';
   area.innerHTML=`
-   <h3>Prononciation & articulation</h3>
-   <p>Lis ce groupe de mots à voix haute en articulant nettement chaque syllabe et en respectant le rythme :</p>
+   <h3>${appLang==='en'?'Pronunciation & articulation':'Prononciation & articulation'}</h3>
+   <p>${appLang==='en'?'Read this group of words aloud clearly:':'Lis ce groupe de mots à voix haute en articulant nettement chaque syllabe :'}</p>
    <div class="ex-highlight">« ${chunk} »</div>
-   <button onclick="pronIndex++;renderExercise()">Groupe suivant</button>
-   <p class="sub" style="margin-top:8px">Conseil : prononce la fin de chaque mot sans précipitation.</p>
+   <button onclick="pronIndex++;renderExercise()">${appLang==='en'?'Next phrase':'Groupe suivant'}</button>
   `;
  } else if(currentExercise==='vocab'){
-  const item=vocabBank[0];
+  const item=vocabByLang[appLang][0];
   area.innerHTML=`
-   <h3>Vocabulaire actif</h3>
-   <p>Mot clé : <strong>${item.word}</strong></p>
-   <p><strong>Définition :</strong> ${item.def}</p>
-   <p><strong>Exemple :</strong> <em>${item.ex}</em></p>
-   <textarea id="vocabSentence" rows="2" placeholder="Écris une phrase avec le mot « ${item.word} »..."></textarea>
-   <button onclick="checkVocab('${item.word}')">Vérifier ma phrase</button>
+   <h3>${appLang==='en'?'Active vocabulary':'Vocabulaire actif'}</h3>
+   <p>${appLang==='en'?'Key word:':'Mot clé :'} <strong>${item.word}</strong></p>
+   <p><strong>${appLang==='en'?'Meaning:':'Définition :'}</strong> ${item.def}</p>
+   <p><strong>${appLang==='en'?'Example:':'Exemple :'}</strong> <em>${item.ex}</em></p>
+   <textarea id="vocabSentence" rows="2" placeholder="${appLang==='en'?'Write a sentence using « '+item.word+' »...':'Écris une phrase avec le mot « '+item.word+' »...'}"></textarea>
+   <button onclick="checkVocab('${item.word}')">${appLang==='en'?'Check sentence':'Vérifier ma phrase'}</button>
    <div class="feedback" id="vocabFeedback"></div>
   `;
  } else if(currentExercise==='comp'){
   area.innerHTML=`
-   <h3>Compréhension & reformulation</h3>
-   <p>Texte travaillé : <strong>${currentText.title}</strong></p>
-   <p>Quelle est l'idée principale de ce passage ? Résume-la en une ou deux phrases simples avec tes propres mots :</p>
-   <textarea id="compAnswer" rows="3" placeholder="Écris l'idée principale ici..."></textarea>
-   <button onclick="checkComp()">Valider ma reformulation</button>
+   <h3>${appLang==='en'?'Comprehension & restatement':'Compréhension & reformulation'}</h3>
+   <p>${appLang==='en'?'Current text:':'Texte travaillé :'} <strong>${currentText.title}</strong></p>
+   <p>${appLang==='en'?'What is the main idea? Summarize it in one or two simple sentences:':'Quelle est l\'idée principale de ce passage ? Résume-la en une ou deux phrases simples :'}</p>
+   <textarea id="compAnswer" rows="3" placeholder="${appLang==='en'?'Write the main idea here...':'Écris l\'idée principale ici...'}"></textarea>
+   <button onclick="checkComp()">${appLang==='en'?'Save summary':'Valider ma reformulation'}</button>
    <div class="feedback" id="compFeedback"></div>
   `;
  } else if(currentExercise==='oral'){
-  const prompt=speechPrompts[promptIndex % speechPrompts.length];
+  const listPrompts=promptsByLang[appLang];
+  const prompt=listPrompts[promptIndex % listPrompts.length];
   area.innerHTML=`
-   <h3>Expression orale guidée</h3>
-   <p>Sujet lié à <strong>${currentText.title}</strong> :</p>
+   <h3>${appLang==='en'?'Guided speaking practice':'Expression orale guidée'}</h3>
+   <p>${appLang==='en'?'Prompt linked to':'Sujet lié à'} <strong>${currentText.title}</strong> :</p>
    <div class="ex-highlight">« ${prompt} »</div>
-   <button onclick="promptIndex++;renderExercise()">Autre amorce</button>
+   <button onclick="promptIndex++;renderExercise()">${appLang==='en'?'Another prompt':'Autre amorce'}</button>
    <div class="speech-box">
-    <div class="sub">PLAN EN 3 TEMPS</div>
+    <div class="sub">${appLang==='en'?'3-PART OUTLINE':'PLAN EN 3 TEMPS'}</div>
     <ol class="outline-list">
-     <li><strong>Idée centrale :</strong> énonce ton message en une phrase simple.</li>
-     <li><strong>Deux points clés :</strong> donne un exemple concret ou une raison claire.</li>
-     <li><strong>Conclusion :</strong> termine calmement par l'essentiel à retenir.</li>
+     <li><strong>${appLang==='en'?'Main idea:':'Idée centrale :'}</strong> ${appLang==='en'?'state your core message in one plain sentence.':'énonce ton message en une phrase simple.'}</li>
+     <li><strong>${appLang==='en'?'Two key points:':'Deux points clés :'}</strong> ${appLang==='en'?'give a clear example or reason.':'donne un exemple concret ou une raison claire.'}</li>
+     <li><strong>${appLang==='en'?'Conclusion:':'Conclusion :'}</strong> ${appLang==='en'?'close calmly with the takeaway.':'termine calmement par l\'essentiel à retenir.'}</li>
     </ol>
-    <div class="sub" style="margin-top:10px">DURÉE DE PRISE DE PAROLE</div>
+    <div class="sub" style="margin-top:10px">${appLang==='en'?'SPEAKING DURATION':'DURÉE DE PRISE DE PAROLE'}</div>
     <div class="tabs" style="margin-top:6px">
      <button class="tab ${speechTargetSec===60?'active':''}" onclick="setSpeechDuration(60)">1 min</button>
      <button class="tab ${speechTargetSec===120?'active':''}" onclick="setSpeechDuration(120)">2 min</button>
      <button class="tab ${speechTargetSec===180?'active':''}" onclick="setSpeechDuration(180)">3 min</button>
     </div>
     <div class="speech-clock" id="speechClock">${formatClock(speechRemaining)}</div>
-    <button id="speechToggleBtn" onclick="toggleSpeechTimer()">Démarrer</button>
-    <button onclick="resetSpeechTimer()">Réinitialiser</button>
+    <button id="speechToggleBtn" onclick="toggleSpeechTimer()">${speechRunning?'Pause':(appLang==='en'?'Start':'Démarrer')}</button>
+    <button onclick="resetSpeechTimer()">${appLang==='en'?'Reset':'Réinitialiser'}</button>
     <div class="feedback" id="speechFeedback"></div>
    </div>
    <div class="rec-box">
-    <div class="sub">ENREGISTREMENT VOCAL & AUTO-ÉCOUTE (HORS LIGNE)</div>
-    <p style="margin:6px 0">Enregistre ta voix sur l'appareil, écoute-toi pour t'améliorer, puis supprime l'audio. La transcription directe s'ajoute uniquement si la connexion et le navigateur le permettent.</p>
-    <button onclick="toggleAudioRecording()">${isRecording?'Arrêter l’enregistrement':'Enregistrer ma voix'}</button>
-    ${(audioUrl || spokenTranscript)?`<button class="btn-danger" onclick="clearAudioRecording()">Supprimer l'enregistrement</button>`:''}
+    <div class="sub">${appLang==='en'?'VOICE RECORDING & SELF-LISTENING (OFFLINE)':'ENREGISTREMENT VOCAL & AUTO-ÉCOUTE (HORS LIGNE)'}</div>
+    <p style="margin:6px 0">${appLang==='en'?'Record your voice locally, listen to improve, then delete the audio. Live transcript appears when supported.':'Enregistre ta voix sur l\'appareil, écoute-toi pour t\'améliorer, puis supprime l\'audio. La transcription directe s\'ajoute selon la connexion.'}</p>
+    <button onclick="toggleAudioRecording()">${isRecording?(appLang==='en'?'Stop recording':'Arrêter l’enregistrement'):(appLang==='en'?'Record voice':'Enregistrer ma voix')}</button>
+    ${(audioUrl || spokenTranscript)?`<button class="btn-danger" onclick="clearAudioRecording()">${appLang==='en'?'Delete recording':'Supprimer l\'enregistrement'}</button>`:''}
     ${audioUrl?`<audio class="rec-player" controls src="${audioUrl}"></audio>`:''}
     <div class="transcript-box" id="liveTranscriptBox">${renderAnnotatedTranscript(spokenTranscript)}</div>
     ${recStatusMsg?`<div class="feedback">${recStatusMsg}</div>`:''}
    </div>
-   <p class="sub">Repère : inspire avant de commencer, garde une diction posée et ne cherche pas à aller vite.</p>
   `;
  }
 }
@@ -834,11 +1091,11 @@ function checkReco(clicked,target){
  const fb=document.getElementById('recoFeedback');
  if(clicked===target){
   foundWords.add(clicked);
-  fb.textContent='Bien vu ! Tu as reconnu « '+target+' » calmement.';
-  logActivity('Reconnaissance du mot « '+target+' »');
+  fb.textContent=appLang==='en'?'Well spotted! You recognized « '+target+' » calmly.':'Bien vu ! Tu as reconnu « '+target+' » calmement.';
+  logActivity((appLang==='en'?'Word recognition: ':'Reconnaissance du mot « ')+target+(appLang==='en'?'':' »'));
   renderExercise();
  } else {
-  fb.textContent='Ce mot est « '+clicked+' ». Cherche « '+target+' » sans te presser.';
+  fb.textContent=appLang==='en'?'That word is « '+clicked+' ». Look for « '+target+' ».':'Ce mot est « '+clicked+' ». Cherche « '+target+' » sans te presser.';
  }
 }
 
@@ -846,32 +1103,32 @@ function checkVocab(word){
  const val=(document.getElementById('vocabSentence').value||'').trim();
  const fb=document.getElementById('vocabFeedback');
  if(!val){
-  fb.textContent='Écris d’abord une phrase avant de vérifier.';
+  fb.textContent=appLang==='en'?'Write a sentence first.':'Écris d’abord une phrase avant de vérifier.';
   return;
  }
  const hasWord=val.toLowerCase().includes(word.toLowerCase());
  fb.textContent=hasWord
-  ? 'Très bien, ta phrase emploie bien le mot « '+word+' ». Lis-la maintenant à voix haute.'
-  : 'Pense à inclure le mot « '+word+' » dans ta phrase.';
- if(hasWord)logActivity('Phrase de vocabulaire avec « '+word+' »');
+  ? (appLang==='en'?'Great, your sentence uses « '+word+' ». Read it aloud now.':'Très bien, ta phrase emploie bien le mot « '+word+' ». Lis-la maintenant à voix haute.')
+  : (appLang==='en'?'Include the word « '+word+' » in your sentence.':'Pense à inclure le mot « '+word+' » dans ta phrase.');
+ if(hasWord)logActivity((appLang==='en'?'Vocabulary sentence: ':'Phrase de vocabulaire avec « ')+word+(appLang==='en'?'':' »'));
 }
 
 function checkComp(){
  const val=(document.getElementById('compAnswer').value||'').trim();
  const fb=document.getElementById('compFeedback');
  if(val.length<12){
-  fb.textContent='Développe un peu ta réponse pour bien résumer l’idée principale.';
+  fb.textContent=appLang==='en'?'Write a bit more to summarize the main idea.':'Développe un peu ta réponse pour bien résumer l’idée principale.';
   return;
  }
- fb.textContent='Reformulation enregistrée pour cette séance. Essaie de l’expliquer à voix haute en 30 secondes.';
- logActivity('Reformulation sur « '+currentText.title+' »');
+ fb.textContent=appLang==='en'?'Summary saved for this session. Try explaining it aloud in 30 seconds.':'Reformulation enregistrée pour cette séance. Essaie de l’expliquer à voix haute en 30 secondes.';
+ logActivity((appLang==='en'?'Summary: ':'Reformulation sur « ')+currentText.title+(appLang==='en'?'':' »'));
 }
 
 function startChrono(){
  if(chronoRunning)return;
  chronoRunning=true;
  chronoSeconds=0;
- document.getElementById('wpmDisplay').textContent='0 mots/min';
+ document.getElementById('wpmDisplay').textContent='0 '+i18n[appLang].wpmUnit;
  chronoInterval=setInterval(()=>{
   chronoSeconds++;
   const m=String(Math.floor(chronoSeconds/60)).padStart(2,'0');
@@ -887,8 +1144,8 @@ function stopChrono(){
  const words=currentText.chunks.join(' ').trim().split(/\s+/).length;
  const minutes=Math.max(chronoSeconds/60,1/60);
  const wpm=Math.round(words/minutes);
- document.getElementById('wpmDisplay').textContent=wpm+' mots/min';
- logActivity('Lecture chronométrée : '+currentText.title,wpm);
+ document.getElementById('wpmDisplay').textContent=wpm+' '+i18n[appLang].wpmUnit;
+ logActivity((appLang==='en'?'Timed reading: ':'Lecture chronométrée : ')+currentText.title,wpm);
 }
 
 function resetAllLocalData(){
@@ -903,22 +1160,23 @@ function resetAllLocalData(){
  renderReader();
  renderExercise();
  const fb=document.getElementById('settingsFeedback');
- if(fb)fb.textContent='Données locales réinitialisées sur cet appareil.';
+ if(fb)fb.textContent=appLang==='en'?'Local data reset on this device.':'Données locales réinitialisées sur cet appareil.';
 }
 
 const checks=[...document.querySelectorAll('.daily')];
 let lastCheckedCount=0;
 function update(fromInit){
+ const t=i18n[appLang];
  let n=checks.filter(c=>c.checked).length,p=Math.round(n/5*100);
  document.getElementById('percent').textContent=p+'%';
  document.getElementById('progressFill').style.width=p+'%';
- document.getElementById('doneCount').textContent=n+' / 5 exercices terminés';
- document.getElementById('statsPercent').textContent=p+'% de la séance';
- document.getElementById('statsText').textContent=n===5?'Bravo ! Tu as terminé ta séance du jour.':`Tu as terminé ${n} exercice(s) sur 5. Continue à ton rythme.`;
+ document.getElementById('doneCount').textContent=t.doneFmt(n);
+ document.getElementById('statsPercent').textContent=p+'% '+(appLang==='en'?'of session':'de la séance');
+ document.getElementById('statsText').textContent=n===0?t.statsZero:(n===5?t.statsFull:t.statsPart(n));
  checks.forEach(c=>c.parentElement.classList.toggle('done',c.checked));
  localStorage.setItem('te_checks',JSON.stringify(checks.map(c=>c.checked)));
  if(!fromInit && n>lastCheckedCount){
-  logActivity('Exercice coché ('+n+'/5 sur la séance)');
+  logActivity((appLang==='en'?'Exercise checked (':'Exercice coché (')+n+'/5)');
  }
  lastCheckedCount=n;
  renderStatsHistory();
@@ -926,6 +1184,7 @@ function update(fromInit){
 function resetDay(){checks.forEach(c=>c.checked=false);lastCheckedCount=0;update();}
 try{const saved=JSON.parse(localStorage.getItem('te_checks')||'[]');checks.forEach((c,i)=>c.checked=!!saved[i]);lastCheckedCount=checks.filter(c=>c.checked).length;}catch(e){}
 checks.forEach(c=>c.addEventListener('change',()=>update(false)));
+applyLanguageUI();
 refreshDailyPick();
 update(true);
 renderSelector();
