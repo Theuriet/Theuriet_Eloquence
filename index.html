@@ -51,6 +51,11 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 .transcript-box{background:#fff;border:1px solid #d8e0ec;border-radius:12px;padding:12px;margin-top:10px;font-size:14px;line-height:1.65;color:var(--ink)}
 .word-ok{color:#166534;font-weight:600;margin-right:4px}
 .word-miss{background:#fee2e2;color:#991b1b;font-weight:700;padding:1px 5px;border-radius:5px;margin-right:4px;border-bottom:2px solid #dc2626}
+.kpi-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0}
+.kpi{background:#f9fbfe;border:1px solid #e2e8f0;border-radius:12px;padding:12px}
+.kpi strong{display:block;font-size:18px;color:var(--navy);margin-top:4px}
+.history-item{border-bottom:1px solid #edf0f5;padding:10px 0;font-size:13px}
+.history-item:last-child{border:0}
 .btn-danger{background:#991b1b !important;color:#fff !important}
 .feedback{margin-top:10px;font-size:13px;font-weight:700;color:var(--navy)}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid #e7ebf1;display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
@@ -92,7 +97,7 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
    <label class="task"><input type="checkbox" class="daily"><span>Expression orale — 5 min</span></label>
    <button class="action" onclick="resetDay()">Réinitialiser ma séance</button>
   </div>
-  <p class="notice">Tes coches sont enregistrées sur cet appareil.</p>
+  <p class="notice">Tes coches et ton historique sont enregistrés sur cet appareil.</p>
  </section>
 
  <section id="modulePage" class="page">
@@ -118,8 +123,22 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
  </section>
 
  <section id="statsPage" class="page">
-  <div class="section-head"><h2>Mes statistiques</h2></div>
-  <div class="panel"><h2 id="statsPercent">0% de la séance</h2><p id="statsText">Tu n'as pas encore coché d'exercice aujourd'hui. Commence par une petite étape !</p></div>
+  <div class="section-head"><h2>Progression & Historique</h2><span class="sub">Étape 5</span></div>
+  <div class="panel">
+   <h2 id="statsPercent">0% de la séance</h2>
+   <p id="statsText">Tu n'as pas encore coché d'exercice aujourd'hui. Commence par une petite étape !</p>
+   <div class="kpi-grid">
+    <div class="kpi"><span class="sub">Régularité (7 jours)</span><strong id="kpiDays">0 / 6 jours</strong></div>
+    <div class="kpi"><span class="sub">Jours actifs enregistrés</span><strong id="kpiTotalDays">0 jour</strong></div>
+    <div class="kpi"><span class="sub">Dernière vitesse lecture</span><strong id="kpiWpm">—</strong></div>
+    <div class="kpi"><span class="sub">Exercices pratiqués</span><strong id="kpiActivities">0</strong></div>
+   </div>
+  </div>
+  <div class="panel">
+   <strong>Historique récent sur cet appareil</strong>
+   <div id="historyList" style="margin-top:8px"></div>
+   <button class="btn-danger" onclick="clearHistory()">Effacer l'historique</button>
+  </div>
   <div class="panel"><strong>Ton objectif</strong><p>30 minutes par jour, 6 jours par semaine. La reconnaissance visuelle et la prononciation naturelle priment sur la vitesse forcée.</p></div>
  </section>
 
@@ -172,7 +191,7 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
  <button class="selected" onclick="showPage('home',this)"><b>⌂</b>Accueil</button>
  <button id="navLib" onclick="showPage('libraryPage',this)"><b>▤</b>Bibliothèque</button>
  <button id="navEx" onclick="showPage('exercisesPage',this)"><b>✎</b>Exercices</button>
- <button onclick="showPage('statsPage',this)"><b>▥</b>Progression</button>
+ <button id="navStats" onclick="showPage('statsPage',this)"><b>▥</b>Progression</button>
  <button onclick="showPage('settingsPage',this)"><b>⚙</b>Paramètres</button>
 </nav>
 <script>
@@ -220,7 +239,78 @@ let audioUrl=null;
 let isRecording=false;
 let recStatusMsg='';
 let spokenTranscript='';
+let speechDiagMsg='';
 let speechRecognizer=null;
+
+function getTodayKey(){
+ const d=new Date();
+ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+function getHistoryData(){
+ try{return JSON.parse(localStorage.getItem('te_history')||'[]');}catch(e){return[];}
+}
+
+function saveHistoryData(list){
+ localStorage.setItem('te_history',JSON.stringify(list.slice(0,40)));
+}
+
+function logActivity(label,wpmVal){
+ const list=getHistoryData();
+ const now=new Date();
+ const timeStr=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+ const entry={
+  date:getTodayKey(),
+  time:timeStr,
+  label,
+  wpm:typeof wpmVal==='number'?wpmVal:null
+ };
+ list.unshift(entry);
+ saveHistoryData(list);
+ renderStatsHistory();
+}
+
+function clearHistory(){
+ localStorage.removeItem('te_history');
+ renderStatsHistory();
+}
+
+function renderStatsHistory(){
+ const list=getHistoryData();
+ const activeDaysSet=new Set(list.map(x=>x.date));
+ if(checks.some(c=>c.checked))activeDaysSet.add(getTodayKey());
+
+ const now=new Date();
+ let last7Count=0;
+ for(let i=0;i<7;i++){
+  const ref=new Date(now.getTime()-i*86400000);
+  const key=ref.getFullYear()+'-'+String(ref.getMonth()+1).padStart(2,'0')+'-'+String(ref.getDate()).padStart(2,'0');
+  if(activeDaysSet.has(key))last7Count++;
+ }
+
+ const lastWpmItem=list.find(x=>typeof x.wpm==='number');
+ const kpiDays=document.getElementById('kpiDays');
+ const kpiTotalDays=document.getElementById('kpiTotalDays');
+ const kpiWpm=document.getElementById('kpiWpm');
+ const kpiActivities=document.getElementById('kpiActivities');
+ if(kpiDays)kpiDays.textContent=last7Count+' / 6 jours';
+ if(kpiTotalDays)kpiTotalDays.textContent=activeDaysSet.size+' jour(s)';
+ if(kpiWpm)kpiWpm.textContent=lastWpmItem ? lastWpmItem.wpm+' mots/min' : '—';
+ if(kpiActivities)kpiActivities.textContent=String(list.length);
+
+ const box=document.getElementById('historyList');
+ if(!box)return;
+ if(!list.length){
+  box.innerHTML='<p class="sub">Aucune activité enregistrée pour le moment. Coche un exercice ou lance un chronomètre.</p>';
+  return;
+ }
+ box.innerHTML=list.slice(0,12).map(item=>`
+  <div class="history-item">
+   <strong>${item.date}</strong> <span class="sub">(${item.time})</span><br>
+   <span>${item.label}${typeof item.wpm==='number'?' • <strong>'+item.wpm+' mots/min</strong>':''}</span>
+  </div>
+ `).join('');
+}
 
 function getCustomTexts(){
  try{return JSON.parse(localStorage.getItem('te_custom_texts')||'[]');}catch(e){return[];}
@@ -306,6 +396,9 @@ function showPage(id,btn){
  if(isRecording && mediaRecorder && mediaRecorder.state==='recording'){
   mediaRecorder.stop();
  }
+ if(id==='statsPage'){
+  renderStatsHistory();
+ }
  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
  document.getElementById(id).classList.add('active');
  document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('selected'));
@@ -344,6 +437,7 @@ function addCustomText(){
  renderSelector();
  renderReader();
  renderExercise();
+ logActivity('Ajout d’un texte : '+item.title);
 }
 
 function setMode(mode){
@@ -426,6 +520,7 @@ function toggleSpeechTimer(){
   if(el)el.textContent=formatClock(Math.max(speechRemaining,0));
   if(speechRemaining<=0){
    stopSpeechTimer();
+   logActivity('Prise de parole chronométrée ('+Math.round(speechTargetSec/60)+' min)');
    const doneFb=document.getElementById('speechFeedback');
    if(doneFb)doneFb.textContent='Temps écoulé ! Bien joué pour cette prise de parole.';
   }
@@ -466,7 +561,8 @@ function buildReferenceWordSet(){
 function renderAnnotatedTranscript(transcript){
  const cleanText=(transcript||'').trim();
  if(!cleanText){
-  return '<span class="sub">Aucune parole détectée pour le moment.</span>';
+  const info=speechDiagMsg || 'Aucune parole détectée (optionnel, fonctionne selon connexion/navigateur).';
+  return `<span class="sub">${info}</span>`;
  }
  const refSet=buildReferenceWordSet();
  const rawTokens=cleanText.split(/\s+/);
@@ -488,13 +584,17 @@ function renderAnnotatedTranscript(transcript){
 
 function startLiveSpeechRecognition(){
  const SR=window.SpeechRecognition || window.webkitSpeechRecognition;
- if(!SR)return;
+ if(!SR){
+  speechDiagMsg="Transcription directe indisponible ici. L'enregistrement audio et l'écoute fonctionnent hors ligne.";
+  return;
+ }
  try{
   stopLiveSpeechRecognition();
   speechRecognizer=new SR();
   speechRecognizer.lang='fr-FR';
   speechRecognizer.continuous=true;
   speechRecognizer.interimResults=true;
+  speechDiagMsg='Écoute vocale active...';
   let finalAccum=spokenTranscript ? spokenTranscript+' ' : '';
   speechRecognizer.onresult=event=>{
    let interim='';
@@ -510,9 +610,16 @@ function startLiveSpeechRecognition(){
    const box=document.getElementById('liveTranscriptBox');
    if(box)box.innerHTML=renderAnnotatedTranscript(spokenTranscript);
   };
-  speechRecognizer.onerror=()=>{};
+  speechRecognizer.onerror=e=>{
+   const code=(e && e.error) ? e.error : 'hors-ligne';
+   speechDiagMsg="Transcription non active ("+code+"). Écoute ton enregistrement audio enregistré en local.";
+   const box=document.getElementById('liveTranscriptBox');
+   if(box && !spokenTranscript)box.innerHTML=renderAnnotatedTranscript('');
+  };
   speechRecognizer.start();
- }catch(e){}
+ }catch(e){
+  speechDiagMsg="Transcription directe non démarrée. L'audio reste disponible.";
+ }
 }
 
 function stopLiveSpeechRecognition(){
@@ -530,8 +637,9 @@ function clearAudioRecording(){
  }
  audioChunks=[];
  spokenTranscript='';
+ speechDiagMsg='';
  isRecording=false;
- recStatusMsg='Enregistrement et transcription supprimés.';
+ recStatusMsg='Enregistrement supprimé.';
  renderExercise();
 }
 
@@ -554,6 +662,7 @@ async function toggleAudioRecording(){
   }
   audioChunks=[];
   spokenTranscript='';
+  speechDiagMsg='';
   mediaRecorder=new MediaRecorder(stream);
   mediaRecorder.ondataavailable=e=>{
    if(e.data && e.data.size>0)audioChunks.push(e.data);
@@ -564,14 +673,15 @@ async function toggleAudioRecording(){
    const blob=new Blob(audioChunks,{type:mediaRecorder.mimeType||'audio/webm'});
    audioUrl=URL.createObjectURL(blob);
    isRecording=false;
-   recStatusMsg='Enregistrement terminé. Écoute-toi et compare avec la transcription ci-dessous.';
+   recStatusMsg='Enregistrement prêt. Écoute-toi puis supprime-le quand tu as fini.';
+   logActivity('Enregistrement vocal & auto-écoute');
    renderExercise();
   };
   mediaRecorder.start();
-  startLiveSpeechRecognition();
   isRecording=true;
-  recStatusMsg='Enregistrement et transcription en cours... Parle clairement à voix haute.';
+  recStatusMsg='Enregistrement en cours... Parle clairement à voix haute.';
   renderExercise();
+  startLiveSpeechRecognition();
  }catch(err){
   isRecording=false;
   stopLiveSpeechRecognition();
@@ -647,8 +757,8 @@ function renderExercise(){
     <div class="feedback" id="speechFeedback"></div>
    </div>
    <div class="rec-box">
-    <div class="sub">ENREGISTREMENT VOCAL, TRANSCRIPTION & AUTO-ÉCOUTE</div>
-    <p style="margin:6px 0">Enregistre ta prise de parole : ce que tu dis s'écrit en direct pendant que tu parles, puis tu peux t'écouter et tout supprimer.</p>
+    <div class="sub">ENREGISTREMENT VOCAL & AUTO-ÉCOUTE (HORS LIGNE)</div>
+    <p style="margin:6px 0">Enregistre ta voix sur l'appareil, écoute-toi pour t'améliorer, puis supprime l'audio. La transcription directe s'ajoute uniquement si la connexion et le navigateur le permettent.</p>
     <button onclick="toggleAudioRecording()">${isRecording?'Arrêter l’enregistrement':'Enregistrer ma voix'}</button>
     ${(audioUrl || spokenTranscript)?`<button class="btn-danger" onclick="clearAudioRecording()">Supprimer l'enregistrement</button>`:''}
     ${audioUrl?`<audio class="rec-player" controls src="${audioUrl}"></audio>`:''}
@@ -665,6 +775,7 @@ function checkReco(clicked,target){
  if(clicked===target){
   foundWords.add(clicked);
   fb.textContent='Bien vu ! Tu as reconnu « '+target+' » calmement.';
+  logActivity('Reconnaissance du mot « '+target+' »');
   renderExercise();
  } else {
   fb.textContent='Ce mot est « '+clicked+' ». Cherche « '+target+' » sans te presser.';
@@ -682,6 +793,7 @@ function checkVocab(word){
  fb.textContent=hasWord
   ? 'Très bien, ta phrase emploie bien le mot « '+word+' ». Lis-la maintenant à voix haute.'
   : 'Pense à inclure le mot « '+word+' » dans ta phrase.';
+ if(hasWord)logActivity('Phrase de vocabulaire avec « '+word+' »');
 }
 
 function checkComp(){
@@ -692,6 +804,7 @@ function checkComp(){
   return;
  }
  fb.textContent='Reformulation enregistrée pour cette séance. Essaie de l’expliquer à voix haute en 30 secondes.';
+ logActivity('Reformulation sur « '+currentText.title+' »');
 }
 
 function startChrono(){
@@ -715,10 +828,12 @@ function stopChrono(){
  const minutes=Math.max(chronoSeconds/60,1/60);
  const wpm=Math.round(words/minutes);
  document.getElementById('wpmDisplay').textContent=wpm+' mots/min';
+ logActivity('Lecture chronométrée : '+currentText.title,wpm);
 }
 
 const checks=[...document.querySelectorAll('.daily')];
-function update(){
+let lastCheckedCount=0;
+function update(fromInit){
  let n=checks.filter(c=>c.checked).length,p=Math.round(n/5*100);
  document.getElementById('percent').textContent=p+'%';
  document.getElementById('progressFill').style.width=p+'%';
@@ -727,12 +842,17 @@ function update(){
  document.getElementById('statsText').textContent=n===5?'Bravo ! Tu as terminé ta séance du jour.':`Tu as terminé ${n} exercice(s) sur 5. Continue à ton rythme.`;
  checks.forEach(c=>c.parentElement.classList.toggle('done',c.checked));
  localStorage.setItem('te_checks',JSON.stringify(checks.map(c=>c.checked)));
+ if(!fromInit && n>lastCheckedCount){
+  logActivity('Exercice coché ('+n+'/5 sur la séance)');
+ }
+ lastCheckedCount=n;
+ renderStatsHistory();
 }
-function resetDay(){checks.forEach(c=>c.checked=false);update();}
-try{const saved=JSON.parse(localStorage.getItem('te_checks')||'[]');checks.forEach((c,i)=>c.checked=!!saved[i]);}catch(e){}
-checks.forEach(c=>c.addEventListener('change',update));
+function resetDay(){checks.forEach(c=>c.checked=false);lastCheckedCount=0;update();}
+try{const saved=JSON.parse(localStorage.getItem('te_checks')||'[]');checks.forEach((c,i)=>c.checked=!!saved[i]);lastCheckedCount=checks.filter(c=>c.checked).length;}catch(e){}
+checks.forEach(c=>c.addEventListener('change',()=>update(false)));
 refreshDailyPick();
-update();
+update(true);
 renderSelector();
 renderReader();
 renderExercise();
