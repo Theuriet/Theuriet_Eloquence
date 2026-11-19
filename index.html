@@ -28,8 +28,15 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 .session .sub{color:#c5cede}.task{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #ffffff1c;font-size:13px}.task:last-child{border:0}
 .task input{accent-color:var(--gold);width:18px;height:18px}.task.done span{text-decoration:line-through;color:#aeb9cb}
 .action{background:var(--gold);border:0;color:#18233a;padding:12px 16px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:13px;width:100%}
-.page{display:none}.page.active{display:block}.back{border:0;background:#e8edf5;color:var(--navy);padding:9px 13px;border-radius:10px;font-weight:700;margin-bottom:15px}
-.panel{background:white;padding:18px;border-radius:17px;margin-bottom:12px;line-height:1.55}.panel p{font-size:14px;color:#4e5c70}.panel button{border:0;background:var(--navy);color:white;border-radius:10px;padding:10px 13px}
+.page{display:none}.page.active{display:block}.back{border:0;background:#e8edf5;color:var(--navy);padding:9px 13px;border-radius:10px;font-weight:700;margin-bottom:15px;cursor:pointer}
+.panel{background:white;padding:18px;border-radius:17px;margin-bottom:12px;line-height:1.55;box-shadow:0 4px 14px #17233b08}.panel p{font-size:14px;color:#4e5c70}.panel button{border:0;background:var(--navy);color:white;border-radius:10px;padding:10px 13px;cursor:pointer;margin-top:6px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tab{border:1px solid #d8e0ec;background:white;color:var(--navy);padding:8px 12px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer}
+.tab.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.reader-box{background:#f9fbfe;border:1px solid #e2e8f0;border-radius:14px;padding:16px;font-size:17px;line-height:1.85;color:var(--ink);margin:12px 0}
+.chunk{display:inline-block;padding:2px 6px;margin:2px;border-radius:6px;transition:background .2s}
+.chunk.highlight{background:#fde68a;color:#101b32;font-weight:700}
+.timer-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#eef2f8;padding:10px 14px;border-radius:12px;margin-top:10px;font-size:13px}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid #e7ebf1;display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
 .bottom button{border:0;background:none;color:#718096;font-size:10px;display:grid;gap:4px;justify-items:center;cursor:pointer}.bottom button b{font-size:19px}.bottom button.selected{color:#a87822;font-weight:bold}
 .notice{font-size:11px;color:var(--muted);text-align:center;margin:17px 0}
@@ -71,52 +78,203 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
   </div>
   <p class="notice">Tes coches sont enregistrées sur cet appareil.</p>
  </section>
+
  <section id="modulePage" class="page">
   <button class="back" onclick="showPage('home')">← Retour à l'accueil</button>
   <div class="panel"><div class="sub">MODULE D'ENTRAÎNEMENT</div><h2 id="moduleTitle">Lecture</h2><p id="moduleDesc"></p></div>
   <div class="panel"><strong>Ce que nous allons travailler</strong><p id="moduleDetail"></p></div>
-  <div class="panel"><strong>Prochaine étape</strong><p>Cette rubrique est prête à accueillir tes exercices. Nous allons la construire progressivement avec des textes, des consignes et des activités adaptées à tes difficultés.</p><button onclick="showPage('home')">Revenir à mes modules</button></div>
+  <div class="panel"><strong>Accès direct</strong><p>Ouvre la bibliothèque pour lire un texte avec les modes libre, guidé ou chronométré.</p><button onclick="openLibraryTab()">Aller à la Bibliothèque</button></div>
  </section>
+
  <section id="statsPage" class="page">
   <div class="section-head"><h2>Mes statistiques</h2></div>
   <div class="panel"><h2 id="statsPercent">0% de la séance</h2><p id="statsText">Tu n'as pas encore coché d'exercice aujourd'hui. Commence par une petite étape !</p></div>
-  <div class="panel"><strong>Ton objectif</strong><p>30 minutes par jour, 6 jours par semaine. La régularité compte davantage que la vitesse au début.</p></div>
+  <div class="panel"><strong>Ton objectif</strong><p>30 minutes par jour, 6 jours par semaine. La reconnaissance visuelle et la prononciation naturelle priment sur la vitesse forcée.</p></div>
  </section>
+
  <section id="libraryPage" class="page">
-  <div class="section-head"><h2>Bibliothèque</h2></div>
-  <div class="panel"><strong>📖 Textes bibliques</strong><p>Genèse à Apocalypse, Psaumes, Proverbes et Évangiles. Les textes bibliques seront distingués des explications et exercices.</p></div>
-  <div class="panel"><strong>🌍 Textes en français</strong><p>Récits, culture générale, sciences, société, développement personnel et discours.</p></div>
-  <div class="panel"><strong>✨ Textes adaptés</strong><p>Des textes d'entraînement selon ton niveau, tes progrès et les difficultés observées.</p></div>
+  <div class="section-head"><h2>Bibliothèque & Lecteur</h2><span class="sub">3 modes</span></div>
+  <div class="panel">
+   <div class="sub">CHOISIR UN TEXTE</div>
+   <div class="tabs" id="textSelector"></div>
+   <div class="sub">MODE DE LECTURE</div>
+   <div class="tabs">
+    <button class="tab active" id="mode-libre" onclick="setMode('libre')">Lecture libre</button>
+    <button class="tab" id="mode-guide" onclick="setMode('guide')">Lecture guidée (groupes)</button>
+    <button class="tab" id="mode-chrono" onclick="setMode('chrono')">Lecture chronométrée</button>
+   </div>
+   <h3 id="readerTitle" style="margin:10px 0 4px"></h3>
+   <div class="sub" id="readerMeta"></div>
+   <div class="reader-box" id="readerContent"></div>
+   <div class="timer-bar" id="chronoControls" style="display:none">
+    <div>Chrono : <strong id="chronoDisplay">00:00</strong> | Vitesse : <strong id="wpmDisplay">0 mots/min</strong></div>
+    <div>
+     <button onclick="startChrono()">Démarrer</button>
+     <button onclick="stopChrono()">Terminer</button>
+    </div>
+   </div>
+  </div>
  </section>
+
  <section id="settingsPage" class="page">
   <div class="section-head"><h2>Paramètres</h2></div>
-  <div class="panel"><strong>Durée quotidienne</strong><p>30 minutes</p></div>
+  <div class="panel"><strong>Durée quotidienne</strong><p>30 minutes (6 jours / semaine)</p></div>
   <div class="panel"><strong>Langue d'apprentissage</strong><p>Français</p></div>
-  <div class="panel"><strong>Audio</strong><p>Écoute d'un modèle de prononciation et enregistrement de ta propre voix seront ajoutés dans une prochaine version.</p></div>
+  <div class="panel"><strong>Règle de lecture</strong><p>Priorité à la reconnaissance visuelle des mots et à la fluidité naturelle, sans précipitation.</p></div>
  </section>
 </main>
 <nav class="bottom">
  <button class="selected" onclick="showPage('home',this)"><b>⌂</b>Accueil</button>
- <button onclick="showPage('libraryPage',this)"><b>▤</b>Bibliothèque</button>
+ <button id="navLib" onclick="showPage('libraryPage',this)"><b>▤</b>Bibliothèque</button>
  <button onclick="showPage('statsPage',this)"><b>▥</b>Progression</button>
  <button onclick="showPage('settingsPage',this)"><b>⚙</b>Paramètres</button>
 </nav>
 <script>
 const modules={
- lecture:["Lecture","Développer une lecture plus fluide, précise et naturelle.","Lecture à voix haute, reconnaissance rapide des mots, ponctuation, groupes de souffle et textes de difficulté progressive."],
- prononciation:["Prononciation","Améliorer l'articulation et prononcer les mots avec assurance.","Sons difficiles, syllabes, enchaînements, liaisons, virelangues et comparaison avec un modèle audio."],
- vitesse:["Vitesse de lecture","Gagner progressivement en vitesse sans sacrifier la précision ni la compréhension.","Lecture chronométrée, suivi des mots lus et exercices pour réduire les hésitations et les retours en arrière."],
- vocabulaire:["Vocabulaire","Enrichir ton vocabulaire et apprendre à utiliser les mots dans tes propres phrases.","Nouveaux mots, définitions simples, prononciation, synonymes, exemples et petites révisions."],
- expression:["Expression orale","Apprendre à organiser rapidement tes idées et à parler avec clarté.","Prises de parole d'une à trois minutes, improvisation, argumentation et entraînement à l'éloquence."],
- comprehension:["Compréhension","Comprendre un texte, en dégager l'idée principale et l'expliquer avec tes propres mots.","Questions, résumés oraux, reformulation, mémorisation des idées et vérification de la compréhension."]
+ lecture:["Lecture","Développer une lecture plus fluide, précise et naturelle.","Lecture à voix haute, reconnaissance des groupes de mots, respect de la ponctuation et textes progressifs."],
+ prononciation:["Prononciation","Améliorer l'articulation et prononcer les mots avec assurance.","Sons difficiles, syllabes, enchaînements, liaisons et diction posée."],
+ vitesse:["Vitesse de lecture","Automatiser la reconnaissance des mots sans forcer ta vitesse.","Mesure des mots correctement lus par minute, sans précipitation ni retours incessants."],
+ vocabulaire:["Vocabulaire","Enrichir ton vocabulaire et employer les mots dans tes propres phrases.","Nouveaux mots, définitions claires, synonymes et exemples concrets."],
+ expression:["Expression orale","Organiser rapidement tes idées et parler avec clarté.","Prises de parole d'une à trois minutes, structuration des idées et éloquence."],
+ comprehension:["Compréhension","Comprendre un texte, dégager l'idée principale et l'expliquer.","Reformulation avec tes propres mots, idées clés et restitution claire."]
 };
-function openModule(key){const m=modules[key];document.getElementById('moduleTitle').textContent=m[0];document.getElementById('moduleDesc').textContent=m[1];document.getElementById('moduleDetail').textContent=m[2];showPage('modulePage')}
-function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('selected'));if(btn)btn.classList.add('selected');else if(id==='home')document.querySelector('.bottom button').classList.add('selected');window.scrollTo(0,0)}
+
+const texts=[
+ {
+  id:"discipline",
+  category:"Réflexion & Discipline",
+  title:"La constance plutôt que la précipitation",
+  chunks:["Lire avec aisance","ne consiste pas à courir","sur chaque ligne.","C'est d'abord reconnaître","les mots calmement,","puis laisser la voix","suivre le sens","de la phrase."]
+ },
+ {
+  id:"eloquence",
+  category:"Expression & Parole",
+  title:"Parler avec clarté et assurance",
+  chunks:["Une parole claire","commence par une pensée","bien ordonnée.","Avant de répondre,","prends un instant","pour respirer,","choisir tes mots","et articuler sans hâte."]
+ },
+ {
+  id:"recit",
+  category:"Récit & Culture",
+  title:"Le chemin de la vallée",
+  chunks:["Au lever du jour,","la lumière dorée","effleurait les collines.","Sur le sentier étroit,","chaque pas comptait","pour avancer en sécurité","vers le village","au fond de la vallée."]
+ }
+];
+
+let currentText=texts[0], currentMode='libre', guideIndex=0, guideTimer=null;
+let chronoInterval=null, chronoSeconds=0, chronoRunning=false;
+
+function openModule(key){
+ const m=modules[key];
+ document.getElementById('moduleTitle').textContent=m[0];
+ document.getElementById('moduleDesc').textContent=m[1];
+ document.getElementById('moduleDetail').textContent=m[2];
+ showPage('modulePage');
+}
+
+function openLibraryTab(){
+ const navBtn=document.getElementById('navLib');
+ showPage('libraryPage',navBtn);
+}
+
+function showPage(id,btn){
+ stopGuide();
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('selected'));
+ if(btn)btn.classList.add('selected');
+ else if(id==='home')document.querySelector('.bottom button').classList.add('selected');
+ window.scrollTo(0,0);
+}
+
+function renderSelector(){
+ const box=document.getElementById('textSelector');
+ box.innerHTML='';
+ texts.forEach(t=>{
+  const b=document.createElement('button');
+  b.className='tab'+(t.id===currentText.id?' active':'');
+  b.textContent=t.title;
+  b.onclick=()=>{currentText=t;stopChrono();renderSelector();renderReader();};
+  box.appendChild(b);
+ });
+}
+
+function setMode(mode){
+ currentMode=mode;
+ ['libre','guide','chrono'].forEach(m=>{
+  document.getElementById('mode-'+m).classList.toggle('active',m===mode);
+ });
+ document.getElementById('chronoControls').style.display=mode==='chrono'?'flex':'none';
+ renderReader();
+}
+
+function stopGuide(){
+ if(guideTimer){clearInterval(guideTimer);guideTimer=null;}
+}
+
+function renderReader(){
+ stopGuide();
+ document.getElementById('readerTitle').textContent=currentText.title;
+ document.getElementById('readerMeta').textContent='Catégorie : '+currentText.category+' • Mode : '+currentMode;
+ const box=document.getElementById('readerContent');
+ if(currentMode==='libre'){
+  box.textContent=currentText.chunks.join(' ');
+ } else {
+  box.innerHTML=currentText.chunks.map((c,i)=>`<span class="chunk" id="ch-${i}">${c}</span>`).join(' ');
+  if(currentMode==='guide'){
+   guideIndex=0;
+   const highlightNext=()=>{
+    document.querySelectorAll('.chunk').forEach(el=>el.classList.remove('highlight'));
+    const cur=document.getElementById('ch-'+guideIndex);
+    if(cur)cur.classList.add('highlight');
+    guideIndex=(guideIndex+1)%currentText.chunks.length;
+   };
+   highlightNext();
+   guideTimer=setInterval(highlightNext,1800);
+  }
+ }
+}
+
+function startChrono(){
+ if(chronoRunning)return;
+ chronoRunning=true;
+ chronoSeconds=0;
+ document.getElementById('wpmDisplay').textContent='0 mots/min';
+ chronoInterval=setInterval(()=>{
+  chronoSeconds++;
+  const m=String(Math.floor(chronoSeconds/60)).padStart(2,'0');
+  const s=String(chronoSeconds%60).padStart(2,'0');
+  document.getElementById('chronoDisplay').textContent=m+':'+s;
+ },1000);
+}
+
+function stopChrono(){
+ if(!chronoRunning){clearInterval(chronoInterval);return;}
+ chronoRunning=false;
+ clearInterval(chronoInterval);
+ const words=currentText.chunks.join(' ').trim().split(/\s+/).length;
+ const minutes=Math.max(chronoSeconds/60,1/60);
+ const wpm=Math.round(words/minutes);
+ document.getElementById('wpmDisplay').textContent=wpm+' mots/min';
+}
+
 const checks=[...document.querySelectorAll('.daily')];
-function update(){let n=checks.filter(c=>c.checked).length,p=Math.round(n/5*100);document.getElementById('percent').textContent=p+'%';document.getElementById('progressFill').style.width=p+'%';document.getElementById('doneCount').textContent=n+' / 5 exercices terminés';document.getElementById('statsPercent').textContent=p+'% de la séance';document.getElementById('statsText').textContent=n===5?'Bravo ! Tu as terminé ta séance du jour.':`Tu as terminé ${n} exercice(s) sur 5. Continue à ton rythme.`;checks.forEach(c=>c.parentElement.classList.toggle('done',c.checked));localStorage.setItem('te_checks',JSON.stringify(checks.map(c=>c.checked)))}
-function resetDay(){checks.forEach(c=>c.checked=false);update()}
-try{const saved=JSON.parse(localStorage.getItem('te_checks')||'[]');checks.forEach((c,i)=>c.checked=!!saved[i])}catch(e){}
-checks.forEach(c=>c.addEventListener('change',update));update();
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+function update(){
+ let n=checks.filter(c=>c.checked).length,p=Math.round(n/5*100);
+ document.getElementById('percent').textContent=p+'%';
+ document.getElementById('progressFill').style.width=p+'%';
+ document.getElementById('doneCount').textContent=n+' / 5 exercices terminés';
+ document.getElementById('statsPercent').textContent=p+'% de la séance';
+ document.getElementById('statsText').textContent=n===5?'Bravo ! Tu as terminé ta séance du jour.':`Tu as terminé ${n} exercice(s) sur 5. Continue à ton rythme.`;
+ checks.forEach(c=>c.parentElement.classList.toggle('done',c.checked));
+ localStorage.setItem('te_checks',JSON.stringify(checks.map(c=>c.checked)));
+}
+function resetDay(){checks.forEach(c=>c.checked=false);update();}
+try{const saved=JSON.parse(localStorage.getItem('te_checks')||'[]');checks.forEach((c,i)=>c.checked=!!saved[i]);}catch(e){}
+checks.forEach(c=>c.addEventListener('change',update));
+update();
+renderSelector();
+renderReader();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 </script>
-</body></html>
+</body>
+</html>
