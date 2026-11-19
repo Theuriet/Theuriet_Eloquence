@@ -46,6 +46,9 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 .speech-clock{font-size:28px;font-weight:700;color:var(--navy);margin:6px 0}
 .outline-list{margin:8px 0;padding-left:18px;font-size:14px;color:#334155}
 .outline-list li{margin-bottom:6px}
+.rec-box{background:#f9fbfe;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin:10px 0}
+.rec-player{width:100%;margin-top:10px}
+.btn-danger{background:#991b1b !important;color:#fff !important}
 .feedback{margin-top:10px;font-size:13px;font-weight:700;color:var(--navy)}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid #e7ebf1;display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
 .bottom button{border:0;background:none;color:#718096;font-size:10px;display:grid;gap:4px;justify-items:center;cursor:pointer}.bottom button b{font-size:19px}.bottom button.selected{color:#a87822;font-weight:bold}
@@ -208,6 +211,12 @@ let speechRemaining=120;
 let speechInterval=null;
 let speechRunning=false;
 
+let mediaRecorder=null;
+let audioChunks=[];
+let audioUrl=null;
+let isRecording=false;
+let recStatusMsg='';
+
 function getCustomTexts(){
  try{return JSON.parse(localStorage.getItem('te_custom_texts')||'[]');}catch(e){return[];}
 }
@@ -288,6 +297,9 @@ function openExercisesTab(){
 function showPage(id,btn){
  stopGuide();
  stopSpeechTimer();
+ if(isRecording && mediaRecorder && mediaRecorder.state==='recording'){
+  mediaRecorder.stop();
+ }
  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
  document.getElementById(id).classList.add('active');
  document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('selected'));
@@ -434,6 +446,57 @@ function updateSpeechButton(){
  if(btn)btn.textContent=speechRunning?'Pause':'Démarrer';
 }
 
+function clearAudioRecording(){
+ if(audioUrl){
+  URL.revokeObjectURL(audioUrl);
+  audioUrl=null;
+ }
+ audioChunks=[];
+ isRecording=false;
+ recStatusMsg='Enregistrement supprimé.';
+ renderExercise();
+}
+
+async function toggleAudioRecording(){
+ if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder==='undefined'){
+  recStatusMsg="L'enregistrement vocal n'est pas disponible sur ce navigateur.";
+  renderExercise();
+  return;
+ }
+ if(isRecording && mediaRecorder && mediaRecorder.state==='recording'){
+  mediaRecorder.stop();
+  return;
+ }
+ try{
+  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  if(audioUrl){
+   URL.revokeObjectURL(audioUrl);
+   audioUrl=null;
+  }
+  audioChunks=[];
+  mediaRecorder=new MediaRecorder(stream);
+  mediaRecorder.ondataavailable=e=>{
+   if(e.data && e.data.size>0)audioChunks.push(e.data);
+  };
+  mediaRecorder.onstop=()=>{
+   stream.getTracks().forEach(t=>t.stop());
+   const blob=new Blob(audioChunks,{type:mediaRecorder.mimeType||'audio/webm'});
+   audioUrl=URL.createObjectURL(blob);
+   isRecording=false;
+   recStatusMsg='Enregistrement prêt. Écoute-toi puis supprime-le quand tu as fini.';
+   renderExercise();
+  };
+  mediaRecorder.start();
+  isRecording=true;
+  recStatusMsg='Enregistrement en cours... Parle clairement à voix haute.';
+  renderExercise();
+ }catch(err){
+  isRecording=false;
+  recStatusMsg="Micro non autorisé ou indisponible. Vérifie les permissions du navigateur.";
+  renderExercise();
+ }
+}
+
 function renderExercise(){
  const area=document.getElementById('exArea');
  if(!area)return;
@@ -499,6 +562,13 @@ function renderExercise(){
     <button id="speechToggleBtn" onclick="toggleSpeechTimer()">Démarrer</button>
     <button onclick="resetSpeechTimer()">Réinitialiser</button>
     <div class="feedback" id="speechFeedback"></div>
+   </div>
+   <div class="rec-box">
+    <div class="sub">ENREGISTREMENT VOCAL & AUTO-ÉCOUTE</div>
+    <p style="margin:6px 0">Enregistre ta prise de parole, écoute-toi pour t'améliorer, puis supprime l'audio après écoute.</p>
+    <button onclick="toggleAudioRecording()">${isRecording?'Arrêter l’enregistrement':'Enregistrer ma voix'}</button>
+    ${audioUrl?`<button class="btn-danger" onclick="clearAudioRecording()">Supprimer l'enregistrement</button><audio class="rec-player" controls src="${audioUrl}"></audio>`:''}
+    ${recStatusMsg?`<div class="feedback">${recStatusMsg}</div>`:''}
    </div>
    <p class="sub">Repère : inspire avant de commencer, garde une diction posée et ne cherche pas à aller vite.</p>
   `;
