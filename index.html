@@ -39,6 +39,8 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 .chunk.highlight{background:#fde68a;color:#101b32;font-weight:700}
 .timer-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#eef2f8;padding:10px 14px;border-radius:12px;margin-top:10px;font-size:13px}
 .add-box input,.add-box textarea{width:100%;border:1px solid #d8e0ec;border-radius:10px;padding:10px;font-family:inherit;font-size:13px;margin-top:8px;color:var(--ink)}
+.custom-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #edf0f5;font-size:13px}
+.custom-row:last-child{border:0}
 .word-chip{display:inline-block;border:1px solid #d8e0ec;background:#f9fbfe;color:var(--ink);padding:7px 11px;border-radius:10px;margin:4px;font-size:14px;cursor:pointer}
 .word-chip.found{background:#dcfce7;border-color:#86efac;color:#14532d;font-weight:700}
 .ex-highlight{background:#eef2f8;border-left:4px solid var(--gold);padding:12px;border-radius:10px;margin:10px 0;font-size:15px}
@@ -57,6 +59,7 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 .history-item{border-bottom:1px solid #edf0f5;padding:10px 0;font-size:13px}
 .history-item:last-child{border:0}
 .btn-danger{background:#991b1b !important;color:#fff !important}
+.btn-sm{padding:6px 10px !important;font-size:12px !important;margin-top:0 !important}
 .feedback{margin-top:10px;font-size:13px;font-weight:700;color:var(--navy)}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid #e7ebf1;display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
 .bottom button{border:0;background:none;color:#718096;font-size:10px;display:grid;gap:4px;justify-items:center;cursor:pointer}.bottom button b{font-size:19px}.bottom button.selected{color:#a87822;font-weight:bold}
@@ -158,6 +161,14 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
     <button class="tab" id="mode-guide" onclick="setMode('guide')">Lecture guidée (groupes)</button>
     <button class="tab" id="mode-chrono" onclick="setMode('chrono')">Lecture chronométrée</button>
    </div>
+   <div id="guidePaceBar" style="display:none;margin-bottom:10px">
+    <div class="sub">RYTHME DE GUIDAGE (SANS PRÉCIPITATION)</div>
+    <div class="tabs" style="margin-top:6px">
+     <button class="tab" id="pace-slow" onclick="setGuidePace(2500)">Posé (2,5 s)</button>
+     <button class="tab active" id="pace-normal" onclick="setGuidePace(1800)">Normal (1,8 s)</button>
+     <button class="tab" id="pace-fluid" onclick="setGuidePace(1300)">Fluide (1,3 s)</button>
+    </div>
+   </div>
    <h3 id="readerTitle" style="margin:10px 0 4px"></h3>
    <div class="sub" id="readerMeta"></div>
    <div class="reader-box" id="readerContent"></div>
@@ -177,14 +188,21 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
    <input type="text" id="newCategory" placeholder="Catégorie (ex. Récit, Discours, Réflexion)">
    <textarea id="newBody" rows="3" placeholder="Écris ton texte ici..."></textarea>
    <button onclick="addCustomText()">Enregistrer ce texte</button>
+   <div id="customTextsManager" style="margin-top:14px"></div>
   </div>
  </section>
 
  <section id="settingsPage" class="page">
-  <div class="section-head"><h2>Paramètres</h2></div>
+  <div class="section-head"><h2>Paramètres & Fiabilité</h2><span class="sub">Étape 6</span></div>
   <div class="panel"><strong>Durée quotidienne</strong><p>30 minutes (6 jours / semaine)</p></div>
   <div class="panel"><strong>Langue d'apprentissage</strong><p>Français</p></div>
   <div class="panel"><strong>Règle de lecture</strong><p>Priorité à la reconnaissance visuelle des mots et à la fluidité naturelle, sans précipitation.</p></div>
+  <div class="panel">
+   <strong>Sauvegarde locale sur cet appareil</strong>
+   <p>Tes coches, textes personnels et historiques sont conservés localement dans ton navigateur, y compris hors ligne.</p>
+   <button class="btn-danger" onclick="resetAllLocalData()">Réinitialiser toutes les données locales</button>
+   <div class="feedback" id="settingsFeedback"></div>
+  </div>
  </section>
 </main>
 <nav class="bottom">
@@ -232,6 +250,7 @@ let speechTargetSec=120;
 let speechRemaining=120;
 let speechInterval=null;
 let speechRunning=false;
+let guidePaceMs=1800;
 
 let mediaRecorder=null;
 let audioChunks=[];
@@ -399,6 +418,9 @@ function showPage(id,btn){
  if(id==='statsPage'){
   renderStatsHistory();
  }
+ if(id==='libraryPage'){
+  renderCustomTextsManager();
+ }
  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
  document.getElementById(id).classList.add('active');
  document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('selected'));
@@ -417,6 +439,34 @@ function renderSelector(){
   b.onclick=()=>{currentText=t;stopChrono();foundWords.clear();renderSelector();renderReader();renderExercise();};
   box.appendChild(b);
  });
+ renderCustomTextsManager();
+}
+
+function renderCustomTextsManager(){
+ const wrap=document.getElementById('customTextsManager');
+ if(!wrap)return;
+ const custom=getCustomTexts();
+ if(!custom.length){
+  wrap.innerHTML='';
+  return;
+ }
+ wrap.innerHTML='<div class="sub" style="margin-bottom:6px">TEXTES ENREGISTRÉS SUR L\'APPAREIL</div>'+custom.map(t=>`
+  <div class="custom-row">
+   <div><strong>${t.title}</strong> <span class="sub">(${t.category})</span></div>
+   <button class="btn-danger btn-sm" onclick="deleteCustomText('${t.id}')">Supprimer</button>
+  </div>
+ `).join('');
+}
+
+function deleteCustomText(id){
+ const filtered=getCustomTexts().filter(t=>t.id!==id);
+ localStorage.setItem('te_custom_texts',JSON.stringify(filtered));
+ if(currentText && currentText.id===id){
+  currentText=dailyText;
+ }
+ renderSelector();
+ renderReader();
+ renderExercise();
 }
 
 function addCustomText(){
@@ -440,12 +490,22 @@ function addCustomText(){
  logActivity('Ajout d’un texte : '+item.title);
 }
 
+function setGuidePace(ms){
+ guidePaceMs=ms;
+ ['pace-slow','pace-normal','pace-fluid'].forEach(id=>document.getElementById(id).classList.remove('active'));
+ if(ms===2500)document.getElementById('pace-slow').classList.add('active');
+ else if(ms===1300)document.getElementById('pace-fluid').classList.add('active');
+ else document.getElementById('pace-normal').classList.add('active');
+ if(currentMode==='guide')renderReader();
+}
+
 function setMode(mode){
  currentMode=mode;
  ['libre','guide','chrono'].forEach(m=>{
   document.getElementById('mode-'+m).classList.toggle('active',m===mode);
  });
  document.getElementById('chronoControls').style.display=mode==='chrono'?'flex':'none';
+ document.getElementById('guidePaceBar').style.display=mode==='guide'?'block':'none';
  renderReader();
 }
 
@@ -471,7 +531,7 @@ function renderReader(){
     guideIndex=(guideIndex+1)%currentText.chunks.length;
    };
    highlightNext();
-   guideTimer=setInterval(highlightNext,1800);
+   guideTimer=setInterval(highlightNext,guidePaceMs);
   }
  }
 }
@@ -829,6 +889,21 @@ function stopChrono(){
  const wpm=Math.round(words/minutes);
  document.getElementById('wpmDisplay').textContent=wpm+' mots/min';
  logActivity('Lecture chronométrée : '+currentText.title,wpm);
+}
+
+function resetAllLocalData(){
+ localStorage.removeItem('te_checks');
+ localStorage.removeItem('te_history');
+ localStorage.removeItem('te_custom_texts');
+ checks.forEach(c=>c.checked=false);
+ lastCheckedCount=0;
+ currentText=dailyText;
+ update(true);
+ renderSelector();
+ renderReader();
+ renderExercise();
+ const fb=document.getElementById('settingsFeedback');
+ if(fb)fb.textContent='Données locales réinitialisées sur cet appareil.';
 }
 
 const checks=[...document.querySelectorAll('.daily')];
