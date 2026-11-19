@@ -39,6 +39,10 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 .chunk.highlight{background:#fde68a;color:#101b32;font-weight:700}
 .timer-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#eef2f8;padding:10px 14px;border-radius:12px;margin-top:10px;font-size:13px}
 .add-box input,.add-box textarea{width:100%;border:1px solid #d8e0ec;border-radius:10px;padding:10px;font-family:inherit;font-size:13px;margin-top:8px;color:var(--ink)}
+.word-chip{display:inline-block;border:1px solid #d8e0ec;background:#f9fbfe;color:var(--ink);padding:7px 11px;border-radius:10px;margin:4px;font-size:14px;cursor:pointer}
+.word-chip.found{background:#dcfce7;border-color:#86efac;color:#14532d;font-weight:700}
+.ex-highlight{background:#eef2f8;border-left:4px solid var(--gold);padding:12px;border-radius:10px;margin:10px 0;font-size:15px}
+.feedback{margin-top:10px;font-size:13px;font-weight:700;color:var(--navy)}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid #e7ebf1;display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
 .bottom button{border:0;background:none;color:#718096;font-size:10px;display:grid;gap:4px;justify-items:center;cursor:pointer}.bottom button b{font-size:19px}.bottom button.selected{color:#a87822;font-weight:bold}
 .notice{font-size:11px;color:var(--muted);text-align:center;margin:17px 0}
@@ -85,7 +89,21 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
   <button class="back" onclick="showPage('home')">← Retour à l'accueil</button>
   <div class="panel"><div class="sub">MODULE D'ENTRAÎNEMENT</div><h2 id="moduleTitle">Lecture</h2><p id="moduleDesc"></p></div>
   <div class="panel"><strong>Ce que nous allons travailler</strong><p id="moduleDetail"></p></div>
-  <div class="panel"><strong>Accès direct</strong><p>Ouvre la bibliothèque pour lire un texte avec les modes libre, guidé ou chronométré.</p><button onclick="openLibraryTab()">Aller à la Bibliothèque</button></div>
+  <div class="panel"><strong>Accès direct</strong><p>Ouvre la bibliothèque pour lire un texte ou lance l'atelier d'exercices interactifs.</p><button onclick="openLibraryTab()">Aller à la Bibliothèque</button> <button onclick="openExercisesTab()">Faire les exercices</button></div>
+ </section>
+
+ <section id="exercisesPage" class="page">
+  <div class="section-head"><h2>Exercices interactifs</h2><span class="sub">Étape 3</span></div>
+  <div class="panel">
+   <div class="sub">CHOISIR L'EXERCICE</div>
+   <div class="tabs">
+    <button class="tab active" id="ex-reco" onclick="setExercise('reco')">Reconnaissance</button>
+    <button class="tab" id="ex-pron" onclick="setExercise('pron')">Prononciation</button>
+    <button class="tab" id="ex-vocab" onclick="setExercise('vocab')">Vocabulaire</button>
+    <button class="tab" id="ex-comp" onclick="setExercise('comp')">Compréhension</button>
+   </div>
+   <div id="exArea"></div>
+  </div>
  </section>
 
  <section id="statsPage" class="page">
@@ -120,6 +138,7 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
      <button onclick="stopChrono()">Terminer</button>
     </div>
    </div>
+   <button onclick="openExercisesTab()">Pratiquer sur ce texte → Exercices</button>
   </div>
   <div class="panel add-box">
    <strong>+ Ajouter un texte sur cet appareil</strong>
@@ -141,6 +160,7 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 <nav class="bottom">
  <button class="selected" onclick="showPage('home',this)"><b>⌂</b>Accueil</button>
  <button id="navLib" onclick="showPage('libraryPage',this)"><b>▤</b>Bibliothèque</button>
+ <button id="navEx" onclick="showPage('exercisesPage',this)"><b>✎</b>Exercices</button>
  <button onclick="showPage('statsPage',this)"><b>▥</b>Progression</button>
  <button onclick="showPage('settingsPage',this)"><b>⚙</b>Paramètres</button>
 </nav>
@@ -160,7 +180,17 @@ const baseTexts=[
  {id:"t3",category:"Récit & Culture",title:"Le chemin de la vallée",chunks:["Au lever du jour,","la lumière dorée","effleurait les collines.","Sur le sentier étroit,","chaque pas comptait","pour avancer en sécurité","vers le village","au fond de la vallée."]}
 ];
 
+const vocabBank=[
+ {word:"aisance",def:"Facilité naturelle et assurance dans un mouvement ou une parole.",ex:"Il s'exprime avec aisance devant le groupe."},
+ {word:"clarté",def:"Qualité de ce qui est net, facile à comprendre sans ambiguïté.",ex:"La clarté de ton propos aide l'auditoire à te suivre."},
+ {word:"constance",def:"Stabilité et régularité dans l'effort au fil du temps.",ex:"La constance quotidienne produit des progrès solides."},
+ {word:"articuler",def:"Prononcer nettement les sons et les syllabes d'un mot.",ex:"Prends le temps d'articuler la fin de chaque phrase."}
+];
+
 let externalTexts=[];
+let currentExercise='reco';
+let pronIndex=0;
+let foundWords=new Set();
 
 function getCustomTexts(){
  try{return JSON.parse(localStorage.getItem('te_custom_texts')||'[]');}catch(e){return[];}
@@ -205,6 +235,7 @@ async function loadExternalTexts(){
     refreshDailyPick();
     renderSelector();
     renderReader();
+    renderExercise();
    }
   }
  }catch(e){
@@ -215,8 +246,10 @@ async function loadExternalTexts(){
 function selectDailyText(){
  currentText=dailyText;
  stopChrono();
+ foundWords.clear();
  renderSelector();
  renderReader();
+ renderExercise();
 }
 
 function openModule(key){
@@ -229,6 +262,11 @@ function openModule(key){
 
 function openLibraryTab(){
  showPage('libraryPage',document.getElementById('navLib'));
+}
+
+function openExercisesTab(){
+ showPage('exercisesPage',document.getElementById('navEx'));
+ renderExercise();
 }
 
 function showPage(id,btn){
@@ -248,7 +286,7 @@ function renderSelector(){
   const b=document.createElement('button');
   b.className='tab'+(t.id===currentText.id?' active':'');
   b.textContent=(t.id===dailyText.id?'★ ':'')+t.title;
-  b.onclick=()=>{currentText=t;stopChrono();renderSelector();renderReader();};
+  b.onclick=()=>{currentText=t;stopChrono();foundWords.clear();renderSelector();renderReader();renderExercise();};
   box.appendChild(b);
  });
 }
@@ -267,8 +305,10 @@ function addCustomText(){
  document.getElementById('newCategory').value='';
  document.getElementById('newBody').value='';
  currentText=item;
+ foundWords.clear();
  renderSelector();
  renderReader();
+ renderExercise();
 }
 
 function setMode(mode){
@@ -305,6 +345,97 @@ function renderReader(){
    guideTimer=setInterval(highlightNext,1800);
   }
  }
+}
+
+function setExercise(ex){
+ currentExercise=ex;
+ ['reco','pron','vocab','comp'].forEach(k=>{
+  document.getElementById('ex-'+k).classList.toggle('active',k===ex);
+ });
+ renderExercise();
+}
+
+function getUniqueWords(){
+ const raw=currentText.chunks.join(' ').replace(/[.,!?;:«»"()’']/g,' ').split(/\s+/).filter(w=>w.length>=4);
+ return [...new Set(raw.map(w=>w.toLowerCase()))].slice(0,8);
+}
+
+function renderExercise(){
+ const area=document.getElementById('exArea');
+ if(!area)return;
+ if(currentExercise==='reco'){
+  const words=getUniqueWords();
+  const target=words[0]||'lire';
+  area.innerHTML=`
+   <h3>Reconnaissance visuelle des mots</h3>
+   <p>Repère et clique sur le mot cible dans la liste ci-dessous sans te presser : <strong>« ${target} »</strong></p>
+   <div>${words.map(w=>`<button class="word-chip ${foundWords.has(w)?'found':''}" onclick="checkReco('${w}','${target}')">${w}</button>`).join('')}</div>
+   <div class="feedback" id="recoFeedback">Mots validés : ${foundWords.size}</div>
+  `;
+ } else if(currentExercise==='pron'){
+  const chunk=currentText.chunks[pronIndex % currentText.chunks.length]||'';
+  area.innerHTML=`
+   <h3>Prononciation & articulation</h3>
+   <p>Lis ce groupe de mots à voix haute en articulant nettement chaque syllabe et en respectant le rythme :</p>
+   <div class="ex-highlight">« ${chunk} »</div>
+   <button onclick="pronIndex++;renderExercise()">Groupe suivant</button>
+   <p class="sub" style="margin-top:8px">Conseil : prononce la fin de chaque mot sans précipitation.</p>
+  `;
+ } else if(currentExercise==='vocab'){
+  const item=vocabBank[0];
+  area.innerHTML=`
+   <h3>Vocabulaire actif</h3>
+   <p>Mot clé : <strong>${item.word}</strong></p>
+   <p><strong>Définition :</strong> ${item.def}</p>
+   <p><strong>Exemple :</strong> <em>${item.ex}</em></p>
+   <textarea id="vocabSentence" rows="2" placeholder="Écris une phrase avec le mot « ${item.word} »..."></textarea>
+   <button onclick="checkVocab('${item.word}')">Vérifier ma phrase</button>
+   <div class="feedback" id="vocabFeedback"></div>
+  `;
+ } else if(currentExercise==='comp'){
+  area.innerHTML=`
+   <h3>Compréhension & reformulation</h3>
+   <p>Texte travaillé : <strong>${currentText.title}</strong></p>
+   <p>Quelle est l'idée principale de ce passage ? Résume-la en une ou deux phrases simples avec tes propres mots :</p>
+   <textarea id="compAnswer" rows="3" placeholder="Écris l'idée principale ici..."></textarea>
+   <button onclick="checkComp()">Valider ma reformulation</button>
+   <div class="feedback" id="compFeedback"></div>
+  `;
+ }
+}
+
+function checkReco(clicked,target){
+ const fb=document.getElementById('recoFeedback');
+ if(clicked===target){
+  foundWords.add(clicked);
+  fb.textContent='Bien vu ! Tu as reconnu « '+target+' » calmement.';
+  renderExercise();
+ } else {
+  fb.textContent='Ce mot est « '+clicked+' ». Cherche « '+target+' » sans te presser.';
+ }
+}
+
+function checkVocab(word){
+ const val=(document.getElementById('vocabSentence').value||'').trim();
+ const fb=document.getElementById('vocabFeedback');
+ if(!val){
+  fb.textContent='Écris d’abord une phrase avant de vérifier.';
+  return;
+ }
+ const hasWord=val.toLowerCase().includes(word.toLowerCase());
+ fb.textContent=hasWord
+  ? 'Très bien, ta phrase emploie bien le mot « '+word+' ». Lis-la maintenant à voix haute.'
+  : 'Pense à inclure le mot « '+word+' » dans ta phrase.';
+}
+
+function checkComp(){
+ const val=(document.getElementById('compAnswer').value||'').trim();
+ const fb=document.getElementById('compFeedback');
+ if(val.length<12){
+  fb.textContent='Développe un peu ta réponse pour bien résumer l’idée principale.';
+  return;
+ }
+ fb.textContent='Reformulation enregistrée pour cette séance. Essaie de l’expliquer à voix haute en 30 secondes.';
 }
 
 function startChrono(){
@@ -348,6 +479,7 @@ refreshDailyPick();
 update();
 renderSelector();
 renderReader();
+renderExercise();
 loadExternalTexts();
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 </script>
