@@ -23,7 +23,7 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 .stats{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
 .module{border:0;text-align:left;background:white;border-radius:16px;padding:15px;min-height:126px;box-shadow:0 4px 14px #17233b0a;color:var(--ink);cursor:pointer}
-.module:active,.nav button:active{transform:scale(.98)}.emoji{font-size:25px}.module strong{display:block;font-size:14px;margin:10px 0 5px}.module small{font-size:11px;line-height:1.4;color:var(--muted)}
+.module:active,.bottom button:active{transform:scale(.98)}.emoji{font-size:25px}.module strong{display:block;font-size:14px;margin:10px 0 5px}.module small{font-size:11px;line-height:1.4;color:var(--muted)}
 .session{background:var(--navy);color:white;padding:17px;border-radius:18px}
 .session .sub{color:#c5cede}.task{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #ffffff1c;font-size:13px}.task:last-child{border:0}
 .task input{accent-color:var(--gold);width:18px;height:18px}.task.done span{text-decoration:line-through;color:#aeb9cb}
@@ -61,7 +61,7 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 .btn-danger{background:#991b1b !important;color:#fff !important}
 .btn-sm{padding:6px 10px !important;font-size:12px !important;margin-top:0 !important}
 .feedback{margin-top:10px;font-size:13px;font-weight:700;color:var(--navy)}
-.bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid #e7ebf1;display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid #e7ebf1;display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:20}
 .bottom button{border:0;background:none;color:#718096;font-size:10px;display:grid;gap:4px;justify-items:center;cursor:pointer}.bottom button b{font-size:19px}.bottom button.selected{color:#a87822;font-weight:bold}
 .notice{font-size:11px;color:var(--muted);text-align:center;margin:17px 0}
 @media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}header{padding-left:max(22px,calc((100% - 720px)/2));padding-right:max(22px,calc((100% - 720px)/2))}}
@@ -83,12 +83,12 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
   </div>
   <div class="section-head"><h2 id="secSpaces">Les espaces d'entraînement</h2><span class="sub" id="secSpacesSub">6 modules</span></div>
   <div class="grid">
-   <button class="module" onclick="openModule('lecture')"><span class="emoji">📖</span><strong id="mod-lecture-t">Lecture</strong><small id="mod-lecture-s">Lire avec fluidité et assurance.</small></button>
-   <button class="module" onclick="openModule('prononciation')"><span class="emoji">🗣️</span><strong id="mod-pron-t">Prononciation</strong><small id="mod-pron-s">Travailler les sons et l'articulation.</small></button>
-   <button class="module" onclick="openModule('vitesse')"><span class="emoji">⏱️</span><strong id="mod-vitesse-t">Vitesse de lecture</strong><small id="mod-vitesse-s">Lire plus naturellement, sans précipitation.</small></button>
-   <button class="module" onclick="openModule('vocabulaire')"><span class="emoji">📚</span><strong id="mod-vocab-t">Vocabulaire</strong><small id="mod-vocab-s">Découvrir et employer de nouveaux mots.</small></button>
-   <button class="module" onclick="openModule('expression')"><span class="emoji">🎙️</span><strong id="mod-expr-t">Expression orale</strong><small id="mod-expr-s">Organiser ses idées et s'exprimer.</small></button>
-   <button class="module" onclick="openModule('comprehension')"><span class="emoji">🧠</span><strong id="mod-comp-t">Compréhension</strong><small id="mod-comp-s">Comprendre, retenir et reformuler.</small></button>
+   <button class="module" type="button" onclick="openModule('lecture')"><span class="emoji">📖</span><strong id="mod-lecture-t">Lecture</strong><small id="mod-lecture-s">Lire avec fluidité et assurance.</small></button>
+   <button class="module" type="button" onclick="openModule('prononciation')"><span class="emoji">🗣️</span><strong id="mod-pron-t">Prononciation</strong><small id="mod-pron-s">Travailler les sons et l'articulation.</small></button>
+   <button class="module" type="button" onclick="openModule('vitesse')"><span class="emoji">⏱️</span><strong id="mod-vitesse-t">Vitesse de lecture</strong><small id="mod-vitesse-s">Lire plus naturellement, sans précipitation.</small></button>
+   <button class="module" type="button" onclick="openModule('vocabulaire')"><span class="emoji">📚</span><strong id="mod-vocab-t">Vocabulaire</strong><small id="mod-vocab-s">Découvrir et employer de nouveaux mots.</small></button>
+   <button class="module" type="button" onclick="openModule('expression')"><span class="emoji">🎙️</span><strong id="mod-expr-t">Expression orale</strong><small id="mod-expr-s">Organiser ses idées et s'exprimer.</small></button>
+   <button class="module" type="button" onclick="openModule('comprehension')"><span class="emoji">🧠</span><strong id="mod-comp-t">Compréhension</strong><small id="mod-comp-s">Comprendre, retenir et reformuler.</small></button>
   </div>
   <div class="section-head"><h2 id="secSession">Ma séance du jour</h2><span class="sub">30 minutes</span></div>
   <div class="session">
@@ -98,16 +98,16 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
    <label class="task"><input type="checkbox" class="daily"><span id="task-2">Lecture à voix haute — 10 min</span></label>
    <label class="task"><input type="checkbox" class="daily"><span id="task-3">Compréhension et vocabulaire — 5 min</span></label>
    <label class="task"><input type="checkbox" class="daily"><span id="task-4">Expression orale — 5 min</span></label>
-   <button class="action" id="resetDayBtn" onclick="resetDay()">Réinitialiser ma séance</button>
+   <button class="action" type="button" id="resetDayBtn" onclick="resetDay()">Réinitialiser ma séance</button>
   </div>
   <p class="notice" id="localNotice">Tes coches et ton historique sont enregistrés sur cet appareil.</p>
  </section>
 
  <section id="modulePage" class="page">
-  <button class="back" id="backHomeBtn" onclick="showPage('home')">← Retour à l'accueil</button>
+  <button class="back" type="button" id="backHomeBtn" onclick="showPage('home')">← Retour à l'accueil</button>
   <div class="panel"><div class="sub" id="modBadge">MODULE D'ENTRAÎNEMENT</div><h2 id="moduleTitle">Lecture</h2><p id="moduleDesc"></p></div>
   <div class="panel"><strong id="modWorkLabel">Ce que nous allons travailler</strong><p id="moduleDetail"></p></div>
-  <div class="panel"><strong id="modDirectLabel">Accès direct</strong><p id="modDirectText">Ouvre la bibliothèque pour lire un texte ou lance l'atelier d'exercices interactifs.</p><button id="goLibBtn" onclick="openLibraryTab()">Aller à la Bibliothèque</button> <button id="goExBtn" onclick="openExercisesTab()">Faire les exercices</button></div>
+  <div class="panel"><strong id="modDirectLabel">Accès direct</strong><p id="modDirectText">Ouvre la bibliothèque pour lire un texte ou lance l'atelier d'exercices interactifs.</p><button type="button" id="goLibBtn" onclick="openLibraryTab()">Aller à la Bibliothèque</button> <button type="button" id="goExBtn" onclick="openExercisesTab()">Faire les exercices</button></div>
  </section>
 
  <section id="exercisesPage" class="page">
@@ -115,11 +115,11 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
   <div class="panel">
    <div class="sub" id="exChooseSub">CHOISIR L'EXERCICE</div>
    <div class="tabs">
-    <button class="tab active" id="ex-reco" onclick="setExercise('reco')">Reconnaissance</button>
-    <button class="tab" id="ex-pron" onclick="setExercise('pron')">Prononciation</button>
-    <button class="tab" id="ex-vocab" onclick="setExercise('vocab')">Vocabulaire</button>
-    <button class="tab" id="ex-comp" onclick="setExercise('comp')">Compréhension</button>
-    <button class="tab" id="ex-oral" onclick="setExercise('oral')">Expression</button>
+    <button class="tab active" type="button" id="ex-reco" onclick="setExercise('reco')">Reconnaissance</button>
+    <button class="tab" type="button" id="ex-pron" onclick="setExercise('pron')">Prononciation</button>
+    <button class="tab" type="button" id="ex-vocab" onclick="setExercise('vocab')">Vocabulaire</button>
+    <button class="tab" type="button" id="ex-comp" onclick="setExercise('comp')">Compréhension</button>
+    <button class="tab" type="button" id="ex-oral" onclick="setExercise('oral')">Expression</button>
    </div>
    <div id="exArea"></div>
   </div>
@@ -140,7 +140,7 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
   <div class="panel">
    <strong id="histBoxTitle">Historique récent sur cet appareil</strong>
    <div id="historyList" style="margin-top:8px"></div>
-   <button class="btn-danger" id="clearHistBtn" onclick="clearHistory()">Effacer l'historique</button>
+   <button class="btn-danger" type="button" id="clearHistBtn" onclick="clearHistory()">Effacer l'historique</button>
   </div>
   <div class="panel"><strong id="goalBoxTitle">Ton objectif</strong><p id="goalBoxText">30 minutes par jour, 6 jours par semaine. La reconnaissance visuelle et la prononciation naturelle priment sur la vitesse forcée.</p></div>
  </section>
@@ -150,23 +150,23 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
   <div class="panel">
    <div class="daily-banner">
     <span id="dailyPickText">Texte du jour sélectionné automatiquement.</span>
-    <button id="openDailyBtn" onclick="selectDailyText()">Ouvrir le texte du jour</button>
+    <button type="button" id="openDailyBtn" onclick="selectDailyText()">Ouvrir le texte du jour</button>
    </div>
    <div class="sub" id="sourceStatus">Source : locale</div>
    <div class="sub" id="chooseTextSub" style="margin-top:8px">CHOISIR UN TEXTE</div>
    <div class="tabs" id="textSelector"></div>
    <div class="sub" id="readModeSub">MODE DE LECTURE</div>
    <div class="tabs">
-    <button class="tab active" id="mode-libre" onclick="setMode('libre')">Lecture libre</button>
-    <button class="tab" id="mode-guide" onclick="setMode('guide')">Lecture guidée (groupes)</button>
-    <button class="tab" id="mode-chrono" onclick="setMode('chrono')">Lecture chronométrée</button>
+    <button class="tab active" type="button" id="mode-libre" onclick="setMode('libre')">Lecture libre</button>
+    <button class="tab" type="button" id="mode-guide" onclick="setMode('guide')">Lecture guidée (groupes)</button>
+    <button class="tab" type="button" id="mode-chrono" onclick="setMode('chrono')">Lecture chronométrée</button>
    </div>
    <div id="guidePaceBar" style="display:none;margin-bottom:10px">
     <div class="sub" id="paceSub">RYTHME DE GUIDAGE (SANS PRÉCIPITATION)</div>
     <div class="tabs" style="margin-top:6px">
-     <button class="tab" id="pace-slow" onclick="setGuidePace(2500)">Posé (2,5 s)</button>
-     <button class="tab active" id="pace-normal" onclick="setGuidePace(1800)">Normal (1,8 s)</button>
-     <button class="tab" id="pace-fluid" onclick="setGuidePace(1300)">Fluide (1,3 s)</button>
+     <button class="tab" type="button" id="pace-slow" onclick="setGuidePace(2500)">Posé (2,5 s)</button>
+     <button class="tab active" type="button" id="pace-normal" onclick="setGuidePace(1800)">Normal (1,8 s)</button>
+     <button class="tab" type="button" id="pace-fluid" onclick="setGuidePace(1300)">Fluide (1,3 s)</button>
     </div>
    </div>
    <h3 id="readerTitle" style="margin:10px 0 4px"></h3>
@@ -175,11 +175,11 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
    <div class="timer-bar" id="chronoControls" style="display:none">
     <div><span id="chronoLbl">Chrono</span> : <strong id="chronoDisplay">00:00</strong> | <span id="speedLbl">Vitesse</span> : <strong id="wpmDisplay">0 mots/min</strong></div>
     <div>
-     <button id="startChronoBtn" onclick="startChrono()">Démarrer</button>
-     <button id="stopChronoBtn" onclick="stopChrono()">Terminer</button>
+     <button type="button" id="startChronoBtn" onclick="startChrono()">Démarrer</button>
+     <button type="button" id="stopChronoBtn" onclick="stopChrono()">Terminer</button>
     </div>
    </div>
-   <button id="libToExBtn" onclick="openExercisesTab()">Pratiquer sur ce texte → Exercices</button>
+   <button type="button" id="libToExBtn" onclick="openExercisesTab()">Pratiquer sur ce texte → Exercices</button>
   </div>
   <div class="panel add-box">
    <strong id="addTextTitle">+ Ajouter un texte sur cet appareil</strong>
@@ -187,7 +187,7 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
    <input type="text" id="newTitle" placeholder="Titre du texte">
    <input type="text" id="newCategory" placeholder="Catégorie (ex. Récit, Discours, Réflexion)">
    <textarea id="newBody" rows="3" placeholder="Écris ton texte ici..."></textarea>
-   <button id="saveCustomTextBtn" onclick="addCustomText()">Enregistrer ce texte</button>
+   <button type="button" id="saveCustomTextBtn" onclick="addCustomText()">Enregistrer ce texte</button>
    <div id="customTextsManager" style="margin-top:14px"></div>
   </div>
  </section>
@@ -198,8 +198,8 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
    <strong id="langSettingTitle">Langue d'apprentissage (Bilingue FR / EN)</strong>
    <p id="langSettingDesc">Choisis la langue de travail selon ton besoin : français ou anglais (idéal pour pratiquer avec des textes d'inspiration biblique).</p>
    <div class="tabs" style="margin-top:8px">
-    <button class="tab active" id="lang-fr" onclick="setAppLang('fr')">Français</button>
-    <button class="tab" id="lang-en" onclick="setAppLang('en')">English</button>
+    <button class="tab active" type="button" id="lang-fr" onclick="setAppLang('fr')">Français</button>
+    <button class="tab" type="button" id="lang-en" onclick="setAppLang('en')">English</button>
    </div>
   </div>
   <div class="panel"><strong id="durSettingTitle">Durée quotidienne</strong><p id="durSettingDesc">30 minutes (6 jours / semaine)</p></div>
@@ -207,17 +207,17 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
   <div class="panel">
    <strong id="saveSettingTitle">Sauvegarde locale sur cet appareil</strong>
    <p id="saveSettingDesc">Tes coches, textes personnels et historiques sont conservés localement dans ton navigateur, y compris hors ligne.</p>
-   <button class="btn-danger" id="resetAllBtn" onclick="resetAllLocalData()">Réinitialiser toutes les données locales</button>
+   <button class="btn-danger" type="button" id="resetAllBtn" onclick="resetAllLocalData()">Réinitialiser toutes les données locales</button>
    <div class="feedback" id="settingsFeedback"></div>
   </div>
  </section>
 </main>
-<nav class="bottom">
- <button class="selected" id="navHome" onclick="showPage('home',this)"><b>⌂</b><span>Accueil</span></button>
- <button id="navLib" onclick="showPage('libraryPage',this)"><b>▤</b><span>Bibliothèque</span></button>
- <button id="navEx" onclick="showPage('exercisesPage',this)"><b>✎</b><span>Exercices</span></button>
- <button id="navStats" onclick="showPage('statsPage',this)"><b>▥</b><span>Progression</span></button>
- <button id="navSet" onclick="showPage('settingsPage',this)"><b>⚙</b><span>Paramètres</span></button>
+<nav class="bottom" aria-label="Navigation principale">
+ <button class="selected" type="button" id="navHome" data-page="home" onclick="showPage('home',this)"><b>⌂</b><span>Accueil</span></button>
+ <button type="button" id="navLib" data-page="libraryPage" onclick="showPage('libraryPage',this)"><b>▤</b><span>Bibliothèque</span></button>
+ <button type="button" id="navEx" data-page="exercisesPage" onclick="showPage('exercisesPage',this)"><b>✎</b><span>Exercices</span></button>
+ <button type="button" id="navStats" data-page="statsPage" onclick="showPage('statsPage',this)"><b>▥</b><span>Progression</span></button>
+ <button type="button" id="navSet" data-page="settingsPage" onclick="showPage('settingsPage',this)"><b>⚙</b><span>Paramètres</span></button>
 </nav>
 <script>
 const i18n={
@@ -266,10 +266,10 @@ const i18n={
   resetAllBtn:'Réinitialiser toutes les données locales',
   nav:{home:'Accueil',lib:'Bibliothèque',ex:'Exercices',stats:'Progression',set:'Paramètres'},
   speechLang:'fr-FR',
-  doneFmt:(n)=>`${n} / 5 exercices terminés`,
+  doneFmt:function(n){return n+' / 5 exercices terminés';},
   statsZero:"Tu n'as pas encore coché d'exercice aujourd'hui. Commence par une petite étape !",
   statsFull:'Bravo ! Tu as terminé ta séance du jour.',
-  statsPart:(n)=>`Tu as terminé ${n} exercice(s) sur 5. Continue à ton rythme.`,
+  statsPart:function(n){return 'Tu as terminé '+n+' exercice(s) sur 5. Continue à ton rythme.';},
   catLabel:'Catégorie',modeLabel:'Mode',
   delBtn:'Supprimer',savedLocalSub:'TEXTES ENREGISTRÉS SUR L\'APPAREIL'
  },
@@ -318,10 +318,10 @@ const i18n={
   resetAllBtn:'Reset all local data',
   nav:{home:'Home',lib:'Library',ex:'Exercises',stats:'Progress',set:'Settings'},
   speechLang:'en-US',
-  doneFmt:(n)=>`${n} / 5 exercises completed`,
+  doneFmt:function(n){return n+' / 5 exercises completed';},
   statsZero:'No exercises checked yet today. Start with one small step!',
   statsFull:"Great job! You completed today's session.",
-  statsPart:(n)=>`You completed ${n} of 5 exercises. Keep going at your pace.`,
+  statsPart:function(n){return 'You completed '+n+' of 5 exercises. Keep going at your pace.';},
   catLabel:'Category',modeLabel:'Mode',
   delBtn:'Delete',savedLocalSub:'TEXTS SAVED ON DEVICE'
  }
@@ -410,6 +410,11 @@ let spokenTranscript='';
 let speechDiagMsg='';
 let speechRecognizer=null;
 
+function setText(id,val){
+ const el=document.getElementById(id);
+ if(el && typeof val==='string')el.textContent=val;
+}
+
 function getTodayKey(){
  const d=new Date();
  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -420,7 +425,7 @@ function getHistoryData(){
 }
 
 function saveHistoryData(list){
- localStorage.setItem('te_history',JSON.stringify(list.slice(0,40)));
+ try{localStorage.setItem('te_history',JSON.stringify(list.slice(0,40)));}catch(e){}
 }
 
 function logActivity(label,wpmVal){
@@ -433,7 +438,7 @@ function logActivity(label,wpmVal){
 }
 
 function clearHistory(){
- localStorage.removeItem('te_history');
+ try{localStorage.removeItem('te_history');}catch(e){}
  renderStatsHistory();
 }
 
@@ -451,14 +456,10 @@ function renderStatsHistory(){
  }
 
  const lastWpmItem=list.find(x=>typeof x.wpm==='number');
- const kpiDays=document.getElementById('kpiDays');
- const kpiTotalDays=document.getElementById('kpiTotalDays');
- const kpiWpm=document.getElementById('kpiWpm');
- const kpiActivities=document.getElementById('kpiActivities');
- if(kpiDays)kpiDays.textContent=last7Count+' / 6 '+(appLang==='en'?'days':'jours');
- if(kpiTotalDays)kpiTotalDays.textContent=activeDaysSet.size+(appLang==='en'?' day(s)':' jour(s)');
- if(kpiWpm)kpiWpm.textContent=lastWpmItem ? lastWpmItem.wpm+' '+i18n[appLang].wpmUnit : '—';
- if(kpiActivities)kpiActivities.textContent=String(list.length);
+ setText('kpiDays',last7Count+' / 6 '+(appLang==='en'?'days':'jours'));
+ setText('kpiTotalDays',activeDaysSet.size+(appLang==='en'?' day(s)':' jour(s)'));
+ setText('kpiWpm',lastWpmItem ? lastWpmItem.wpm+' '+i18n[appLang].wpmUnit : '—');
+ setText('kpiActivities',String(list.length));
 
  const box=document.getElementById('historyList');
  if(!box)return;
@@ -504,8 +505,8 @@ function refreshDailyPick(){
  currentText=dailyText;
  const locale=appLang==='en'?'en-US':'fr-FR';
  const d=new Date().toLocaleDateString(locale,{weekday:'long',day:'numeric',month:'long'});
- document.getElementById('dayLabel').textContent=d;
- document.getElementById('dailyPickText').textContent=i18n[appLang].dailyPickPrefix+dailyText.title+i18n[appLang].dailyPickSuffix;
+ setText('dayLabel',d);
+ setText('dailyPickText',i18n[appLang].dailyPickPrefix+dailyText.title+i18n[appLang].dailyPickSuffix);
 }
 
 async function loadExternalTexts(){
@@ -516,7 +517,7 @@ async function loadExternalTexts(){
   if(Array.isArray(data)&&data.length>0){
    externalTexts=data.filter(item=>item&&item.title&&Array.isArray(item.chunks)&&item.chunks.length>0);
    if(externalTexts.length>0){
-    document.getElementById('sourceStatus').textContent=(appLang==='en'?'Source: textes.json ('+externalTexts.length+' texts)':'Source : fichier externe textes.json ('+externalTexts.length+' textes)');
+    setText('sourceStatus',appLang==='en'?'Source: textes.json ('+externalTexts.length+' texts)':'Source : fichier externe textes.json ('+externalTexts.length+' textes)');
     refreshDailyPick();
     renderSelector();
     renderReader();
@@ -524,101 +525,107 @@ async function loadExternalTexts(){
    }
   }
  }catch(e){
-  document.getElementById('sourceStatus').textContent=(appLang==='en'?'Source: built-in texts (offline fallback)':'Source : textes intégrés (mode hors ligne ou repli)');
+  setText('sourceStatus',appLang==='en'?'Source: built-in texts (offline fallback)':'Source : textes intégrés (mode hors ligne ou repli)');
  }
 }
 
 function applyLanguageUI(){
  const t=i18n[appLang];
  document.documentElement.lang=t.htmlLang;
- document.getElementById('lang-fr').classList.toggle('active',appLang==='fr');
- document.getElementById('lang-en').classList.toggle('active',appLang==='en');
- document.getElementById('heroTitle').textContent=t.heroTitle;
- document.getElementById('heroTagline').textContent=t.heroTagline;
- document.getElementById('secProg').textContent=t.secProg;
- document.getElementById('secProgSub').textContent=t.secProgSub;
- document.getElementById('goalTitle').textContent=t.goalTitle;
- document.getElementById('goalSub').textContent=t.goalSub;
- document.getElementById('paceNote').textContent=t.paceNote;
- document.getElementById('secSpaces').textContent=t.secSpaces;
- document.getElementById('secSpacesSub').textContent=t.secSpacesSub;
- document.getElementById('mod-lecture-t').textContent=t.modLectureT;
- document.getElementById('mod-lecture-s').textContent=t.modLectureS;
- document.getElementById('mod-pron-t').textContent=t.modPronT;
- document.getElementById('mod-pron-s').textContent=t.modPronS;
- document.getElementById('mod-vitesse-t').textContent=t.modVitesseT;
- document.getElementById('mod-vitesse-s').textContent=t.modVitesseS;
- document.getElementById('mod-vocab-t').textContent=t.modVocabT;
- document.getElementById('mod-vocab-s').textContent=t.modVocabS;
- document.getElementById('mod-expr-t').textContent=t.modExprT;
- document.getElementById('mod-expr-s').textContent=t.modExprS;
- document.getElementById('mod-comp-t').textContent=t.modCompT;
- document.getElementById('mod-comp-s').textContent=t.modCompS;
- document.getElementById('secSession').textContent=t.secSession;
- document.getElementById('sessionHint').textContent=t.sessionHint;
- t.tasks.forEach((txt,idx)=>{const el=document.getElementById('task-'+idx);if(el)el.textContent=txt;});
- document.getElementById('resetDayBtn').textContent=t.resetDayBtn;
- document.getElementById('localNotice').textContent=t.localNotice;
- document.getElementById('backHomeBtn').textContent=t.backHomeBtn;
- document.getElementById('modBadge').textContent=t.modBadge;
- document.getElementById('modWorkLabel').textContent=t.modWorkLabel;
- document.getElementById('modDirectLabel').textContent=t.modDirectLabel;
- document.getElementById('modDirectText').textContent=t.modDirectText;
- document.getElementById('goLibBtn').textContent=t.goLibBtn;
- document.getElementById('goExBtn').textContent=t.goExBtn;
- document.getElementById('exPageTitle').textContent=t.exPageTitle;
- document.getElementById('exChooseSub').textContent=t.exChooseSub;
- document.getElementById('ex-reco').textContent=t.exTabs.reco;
- document.getElementById('ex-pron').textContent=t.exTabs.pron;
- document.getElementById('ex-vocab').textContent=t.exTabs.vocab;
- document.getElementById('ex-comp').textContent=t.exTabs.comp;
- document.getElementById('ex-oral').textContent=t.exTabs.oral;
- document.getElementById('statsPageTitle').textContent=t.statsPageTitle;
- document.getElementById('kpiDaysLbl').textContent=t.kpiDaysLbl;
- document.getElementById('kpiTotalLbl').textContent=t.kpiTotalLbl;
- document.getElementById('kpiWpmLbl').textContent=t.kpiWpmLbl;
- document.getElementById('kpiActLbl').textContent=t.kpiActLbl;
- document.getElementById('histBoxTitle').textContent=t.histBoxTitle;
- document.getElementById('clearHistBtn').textContent=t.clearHistBtn;
- document.getElementById('goalBoxTitle').textContent=t.goalBoxTitle;
- document.getElementById('goalBoxText').textContent=t.goalBoxText;
- document.getElementById('libPageTitle').textContent=t.libPageTitle;
- document.getElementById('openDailyBtn').textContent=t.openDailyBtn;
- document.getElementById('chooseTextSub').textContent=t.chooseTextSub;
- document.getElementById('readModeSub').textContent=t.readModeSub;
- document.getElementById('mode-libre').textContent=t.modes.libre;
- document.getElementById('mode-guide').textContent=t.modes.guide;
- document.getElementById('mode-chrono').textContent=t.modes.chrono;
- document.getElementById('paceSub').textContent=t.paceSub;
- document.getElementById('pace-slow').textContent=t.paces.slow;
- document.getElementById('pace-normal').textContent=t.paces.normal;
- document.getElementById('pace-fluid').textContent=t.paces.fluid;
- document.getElementById('chronoLbl').textContent=t.chronoLbl;
- document.getElementById('speedLbl').textContent=t.speedLbl;
- document.getElementById('startChronoBtn').textContent=t.startChronoBtn;
- document.getElementById('stopChronoBtn').textContent=t.stopChronoBtn;
- document.getElementById('libToExBtn').textContent=t.libToExBtn;
- document.getElementById('addTextTitle').textContent=t.addTextTitle;
- document.getElementById('addTextDesc').textContent=t.addTextDesc;
- document.getElementById('newTitle').placeholder=t.phTitle;
- document.getElementById('newCategory').placeholder=t.phCat;
- document.getElementById('newBody').placeholder=t.phBody;
- document.getElementById('saveCustomTextBtn').textContent=t.saveCustomTextBtn;
- document.getElementById('setPageTitle').textContent=t.setPageTitle;
- document.getElementById('langSettingTitle').textContent=t.langSettingTitle;
- document.getElementById('langSettingDesc').textContent=t.langSettingDesc;
- document.getElementById('durSettingTitle').textContent=t.durSettingTitle;
- document.getElementById('durSettingDesc').textContent=t.durSettingDesc;
- document.getElementById('ruleSettingTitle').textContent=t.ruleSettingTitle;
- document.getElementById('ruleSettingDesc').textContent=t.ruleSettingDesc;
- document.getElementById('saveSettingTitle').textContent=t.saveSettingTitle;
- document.getElementById('saveSettingDesc').textContent=t.saveSettingDesc;
- document.getElementById('resetAllBtn').textContent=t.resetAllBtn;
- document.querySelector('#navHome span').textContent=t.nav.home;
- document.querySelector('#navLib span').textContent=t.nav.lib;
- document.querySelector('#navEx span').textContent=t.nav.ex;
- document.querySelector('#navStats span').textContent=t.nav.stats;
- document.querySelector('#navSet span').textContent=t.nav.set;
+ const frBtn=document.getElementById('lang-fr');
+ const enBtn=document.getElementById('lang-en');
+ if(frBtn)frBtn.classList.toggle('active',appLang==='fr');
+ if(enBtn)enBtn.classList.toggle('active',appLang==='en');
+ setText('heroTitle',t.heroTitle);
+ setText('heroTagline',t.heroTagline);
+ setText('secProg',t.secProg);
+ setText('secProgSub',t.secProgSub);
+ setText('goalTitle',t.goalTitle);
+ setText('goalSub',t.goalSub);
+ setText('paceNote',t.paceNote);
+ setText('secSpaces',t.secSpaces);
+ setText('secSpacesSub',t.secSpacesSub);
+ setText('mod-lecture-t',t.modLectureT);
+ setText('mod-lecture-s',t.modLectureS);
+ setText('mod-pron-t',t.modPronT);
+ setText('mod-pron-s',t.modPronS);
+ setText('mod-vitesse-t',t.modVitesseT);
+ setText('mod-vitesse-s',t.modVitesseS);
+ setText('mod-vocab-t',t.modVocabT);
+ setText('mod-vocab-s',t.modVocabS);
+ setText('mod-expr-t',t.modExprT);
+ setText('mod-expr-s',t.modExprS);
+ setText('mod-comp-t',t.modCompT);
+ setText('mod-comp-s',t.modCompS);
+ setText('secSession',t.secSession);
+ setText('sessionHint',t.sessionHint);
+ t.tasks.forEach(function(txt,idx){setText('task-'+idx,txt);});
+ setText('resetDayBtn',t.resetDayBtn);
+ setText('localNotice',t.localNotice);
+ setText('backHomeBtn',t.backHomeBtn);
+ setText('modBadge',t.modBadge);
+ setText('modWorkLabel',t.modWorkLabel);
+ setText('modDirectLabel',t.modDirectLabel);
+ setText('modDirectText',t.modDirectText);
+ setText('goLibBtn',t.goLibBtn);
+ setText('goExBtn',t.goExBtn);
+ setText('exPageTitle',t.exPageTitle);
+ setText('exChooseSub',t.exChooseSub);
+ setText('ex-reco',t.exTabs.reco);
+ setText('ex-pron',t.exTabs.pron);
+ setText('ex-vocab',t.exTabs.vocab);
+ setText('ex-comp',t.exTabs.comp);
+ setText('ex-oral',t.exTabs.oral);
+ setText('statsPageTitle',t.statsPageTitle);
+ setText('kpiDaysLbl',t.kpiDaysLbl);
+ setText('kpiTotalLbl',t.kpiTotalLbl);
+ setText('kpiWpmLbl',t.kpiWpmLbl);
+ setText('kpiActLbl',t.kpiActLbl);
+ setText('histBoxTitle',t.histBoxTitle);
+ setText('clearHistBtn',t.clearHistBtn);
+ setText('goalBoxTitle',t.goalBoxTitle);
+ setText('goalBoxText',t.goalBoxText);
+ setText('libPageTitle',t.libPageTitle);
+ setText('openDailyBtn',t.openDailyBtn);
+ setText('chooseTextSub',t.chooseTextSub);
+ setText('readModeSub',t.readModeSub);
+ setText('mode-libre',t.modes.libre);
+ setText('mode-guide',t.modes.guide);
+ setText('mode-chrono',t.modes.chrono);
+ setText('paceSub',t.paceSub);
+ setText('pace-slow',t.paces.slow);
+ setText('pace-normal',t.paces.normal);
+ setText('pace-fluid',t.paces.fluid);
+ setText('chronoLbl',t.chronoLbl);
+ setText('speedLbl',t.speedLbl);
+ setText('startChronoBtn',t.startChronoBtn);
+ setText('stopChronoBtn',t.stopChronoBtn);
+ setText('libToExBtn',t.libToExBtn);
+ setText('addTextTitle',t.addTextTitle);
+ setText('addTextDesc',t.addTextDesc);
+ const inpTitle=document.getElementById('newTitle');
+ const inpCat=document.getElementById('newCategory');
+ const inpBody=document.getElementById('newBody');
+ if(inpTitle)inpTitle.placeholder=t.phTitle;
+ if(inpCat)inpCat.placeholder=t.phCat;
+ if(inpBody)inpBody.placeholder=t.phBody;
+ setText('saveCustomTextBtn',t.saveCustomTextBtn);
+ setText('setPageTitle',t.setPageTitle);
+ setText('langSettingTitle',t.langSettingTitle);
+ setText('langSettingDesc',t.langSettingDesc);
+ setText('durSettingTitle',t.durSettingTitle);
+ setText('durSettingDesc',t.durSettingDesc);
+ setText('ruleSettingTitle',t.ruleSettingTitle);
+ setText('ruleSettingDesc',t.ruleSettingDesc);
+ setText('saveSettingTitle',t.saveSettingTitle);
+ setText('saveSettingDesc',t.saveSettingDesc);
+ setText('resetAllBtn',t.resetAllBtn);
+ const navMap={navHome:t.nav.home,navLib:t.nav.lib,navEx:t.nav.ex,navStats:t.nav.stats,navSet:t.nav.set};
+ Object.keys(navMap).forEach(function(id){
+  const btn=document.getElementById(id);
+  const sp=btn ? btn.querySelector('span') : null;
+  if(sp)sp.textContent=navMap[id];
+ });
 }
 
 function setAppLang(lang){
@@ -635,8 +642,7 @@ function setAppLang(lang){
  renderReader();
  renderExercise();
  renderStatsHistory();
- const fb=document.getElementById('settingsFeedback');
- if(fb)fb.textContent=appLang==='en'?'Language switched to English.':'Langue réglée sur le français.';
+ setText('settingsFeedback',appLang==='en'?'Language switched to English.':'Langue réglée sur le français.');
 }
 
 function selectDailyText(){
@@ -650,9 +656,10 @@ function selectDailyText(){
 
 function openModule(key){
  const m=modulesByLang[appLang][key];
- document.getElementById('moduleTitle').textContent=m[0];
- document.getElementById('moduleDesc').textContent=m[1];
- document.getElementById('moduleDetail').textContent=m[2];
+ if(!m)return;
+ setText('moduleTitle',m[0]);
+ setText('moduleDesc',m[1]);
+ setText('moduleDetail',m[2]);
  showPage('modulePage');
 }
 
@@ -666,11 +673,11 @@ function openExercisesTab(){
 }
 
 function showPage(id,btn){
- stopGuide();
- stopSpeechTimer();
- stopLiveSpeechRecognition();
+ try{stopGuide();}catch(e){}
+ try{stopSpeechTimer();}catch(e){}
+ try{stopLiveSpeechRecognition();}catch(e){}
  if(isRecording && mediaRecorder && mediaRecorder.state==='recording'){
-  mediaRecorder.stop();
+  try{mediaRecorder.stop();}catch(e){}
  }
  if(id==='statsPage'){
   renderStatsHistory();
@@ -678,22 +685,25 @@ function showPage(id,btn){
  if(id==='libraryPage'){
   renderCustomTextsManager();
  }
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('selected'));
- if(btn)btn.classList.add('selected');
- else if(id==='home')document.querySelector('.bottom button').classList.add('selected');
- window.scrollTo(0,0);
+ document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+ const targetPage=document.getElementById(id);
+ if(targetPage)targetPage.classList.add('active');
+ document.querySelectorAll('.bottom button').forEach(function(b){b.classList.remove('selected');});
+ const activeNavBtn=btn || document.querySelector('.bottom button[data-page="'+id+'"]') || (id==='home' ? document.querySelector('.bottom button') : null);
+ if(activeNavBtn)activeNavBtn.classList.add('selected');
+ try{window.scrollTo(0,0);}catch(e){}
 }
 
 function renderSelector(){
  const box=document.getElementById('textSelector');
+ if(!box)return;
  box.innerHTML='';
- getAllTexts().forEach(t=>{
+ getAllTexts().forEach(function(item){
   const b=document.createElement('button');
-  b.className='tab'+(t.id===currentText.id?' active':'');
-  b.textContent=(t.id===dailyText.id?'★ ':'')+t.title;
-  b.onclick=()=>{currentText=t;stopChrono();foundWords.clear();renderSelector();renderReader();renderExercise();};
+  b.type='button';
+  b.className='tab'+(item.id===currentText.id?' active':'');
+  b.textContent=(item.id===dailyText.id?'★ ':'')+item.title;
+  b.onclick=function(){currentText=item;stopChrono();foundWords.clear();renderSelector();renderReader();renderExercise();};
   box.appendChild(b);
  });
  renderCustomTextsManager();
@@ -707,17 +717,14 @@ function renderCustomTextsManager(){
   wrap.innerHTML='';
   return;
  }
- wrap.innerHTML='<div class="sub" style="margin-bottom:6px">'+i18n[appLang].savedLocalSub+'</div>'+custom.map(t=>`
-  <div class="custom-row">
-   <div><strong>${t.title}</strong> <span class="sub">(${t.category})</span></div>
-   <button class="btn-danger btn-sm" onclick="deleteCustomText('${t.id}')">${i18n[appLang].delBtn}</button>
-  </div>
- `).join('');
+ wrap.innerHTML='<div class="sub" style="margin-bottom:6px">'+i18n[appLang].savedLocalSub+'</div>'+custom.map(function(item){
+  return '<div class="custom-row"><div><strong>'+item.title+'</strong> <span class="sub">('+item.category+')</span></div><button class="btn-danger btn-sm" type="button" onclick="deleteCustomText(\''+item.id+'\')">'+i18n[appLang].delBtn+'</button></div>';
+ }).join('');
 }
 
 function deleteCustomText(id){
- const filtered=getCustomTexts().filter(t=>t.id!==id);
- localStorage.setItem('te_custom_texts',JSON.stringify(filtered));
+ const filtered=getCustomTexts().filter(function(item){return item.id!==id;});
+ try{localStorage.setItem('te_custom_texts',JSON.stringify(filtered));}catch(e){}
  if(currentText && currentText.id===id){
   currentText=dailyText;
  }
@@ -731,11 +738,11 @@ function addCustomText(){
  const category=document.getElementById('newCategory').value.trim()||(appLang==='en'?'Personal text':'Texte personnel');
  const body=document.getElementById('newBody').value.trim();
  if(!title||!body)return;
- const chunks=body.split(/(?<=[.!?])\s+|\n+/).map(s=>s.trim()).filter(Boolean);
- const item={id:'c_'+Date.now(),lang:appLang,category,title,chunks:chunks.length?chunks:[body]};
+ const chunks=body.split(/(?<=[.!?])\s+|\n+/).map(function(s){return s.trim();}).filter(Boolean);
+ const item={id:'c_'+Date.now(),lang:appLang,category:category,title:title,chunks:chunks.length?chunks:[body]};
  const list=getCustomTexts();
  list.push(item);
- localStorage.setItem('te_custom_texts',JSON.stringify(list));
+ try{localStorage.setItem('te_custom_texts',JSON.stringify(list));}catch(e){}
  document.getElementById('newTitle').value='';
  document.getElementById('newCategory').value='';
  document.getElementById('newBody').value='';
@@ -749,20 +756,26 @@ function addCustomText(){
 
 function setGuidePace(ms){
  guidePaceMs=ms;
- ['pace-slow','pace-normal','pace-fluid'].forEach(id=>document.getElementById(id).classList.remove('active'));
- if(ms===2500)document.getElementById('pace-slow').classList.add('active');
- else if(ms===1300)document.getElementById('pace-fluid').classList.add('active');
- else document.getElementById('pace-normal').classList.add('active');
+ ['pace-slow','pace-normal','pace-fluid'].forEach(function(id){
+  const el=document.getElementById(id);
+  if(el)el.classList.remove('active');
+ });
+ if(ms===2500){const el=document.getElementById('pace-slow');if(el)el.classList.add('active');}
+ else if(ms===1300){const el=document.getElementById('pace-fluid');if(el)el.classList.add('active');}
+ else {const el=document.getElementById('pace-normal');if(el)el.classList.add('active');}
  if(currentMode==='guide')renderReader();
 }
 
 function setMode(mode){
  currentMode=mode;
- ['libre','guide','chrono'].forEach(m=>{
-  document.getElementById('mode-'+m).classList.toggle('active',m===mode);
+ ['libre','guide','chrono'].forEach(function(m){
+  const el=document.getElementById('mode-'+m);
+  if(el)el.classList.toggle('active',m===mode);
  });
- document.getElementById('chronoControls').style.display=mode==='chrono'?'flex':'none';
- document.getElementById('guidePaceBar').style.display=mode==='guide'?'block':'none';
+ const cc=document.getElementById('chronoControls');
+ const gp=document.getElementById('guidePaceBar');
+ if(cc)cc.style.display=mode==='chrono'?'flex':'none';
+ if(gp)gp.style.display=mode==='guide'?'block':'none';
  renderReader();
 }
 
@@ -772,17 +785,18 @@ function stopGuide(){
 
 function renderReader(){
  stopGuide();
- document.getElementById('readerTitle').textContent=currentText.title;
- document.getElementById('readerMeta').textContent=i18n[appLang].catLabel+' : '+currentText.category+' • '+i18n[appLang].modeLabel+' : '+currentMode;
+ setText('readerTitle',currentText.title);
+ setText('readerMeta',i18n[appLang].catLabel+' : '+currentText.category+' • '+i18n[appLang].modeLabel+' : '+currentMode);
  const box=document.getElementById('readerContent');
+ if(!box)return;
  if(currentMode==='libre'){
   box.textContent=currentText.chunks.join(' ');
  } else {
-  box.innerHTML=currentText.chunks.map((c,i)=>`<span class="chunk" id="ch-${i}">${c}</span>`).join(' ');
+  box.innerHTML=currentText.chunks.map(function(c,i){return '<span class="chunk" id="ch-'+i+'">'+c+'</span>';}).join(' ');
   if(currentMode==='guide'){
    guideIndex=0;
-   const highlightNext=()=>{
-    document.querySelectorAll('.chunk').forEach(el=>el.classList.remove('highlight'));
+   const highlightNext=function(){
+    document.querySelectorAll('.chunk').forEach(function(el){el.classList.remove('highlight');});
     const cur=document.getElementById('ch-'+guideIndex);
     if(cur)cur.classList.add('highlight');
     guideIndex=(guideIndex+1)%currentText.chunks.length;
@@ -796,15 +810,16 @@ function renderReader(){
 function setExercise(ex){
  stopSpeechTimer();
  currentExercise=ex;
- ['reco','pron','vocab','comp','oral'].forEach(k=>{
-  document.getElementById('ex-'+k).classList.toggle('active',k===ex);
+ ['reco','pron','vocab','comp','oral'].forEach(function(k){
+  const el=document.getElementById('ex-'+k);
+  if(el)el.classList.toggle('active',k===ex);
  });
  renderExercise();
 }
 
 function getUniqueWords(){
- const raw=currentText.chunks.join(' ').replace(/[.,!?;:«»"()’']/g,' ').split(/\s+/).filter(w=>w.length>=4);
- return [...new Set(raw.map(w=>w.toLowerCase()))].slice(0,8);
+ const raw=currentText.chunks.join(' ').replace(/[.,!?;:«»"()’']/g,' ').split(/\s+/).filter(function(w){return w.length>=4;});
+ return Array.from(new Set(raw.map(function(w){return w.toLowerCase();}))).slice(0,8);
 }
 
 function formatClock(sec){
@@ -831,13 +846,12 @@ function toggleSpeechTimer(){
  speechRunning=true;
  updateSpeechButton();
  if(fb)fb.textContent=appLang==='en'?'Speak aloud calmly following your 3-part outline.':'Parle à voix haute calmement, en suivant ton plan en 3 temps.';
- speechInterval=setInterval(()=>{
+ speechInterval=setInterval(function(){
   speechRemaining--;
-  const el=document.getElementById('speechClock');
-  if(el)el.textContent=formatClock(Math.max(speechRemaining,0));
+  setText('speechClock',formatClock(Math.max(speechRemaining,0)));
   if(speechRemaining<=0){
    stopSpeechTimer();
-   logActivity((appLang==='en'?'Timed speaking: ':'Prise de parole chronométrée (')+Math.round(speechTargetSec/60)+(appLang==='en'?' min':' min)');
+   logActivity((appLang==='en'?'Timed speaking: ':'Prise de parole chronométrée (')+Math.round(speechTargetSec/60)+' min)');
    const doneFb=document.getElementById('speechFeedback');
    if(doneFb)doneFb.textContent=appLang==='en'?'Time is up! Well done.':'Temps écoulé ! Bien joué pour cette prise de parole.';
   }
@@ -853,15 +867,12 @@ function stopSpeechTimer(){
 function resetSpeechTimer(){
  stopSpeechTimer();
  speechRemaining=speechTargetSec;
- const el=document.getElementById('speechClock');
- if(el)el.textContent=formatClock(speechRemaining);
- const fb=document.getElementById('speechFeedback');
- if(fb)fb.textContent='';
+ setText('speechClock',formatClock(speechRemaining));
+ setText('speechFeedback','');
 }
 
 function updateSpeechButton(){
- const btn=document.getElementById('speechToggleBtn');
- if(btn)btn.textContent=speechRunning?(appLang==='en'?'Pause':'Pause'):(appLang==='en'?'Start':'Démarrer');
+ setText('speechToggleBtn',speechRunning?'Pause':(appLang==='en'?'Start':'Démarrer'));
 }
 
 function normalizeWord(w){
@@ -871,8 +882,8 @@ function normalizeWord(w){
 function buildReferenceWordSet(){
  const listPrompts=promptsByLang[appLang];
  const prompt=listPrompts[promptIndex % listPrompts.length]||'';
- const refText=(currentText.chunks||[]).join(' ')+' '+prompt+' '+vocabByLang[appLang].map(v=>v.word).join(' ');
- const tokens=refText.split(/\s+/).map(normalizeWord).filter(w=>w.length>=3);
+ const refText=(currentText.chunks||[]).join(' ')+' '+prompt+' '+vocabByLang[appLang].map(function(v){return v.word;}).join(' ');
+ const tokens=refText.split(/\s+/).map(normalizeWord).filter(function(w){return w.length>=3;});
  return new Set(tokens);
 }
 
@@ -880,24 +891,24 @@ function renderAnnotatedTranscript(transcript){
  const cleanText=(transcript||'').trim();
  if(!cleanText){
   const info=speechDiagMsg || (appLang==='en'?'No speech detected yet (optional, depends on network/browser).':'Aucune parole détectée (optionnel, fonctionne selon connexion/navigateur).');
-  return `<span class="sub">${info}</span>`;
+  return '<span class="sub">'+info+'</span>';
  }
  const refSet=buildReferenceWordSet();
  const rawTokens=cleanText.split(/\s+/);
  let flaggedCount=0;
- const htmlTokens=rawTokens.map(tok=>{
+ const htmlTokens=rawTokens.map(function(tok){
   const norm=normalizeWord(tok);
   if(!norm)return tok;
   if(norm.length>=4 && !refSet.has(norm)){
    flaggedCount++;
-   return `<span class="word-miss">${tok}</span>`;
+   return '<span class="word-miss">'+tok+'</span>';
   }
-  return `<span class="word-ok">${tok}</span>`;
+  return '<span class="word-ok">'+tok+'</span>';
  });
  const note=flaggedCount>0
-  ? `<div class="sub" style="margin-top:8px">${appLang==='en'?'Highlighted words ('+flaggedCount+'): outside the reference text/topic or spelled differently. Check by listening.':'Points surlignés ('+flaggedCount+') : mots absents du texte/thème de référence ou transcrits différemment. Vérifie à l\'écoute.'}</div>`
-  : `<div class="sub" style="margin-top:8px">${appLang==='en'?'Recognized words match the current text or topic.':'Tous les mots longs reconnus correspondent au vocabulaire ou au thème travaillé.'}</div>`;
- return `<div>${htmlTokens.join(' ')}</div>${note}`;
+  ? '<div class="sub" style="margin-top:8px">'+(appLang==='en'?'Highlighted words ('+flaggedCount+'): outside the reference text/topic or spelled differently. Check by listening.':'Points surlignés ('+flaggedCount+') : mots absents du texte/thème de référence ou transcrits différemment. Vérifie à l\'écoute.')+'</div>'
+  : '<div class="sub" style="margin-top:8px">'+(appLang==='en'?'Recognized words match the current text or topic.':'Tous les mots longs reconnus correspondent au vocabulaire ou au thème travaillé.')+'</div>';
+ return '<div>'+htmlTokens.join(' ')+'</div>'+note;
 }
 
 function startLiveSpeechRecognition(){
@@ -914,7 +925,7 @@ function startLiveSpeechRecognition(){
   speechRecognizer.interimResults=true;
   speechDiagMsg=appLang==='en'?'Listening...':'Écoute vocale active...';
   let finalAccum=spokenTranscript ? spokenTranscript+' ' : '';
-  speechRecognizer.onresult=event=>{
+  speechRecognizer.onresult=function(event){
    let interim='';
    for(let i=event.resultIndex;i<event.results.length;i++){
     const txt=event.results[i][0].transcript;
@@ -928,7 +939,7 @@ function startLiveSpeechRecognition(){
    const box=document.getElementById('liveTranscriptBox');
    if(box)box.innerHTML=renderAnnotatedTranscript(spokenTranscript);
   };
-  speechRecognizer.onerror=e=>{
+  speechRecognizer.onerror=function(e){
    const code=(e && e.error) ? e.error : 'offline';
    speechDiagMsg=(appLang==='en'?'Live transcript inactive (':'Transcription non active (')+code+(appLang==='en'?'). Listen to your local recording.':'). Écoute ton enregistrement audio enregistré en local.');
    const box=document.getElementById('liveTranscriptBox');
@@ -950,7 +961,7 @@ function stopLiveSpeechRecognition(){
 function clearAudioRecording(){
  stopLiveSpeechRecognition();
  if(audioUrl){
-  URL.revokeObjectURL(audioUrl);
+  try{URL.revokeObjectURL(audioUrl);}catch(e){}
   audioUrl=null;
  }
  audioChunks=[];
@@ -975,19 +986,19 @@ async function toggleAudioRecording(){
  try{
   const stream=await navigator.mediaDevices.getUserMedia({audio:true});
   if(audioUrl){
-   URL.revokeObjectURL(audioUrl);
+   try{URL.revokeObjectURL(audioUrl);}catch(e){}
    audioUrl=null;
   }
   audioChunks=[];
   spokenTranscript='';
   speechDiagMsg='';
   mediaRecorder=new MediaRecorder(stream);
-  mediaRecorder.ondataavailable=e=>{
+  mediaRecorder.ondataavailable=function(e){
    if(e.data && e.data.size>0)audioChunks.push(e.data);
   };
-  mediaRecorder.onstop=()=>{
+  mediaRecorder.onstop=function(){
    stopLiveSpeechRecognition();
-   stream.getTracks().forEach(t=>t.stop());
+   stream.getTracks().forEach(function(t){t.stop();});
    const blob=new Blob(audioChunks,{type:mediaRecorder.mimeType||'audio/webm'});
    audioUrl=URL.createObjectURL(blob);
    isRecording=false;
@@ -1014,81 +1025,77 @@ function renderExercise(){
  if(currentExercise==='reco'){
   const words=getUniqueWords();
   const target=words[0]||(appLang==='en'?'read':'lire');
-  area.innerHTML=`
-   <h3>${appLang==='en'?'Visual word recognition':'Reconnaissance visuelle des mots'}</h3>
-   <p>${appLang==='en'?'Spot and tap the target word calmly:':'Repère et clique sur le mot cible dans la liste ci-dessous sans te presser :'} <strong>« ${target} »</strong></p>
-   <div>${words.map(w=>`<button class="word-chip ${foundWords.has(w)?'found':''}" onclick="checkReco('${w}','${target}')">${w}</button>`).join('')}</div>
-   <div class="feedback" id="recoFeedback">${appLang==='en'?'Words matched:':'Mots validés :'} ${foundWords.size}</div>
-  `;
+  area.innerHTML=
+   '<h3>'+(appLang==='en'?'Visual word recognition':'Reconnaissance visuelle des mots')+'</h3>'+
+   '<p>'+(appLang==='en'?'Spot and tap the target word calmly:':'Repère et clique sur le mot cible dans la liste ci-dessous sans te presser :')+' <strong>« '+target+' »</strong></p>'+
+   '<div>'+words.map(function(w){return '<button class="word-chip '+(foundWords.has(w)?'found':'')+'" type="button" onclick="checkReco(\''+w+'\',\''+target+'\')">'+w+'</button>';}).join('')+'</div>'+
+   '<div class="feedback" id="recoFeedback">'+(appLang==='en'?'Words matched:':'Mots validés :')+' '+foundWords.size+'</div>';
  } else if(currentExercise==='pron'){
   const chunk=currentText.chunks[pronIndex % currentText.chunks.length]||'';
-  area.innerHTML=`
-   <h3>${appLang==='en'?'Pronunciation & articulation':'Prononciation & articulation'}</h3>
-   <p>${appLang==='en'?'Read this group of words aloud clearly:':'Lis ce groupe de mots à voix haute en articulant nettement chaque syllabe :'}</p>
-   <div class="ex-highlight">« ${chunk} »</div>
-   <button onclick="pronIndex++;renderExercise()">${appLang==='en'?'Next phrase':'Groupe suivant'}</button>
-  `;
+  area.innerHTML=
+   '<h3>'+(appLang==='en'?'Pronunciation & articulation':'Prononciation & articulation')+'</h3>'+
+   '<p>'+(appLang==='en'?'Read this group of words aloud clearly:':'Lis ce groupe de mots à voix haute en articulant nettement chaque syllabe :')+'</p>'+
+   '<div class="ex-highlight">« '+chunk+' »</div>'+
+   '<button type="button" onclick="pronIndex++;renderExercise()">'+(appLang==='en'?'Next phrase':'Groupe suivant')+'</button>';
  } else if(currentExercise==='vocab'){
   const item=vocabByLang[appLang][0];
-  area.innerHTML=`
-   <h3>${appLang==='en'?'Active vocabulary':'Vocabulaire actif'}</h3>
-   <p>${appLang==='en'?'Key word:':'Mot clé :'} <strong>${item.word}</strong></p>
-   <p><strong>${appLang==='en'?'Meaning:':'Définition :'}</strong> ${item.def}</p>
-   <p><strong>${appLang==='en'?'Example:':'Exemple :'}</strong> <em>${item.ex}</em></p>
-   <textarea id="vocabSentence" rows="2" placeholder="${appLang==='en'?'Write a sentence using « '+item.word+' »...':'Écris une phrase avec le mot « '+item.word+' »...'}"></textarea>
-   <button onclick="checkVocab('${item.word}')">${appLang==='en'?'Check sentence':'Vérifier ma phrase'}</button>
-   <div class="feedback" id="vocabFeedback"></div>
-  `;
+  area.innerHTML=
+   '<h3>'+(appLang==='en'?'Active vocabulary':'Vocabulaire actif')+'</h3>'+
+   '<p>'+(appLang==='en'?'Key word:':'Mot clé :')+' <strong>'+item.word+'</strong></p>'+
+   '<p><strong>'+(appLang==='en'?'Meaning:':'Définition :')+'</strong> '+item.def+'</p>'+
+   '<p><strong>'+(appLang==='en'?'Example:':'Exemple :')+'</strong> <em>'+item.ex+'</em></p>'+
+   '<textarea id="vocabSentence" rows="2" placeholder="'+(appLang==='en'?'Write a sentence using « '+item.word+' »...':'Écris une phrase avec le mot « '+item.word+' »...')+'"></textarea>'+
+   '<button type="button" onclick="checkVocab(\''+item.word+'\')">'+(appLang==='en'?'Check sentence':'Vérifier ma phrase')+'</button>'+
+   '<div class="feedback" id="vocabFeedback"></div>';
  } else if(currentExercise==='comp'){
-  area.innerHTML=`
-   <h3>${appLang==='en'?'Comprehension & restatement':'Compréhension & reformulation'}</h3>
-   <p>${appLang==='en'?'Current text:':'Texte travaillé :'} <strong>${currentText.title}</strong></p>
-   <p>${appLang==='en'?'What is the main idea? Summarize it in one or two simple sentences:':'Quelle est l\'idée principale de ce passage ? Résume-la en une ou deux phrases simples :'}</p>
-   <textarea id="compAnswer" rows="3" placeholder="${appLang==='en'?'Write the main idea here...':'Écris l\'idée principale ici...'}"></textarea>
-   <button onclick="checkComp()">${appLang==='en'?'Save summary':'Valider ma reformulation'}</button>
-   <div class="feedback" id="compFeedback"></div>
-  `;
+  area.innerHTML=
+   '<h3>'+(appLang==='en'?'Comprehension & restatement':'Compréhension & reformulation')+'</h3>'+
+   '<p>'+(appLang==='en'?'Current text:':'Texte travaillé :')+' <strong>'+currentText.title+'</strong></p>'+
+   '<p>'+(appLang==='en'?'What is the main idea? Summarize it in one or two simple sentences:':'Quelle est l\'idée principale de ce passage ? Résume-la en une ou deux phrases simples :')+'</p>'+
+   '<textarea id="compAnswer" rows="3" placeholder="'+(appLang==='en'?'Write the main idea here...':'Écris l\'idée principale ici...')+'"></textarea>'+
+   '<button type="button" onclick="checkComp()">'+(appLang==='en'?'Save summary':'Valider ma reformulation')+'</button>'+
+   '<div class="feedback" id="compFeedback"></div>';
  } else if(currentExercise==='oral'){
   const listPrompts=promptsByLang[appLang];
   const prompt=listPrompts[promptIndex % listPrompts.length];
-  area.innerHTML=`
-   <h3>${appLang==='en'?'Guided speaking practice':'Expression orale guidée'}</h3>
-   <p>${appLang==='en'?'Prompt linked to':'Sujet lié à'} <strong>${currentText.title}</strong> :</p>
-   <div class="ex-highlight">« ${prompt} »</div>
-   <button onclick="promptIndex++;renderExercise()">${appLang==='en'?'Another prompt':'Autre amorce'}</button>
-   <div class="speech-box">
-    <div class="sub">${appLang==='en'?'3-PART OUTLINE':'PLAN EN 3 TEMPS'}</div>
-    <ol class="outline-list">
-     <li><strong>${appLang==='en'?'Main idea:':'Idée centrale :'}</strong> ${appLang==='en'?'state your core message in one plain sentence.':'énonce ton message en une phrase simple.'}</li>
-     <li><strong>${appLang==='en'?'Two key points:':'Deux points clés :'}</strong> ${appLang==='en'?'give a clear example or reason.':'donne un exemple concret ou une raison claire.'}</li>
-     <li><strong>${appLang==='en'?'Conclusion:':'Conclusion :'}</strong> ${appLang==='en'?'close calmly with the takeaway.':'termine calmement par l\'essentiel à retenir.'}</li>
-    </ol>
-    <div class="sub" style="margin-top:10px">${appLang==='en'?'SPEAKING DURATION':'DURÉE DE PRISE DE PAROLE'}</div>
-    <div class="tabs" style="margin-top:6px">
-     <button class="tab ${speechTargetSec===60?'active':''}" onclick="setSpeechDuration(60)">1 min</button>
-     <button class="tab ${speechTargetSec===120?'active':''}" onclick="setSpeechDuration(120)">2 min</button>
-     <button class="tab ${speechTargetSec===180?'active':''}" onclick="setSpeechDuration(180)">3 min</button>
-    </div>
-    <div class="speech-clock" id="speechClock">${formatClock(speechRemaining)}</div>
-    <button id="speechToggleBtn" onclick="toggleSpeechTimer()">${speechRunning?'Pause':(appLang==='en'?'Start':'Démarrer')}</button>
-    <button onclick="resetSpeechTimer()">${appLang==='en'?'Reset':'Réinitialiser'}</button>
-    <div class="feedback" id="speechFeedback"></div>
-   </div>
-   <div class="rec-box">
-    <div class="sub">${appLang==='en'?'VOICE RECORDING & SELF-LISTENING (OFFLINE)':'ENREGISTREMENT VOCAL & AUTO-ÉCOUTE (HORS LIGNE)'}</div>
-    <p style="margin:6px 0">${appLang==='en'?'Record your voice locally, listen to improve, then delete the audio. Live transcript appears when supported.':'Enregistre ta voix sur l\'appareil, écoute-toi pour t\'améliorer, puis supprime l\'audio. La transcription directe s\'ajoute selon la connexion.'}</p>
-    <button onclick="toggleAudioRecording()">${isRecording?(appLang==='en'?'Stop recording':'Arrêter l’enregistrement'):(appLang==='en'?'Record voice':'Enregistrer ma voix')}</button>
-    ${(audioUrl || spokenTranscript)?`<button class="btn-danger" onclick="clearAudioRecording()">${appLang==='en'?'Delete recording':'Supprimer l\'enregistrement'}</button>`:''}
-    ${audioUrl?`<audio class="rec-player" controls src="${audioUrl}"></audio>`:''}
-    <div class="transcript-box" id="liveTranscriptBox">${renderAnnotatedTranscript(spokenTranscript)}</div>
-    ${recStatusMsg?`<div class="feedback">${recStatusMsg}</div>`:''}
-   </div>
-  `;
+  area.innerHTML=
+   '<h3>'+(appLang==='en'?'Guided speaking practice':'Expression orale guidée')+'</h3>'+
+   '<p>'+(appLang==='en'?'Prompt linked to':'Sujet lié à')+' <strong>'+currentText.title+'</strong> :</p>'+
+   '<div class="ex-highlight">« '+prompt+' »</div>'+
+   '<button type="button" onclick="promptIndex++;renderExercise()">'+(appLang==='en'?'Another prompt':'Autre amorce')+'</button>'+
+   '<div class="speech-box">'+
+    '<div class="sub">'+(appLang==='en'?'3-PART OUTLINE':'PLAN EN 3 TEMPS')+'</div>'+
+    '<ol class="outline-list">'+
+     '<li><strong>'+(appLang==='en'?'Main idea:':'Idée centrale :')+'</strong> '+(appLang==='en'?'state your core message in one plain sentence.':'énonce ton message en une phrase simple.')+'</li>'+
+     '<li><strong>'+(appLang==='en'?'Two key points:':'Deux points clés :')+'</strong> '+(appLang==='en'?'give a clear example or reason.':'donne un exemple concret ou une raison claire.')+'</li>'+
+     '<li><strong>'+(appLang==='en'?'Conclusion:':'Conclusion :')+'</strong> '+(appLang==='en'?'close calmly with the takeaway.':'termine calmement par l\'essentiel à retenir.')+'</li>'+
+    '</ol>'+
+    '<div class="sub" style="margin-top:10px">'+(appLang==='en'?'SPEAKING DURATION':'DURÉE DE PRISE DE PAROLE')+'</div>'+
+    '<div class="tabs" style="margin-top:6px">'+
+     '<button class="tab '+(speechTargetSec===60?'active':'')+'" type="button" onclick="setSpeechDuration(60)">1 min</button>'+
+     '<button class="tab '+(speechTargetSec===120?'active':'')+'" type="button" onclick="setSpeechDuration(120)">2 min</button>'+
+     '<button class="tab '+(speechTargetSec===180?'active':'')+'" type="button" onclick="setSpeechDuration(180)">3 min</button>'+
+    '</div>'+
+    '<div class="speech-clock" id="speechClock">'+formatClock(speechRemaining)+'</div>'+
+    '<button id="speechToggleBtn" type="button" onclick="toggleSpeechTimer()">'+(speechRunning?'Pause':(appLang==='en'?'Start':'Démarrer'))+'</button> '+
+    '<button type="button" onclick="resetSpeechTimer()">'+(appLang==='en'?'Reset':'Réinitialiser')+'</button>'+
+    '<div class="feedback" id="speechFeedback"></div>'+
+   '</div>'+
+   '<div class="rec-box">'+
+    '<div class="sub">'+(appLang==='en'?'VOICE RECORDING & SELF-LISTENING (OFFLINE)':'ENREGISTREMENT VOCAL & AUTO-ÉCOUTE (HORS LIGNE)')+'</div>'+
+    '<p style="margin:6px 0">'+(appLang==='en'?'Record your voice locally, listen to improve, then delete the audio. Live transcript appears when supported.':'Enregistre ta voix sur l\'appareil, écoute-toi pour t\'améliorer, puis supprime l\'audio. La transcription directe s\'ajoute selon la connexion.')+'</p>'+
+    '<button type="button" onclick="toggleAudioRecording()">'+(isRecording?(appLang==='en'?'Stop recording':'Arrêter l’enregistrement'):(appLang==='en'?'Record voice':'Enregistrer ma voix'))+'</button> '+
+    ((audioUrl || spokenTranscript)?'<button class="btn-danger" type="button" onclick="clearAudioRecording()">'+(appLang==='en'?'Delete recording':'Supprimer l\'enregistrement')+'</button>':'')+
+    (audioUrl?'<audio class="rec-player" controls src="'+audioUrl+'"></audio>':'')+
+    '<div class="transcript-box" id="liveTranscriptBox">'+renderAnnotatedTranscript(spokenTranscript)+'</div>'+
+    (recStatusMsg?'<div class="feedback">'+recStatusMsg+'</div>':'')+
+   '</div>';
  }
 }
 
 function checkReco(clicked,target){
  const fb=document.getElementById('recoFeedback');
+ if(!fb)return;
  if(clicked===target){
   foundWords.add(clicked);
   fb.textContent=appLang==='en'?'Well spotted! You recognized « '+target+' » calmly.':'Bien vu ! Tu as reconnu « '+target+' » calmement.';
@@ -1102,6 +1109,7 @@ function checkReco(clicked,target){
 function checkVocab(word){
  const val=(document.getElementById('vocabSentence').value||'').trim();
  const fb=document.getElementById('vocabFeedback');
+ if(!fb)return;
  if(!val){
   fb.textContent=appLang==='en'?'Write a sentence first.':'Écris d’abord une phrase avant de vérifier.';
   return;
@@ -1116,6 +1124,7 @@ function checkVocab(word){
 function checkComp(){
  const val=(document.getElementById('compAnswer').value||'').trim();
  const fb=document.getElementById('compFeedback');
+ if(!fb)return;
  if(val.length<12){
   fb.textContent=appLang==='en'?'Write a bit more to summarize the main idea.':'Développe un peu ta réponse pour bien résumer l’idée principale.';
   return;
@@ -1128,12 +1137,12 @@ function startChrono(){
  if(chronoRunning)return;
  chronoRunning=true;
  chronoSeconds=0;
- document.getElementById('wpmDisplay').textContent='0 '+i18n[appLang].wpmUnit;
- chronoInterval=setInterval(()=>{
+ setText('wpmDisplay','0 '+i18n[appLang].wpmUnit);
+ chronoInterval=setInterval(function(){
   chronoSeconds++;
   const m=String(Math.floor(chronoSeconds/60)).padStart(2,'0');
   const s=String(chronoSeconds%60).padStart(2,'0');
-  document.getElementById('chronoDisplay').textContent=m+':'+s;
+  setText('chronoDisplay',m+':'+s);
  },1000);
 }
 
@@ -1144,46 +1153,49 @@ function stopChrono(){
  const words=currentText.chunks.join(' ').trim().split(/\s+/).length;
  const minutes=Math.max(chronoSeconds/60,1/60);
  const wpm=Math.round(words/minutes);
- document.getElementById('wpmDisplay').textContent=wpm+' '+i18n[appLang].wpmUnit;
+ setText('wpmDisplay',wpm+' '+i18n[appLang].wpmUnit);
  logActivity((appLang==='en'?'Timed reading: ':'Lecture chronométrée : ')+currentText.title,wpm);
 }
 
 function resetAllLocalData(){
- localStorage.removeItem('te_checks');
- localStorage.removeItem('te_history');
- localStorage.removeItem('te_custom_texts');
- checks.forEach(c=>c.checked=false);
+ ['te_checks','te_history','te_custom_texts'].forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
+ checks.forEach(function(c){c.checked=false;});
  lastCheckedCount=0;
  currentText=dailyText;
  update(true);
  renderSelector();
  renderReader();
  renderExercise();
- const fb=document.getElementById('settingsFeedback');
- if(fb)fb.textContent=appLang==='en'?'Local data reset on this device.':'Données locales réinitialisées sur cet appareil.';
+ setText('settingsFeedback',appLang==='en'?'Local data reset on this device.':'Données locales réinitialisées sur cet appareil.');
 }
 
-const checks=[...document.querySelectorAll('.daily')];
+const checks=Array.from(document.querySelectorAll('.daily'));
 let lastCheckedCount=0;
 function update(fromInit){
  const t=i18n[appLang];
- let n=checks.filter(c=>c.checked).length,p=Math.round(n/5*100);
- document.getElementById('percent').textContent=p+'%';
- document.getElementById('progressFill').style.width=p+'%';
- document.getElementById('doneCount').textContent=t.doneFmt(n);
- document.getElementById('statsPercent').textContent=p+'% '+(appLang==='en'?'of session':'de la séance');
- document.getElementById('statsText').textContent=n===0?t.statsZero:(n===5?t.statsFull:t.statsPart(n));
- checks.forEach(c=>c.parentElement.classList.toggle('done',c.checked));
- localStorage.setItem('te_checks',JSON.stringify(checks.map(c=>c.checked)));
+ const n=checks.filter(function(c){return c.checked;}).length;
+ const p=Math.round(n/5*100);
+ setText('percent',p+'%');
+ const fill=document.getElementById('progressFill');
+ if(fill)fill.style.width=p+'%';
+ setText('doneCount',t.doneFmt(n));
+ setText('statsPercent',p+'% '+(appLang==='en'?'of session':'de la séance'));
+ setText('statsText',n===0?t.statsZero:(n===5?t.statsFull:t.statsPart(n)));
+ checks.forEach(function(c){c.parentElement.classList.toggle('done',c.checked);});
+ try{localStorage.setItem('te_checks',JSON.stringify(checks.map(function(c){return c.checked;})));}catch(e){}
  if(!fromInit && n>lastCheckedCount){
   logActivity((appLang==='en'?'Exercise checked (':'Exercice coché (')+n+'/5)');
  }
  lastCheckedCount=n;
  renderStatsHistory();
 }
-function resetDay(){checks.forEach(c=>c.checked=false);lastCheckedCount=0;update();}
-try{const saved=JSON.parse(localStorage.getItem('te_checks')||'[]');checks.forEach((c,i)=>c.checked=!!saved[i]);lastCheckedCount=checks.filter(c=>c.checked).length;}catch(e){}
-checks.forEach(c=>c.addEventListener('change',()=>update(false)));
+function resetDay(){checks.forEach(function(c){c.checked=false;});lastCheckedCount=0;update(false);}
+try{
+ const saved=JSON.parse(localStorage.getItem('te_checks')||'[]');
+ checks.forEach(function(c,i){c.checked=!!saved[i];});
+ lastCheckedCount=checks.filter(function(c){return c.checked;}).length;
+}catch(e){}
+checks.forEach(function(c){c.addEventListener('change',function(){update(false);});});
 applyLanguageUI();
 refreshDailyPick();
 update(true);
@@ -1191,7 +1203,7 @@ renderSelector();
 renderReader();
 renderExercise();
 loadExternalTexts();
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}
 </script>
 </body>
 </html>
