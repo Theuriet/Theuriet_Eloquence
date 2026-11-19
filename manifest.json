@@ -1,0 +1,10 @@
+{
+  "name": "THEURIET ÉLOQUENCE",
+  "short_name": "Éloquence",
+  "description": "Application d'entraînement à la lecture, la prononciation et l'expression orale.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f6fa",
+  "theme_color": "#101b32",
+  "lang": "fr"
+}

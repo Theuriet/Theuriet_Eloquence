@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101b32">
+<meta name="description" content="THEURIET ÉLOQUENCE — Lire mieux, prononcer correctement et parler avec aisance.">
+<link rel="manifest" href="manifest.json">
+<title>THEURIET ÉLOQUENCE</title>
+<style>
+:root{--navy:#101b32;--navy2:#1b2a49;--gold:#e5b85c;--paper:#f4f6fa;--ink:#17233b;--muted:#718096;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:white;padding:26px 20px 30px;border-radius:0 0 26px 26px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-size:12px;letter-spacing:2px;color:var(--gold);font-weight:700}
+h1{font-size:25px;margin:12px 0 6px}.tagline{font-size:13px;line-height:1.5;color:#d5dceb;max-width:290px}
+.avatar{width:42px;height:42px;border:1px solid #52617a;border-radius:50%;display:grid;place-items:center;color:var(--gold);font-weight:bold}
+main{max-width:760px;margin:auto;padding:18px 16px 90px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}
+h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
+.progress-card{background:white;padding:17px;border-radius:17px;box-shadow:0 5px 18px #17233b0c}
+.progress-top{display:flex;justify-content:space-between;align-items:center}.percent{font-weight:700;color:#b78327;font-size:20px}
+.track{height:9px;background:#edf0f5;border-radius:20px;overflow:hidden;margin:13px 0 8px}.fill{height:100%;width:0;background:linear-gradient(90deg,#d7a342,#f0cc79);border-radius:20px;transition:width .2s}
+.stats{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.module{border:0;text-align:left;background:white;border-radius:16px;padding:15px;min-height:126px;box-shadow:0 4px 14px #17233b0a;color:var(--ink);cursor:pointer}
+.module:active,.nav button:active{transform:scale(.98)}.emoji{font-size:25px}.module strong{display:block;font-size:14px;margin:10px 0 5px}.module small{font-size:11px;line-height:1.4;color:var(--muted)}
+.session{background:var(--navy);color:white;padding:17px;border-radius:18px}
+.session .sub{color:#c5cede}.task{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #ffffff1c;font-size:13px}.task:last-child{border:0}
+.task input{accent-color:var(--gold);width:18px;height:18px}.task.done span{text-decoration:line-through;color:#aeb9cb}
+.action{background:var(--gold);border:0;color:#18233a;padding:12px 16px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:13px;width:100%}
+.page{display:none}.page.active{display:block}.back{border:0;background:#e8edf5;color:var(--navy);padding:9px 13px;border-radius:10px;font-weight:700;margin-bottom:15px}
+.panel{background:white;padding:18px;border-radius:17px;margin-bottom:12px;line-height:1.55}.panel p{font-size:14px;color:#4e5c70}.panel button{border:0;background:var(--navy);color:white;border-radius:10px;padding:10px 13px}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid #e7ebf1;display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
+.bottom button{border:0;background:none;color:#718096;font-size:10px;display:grid;gap:4px;justify-items:center;cursor:pointer}.bottom button b{font-size:19px}.bottom button.selected{color:#a87822;font-weight:bold}
+.notice{font-size:11px;color:var(--muted);text-align:center;margin:17px 0}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}header{padding-left:max(22px,calc((100% - 720px)/2));padding-right:max(22px,calc((100% - 720px)/2))}}
+</style>
+</head>
+<body>
+<header>
+ <div class="top"><div class="brand">THEURIET ÉLOQUENCE</div><div class="avatar">TE</div></div>
+ <h1>Bienvenue dans ton espace.</h1>
+ <div class="tagline">Lire mieux. Prononcer correctement. Penser rapidement. Parler avec aisance.</div>
+</header>
+<main>
+ <section id="home" class="page active">
+  <div class="section-head"><h2>Ma progression</h2><span class="sub">Cette séance</span></div>
+  <div class="progress-card">
+   <div class="progress-top"><div><strong>Objectif quotidien</strong><div class="sub">30 minutes d'entraînement</div></div><div class="percent" id="percent">0%</div></div>
+   <div class="track"><div class="fill" id="progressFill"></div></div>
+   <div class="stats"><span id="doneCount">0 / 5 exercices terminés</span><span>Pas à pas, chaque jour.</span></div>
+  </div>
+  <div class="section-head"><h2>Les espaces d'entraînement</h2><span class="sub">6 modules</span></div>
+  <div class="grid">
+   <button class="module" onclick="openModule('lecture')"><span class="emoji">📖</span><strong>Lecture</strong><small>Lire avec fluidité et assurance.</small></button>
+   <button class="module" onclick="openModule('prononciation')"><span class="emoji">🗣️</span><strong>Prononciation</strong><small>Travailler les sons et l'articulation.</small></button>
+   <button class="module" onclick="openModule('vitesse')"><span class="emoji">⏱️</span><strong>Vitesse de lecture</strong><small>Lire plus naturellement, sans précipitation.</small></button>
+   <button class="module" onclick="openModule('vocabulaire')"><span class="emoji">📚</span><strong>Vocabulaire</strong><small>Découvrir et employer de nouveaux mots.</small></button>
+   <button class="module" onclick="openModule('expression')"><span class="emoji">🎙️</span><strong>Expression orale</strong><small>Organiser ses idées et s'exprimer.</small></button>
+   <button class="module" onclick="openModule('comprehension')"><span class="emoji">🧠</span><strong>Compréhension</strong><small>Comprendre, retenir et reformuler.</small></button>
+  </div>
+  <div class="section-head"><h2>Ma séance du jour</h2><span class="sub">30 minutes</span></div>
+  <div class="session">
+   <div class="sub">Coche chaque exercice lorsque tu l'as terminé.</div>
+   <label class="task"><input type="checkbox" class="daily"><span>Reconnaissance des mots — 5 min</span></label>
+   <label class="task"><input type="checkbox" class="daily"><span>Articulation et diction — 5 min</span></label>
+   <label class="task"><input type="checkbox" class="daily"><span>Lecture à voix haute — 10 min</span></label>
+   <label class="task"><input type="checkbox" class="daily"><span>Compréhension et vocabulaire — 5 min</span></label>
+   <label class="task"><input type="checkbox" class="daily"><span>Expression orale — 5 min</span></label>
+   <button class="action" onclick="resetDay()">Réinitialiser ma séance</button>
+  </div>
+  <p class="notice">Tes coches sont enregistrées sur cet appareil.</p>
+ </section>
+ <section id="modulePage" class="page">
+  <button class="back" onclick="showPage('home')">← Retour à l'accueil</button>
+  <div class="panel"><div class="sub">MODULE D'ENTRAÎNEMENT</div><h2 id="moduleTitle">Lecture</h2><p id="moduleDesc"></p></div>
+  <div class="panel"><strong>Ce que nous allons travailler</strong><p id="moduleDetail"></p></div>
+  <div class="panel"><strong>Prochaine étape</strong><p>Cette rubrique est prête à accueillir tes exercices. Nous allons la construire progressivement avec des textes, des consignes et des activités adaptées à tes difficultés.</p><button onclick="showPage('home')">Revenir à mes modules</button></div>
+ </section>
+ <section id="statsPage" class="page">
+  <div class="section-head"><h2>Mes statistiques</h2></div>
+  <div class="panel"><h2 id="statsPercent">0% de la séance</h2><p id="statsText">Tu n'as pas encore coché d'exercice aujourd'hui. Commence par une petite étape !</p></div>
+  <div class="panel"><strong>Ton objectif</strong><p>30 minutes par jour, 6 jours par semaine. La régularité compte davantage que la vitesse au début.</p></div>
+ </section>
+ <section id="libraryPage" class="page">
+  <div class="section-head"><h2>Bibliothèque</h2></div>
+  <div class="panel"><strong>📖 Textes bibliques</strong><p>Genèse à Apocalypse, Psaumes, Proverbes et Évangiles. Les textes bibliques seront distingués des explications et exercices.</p></div>
+  <div class="panel"><strong>🌍 Textes en français</strong><p>Récits, culture générale, sciences, société, développement personnel et discours.</p></div>
+  <div class="panel"><strong>✨ Textes adaptés</strong><p>Des textes d'entraînement selon ton niveau, tes progrès et les difficultés observées.</p></div>
+ </section>
+ <section id="settingsPage" class="page">
+  <div class="section-head"><h2>Paramètres</h2></div>
+  <div class="panel"><strong>Durée quotidienne</strong><p>30 minutes</p></div>
+  <div class="panel"><strong>Langue d'apprentissage</strong><p>Français</p></div>
+  <div class="panel"><strong>Audio</strong><p>Écoute d'un modèle de prononciation et enregistrement de ta propre voix seront ajoutés dans une prochaine version.</p></div>
+ </section>
+</main>
+<nav class="bottom">
+ <button class="selected" onclick="showPage('home',this)"><b>⌂</b>Accueil</button>
+ <button onclick="showPage('libraryPage',this)"><b>▤</b>Bibliothèque</button>
+ <button onclick="showPage('statsPage',this)"><b>▥</b>Progression</button>
+ <button onclick="showPage('settingsPage',this)"><b>⚙</b>Paramètres</button>
+</nav>
+<script>
+const modules={
+ lecture:["Lecture","Développer une lecture plus fluide, précise et naturelle.","Lecture à voix haute, reconnaissance rapide des mots, ponctuation, groupes de souffle et textes de difficulté progressive."],
+ prononciation:["Prononciation","Améliorer l'articulation et prononcer les mots avec assurance.","Sons difficiles, syllabes, enchaînements, liaisons, virelangues et comparaison avec un modèle audio."],
+ vitesse:["Vitesse de lecture","Gagner progressivement en vitesse sans sacrifier la précision ni la compréhension.","Lecture chronométrée, suivi des mots lus et exercices pour réduire les hésitations et les retours en arrière."],
+ vocabulaire:["Vocabulaire","Enrichir ton vocabulaire et apprendre à utiliser les mots dans tes propres phrases.","Nouveaux mots, définitions simples, prononciation, synonymes, exemples et petites révisions."],
+ expression:["Expression orale","Apprendre à organiser rapidement tes idées et à parler avec clarté.","Prises de parole d'une à trois minutes, improvisation, argumentation et entraînement à l'éloquence."],
+ comprehension:["Compréhension","Comprendre un texte, en dégager l'idée principale et l'expliquer avec tes propres mots.","Questions, résumés oraux, reformulation, mémorisation des idées et vérification de la compréhension."]
+};
+function openModule(key){const m=modules[key];document.getElementById('moduleTitle').textContent=m[0];document.getElementById('moduleDesc').textContent=m[1];document.getElementById('moduleDetail').textContent=m[2];showPage('modulePage')}
+function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('selected'));if(btn)btn.classList.add('selected');else if(id==='home')document.querySelector('.bottom button').classList.add('selected');window.scrollTo(0,0)}
+const checks=[...document.querySelectorAll('.daily')];
+function update(){let n=checks.filter(c=>c.checked).length,p=Math.round(n/5*100);document.getElementById('percent').textContent=p+'%';document.getElementById('progressFill').style.width=p+'%';document.getElementById('doneCount').textContent=n+' / 5 exercices terminés';document.getElementById('statsPercent').textContent=p+'% de la séance';document.getElementById('statsText').textContent=n===5?'Bravo ! Tu as terminé ta séance du jour.':`Tu as terminé ${n} exercice(s) sur 5. Continue à ton rythme.`;checks.forEach(c=>c.parentElement.classList.toggle('done',c.checked));localStorage.setItem('te_checks',JSON.stringify(checks.map(c=>c.checked)))}
+function resetDay(){checks.forEach(c=>c.checked=false);update()}
+try{const saved=JSON.parse(localStorage.getItem('te_checks')||'[]');checks.forEach((c,i)=>c.checked=!!saved[i])}catch(e){}
+checks.forEach(c=>c.addEventListener('change',update));update();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+</script>
+</body></html>

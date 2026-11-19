@@ -1,0 +1,11 @@
+THEURIET ÉLOQUENCE — Version 1
+
+Contenu :
+- index.html : application et interface
+- manifest.json : paramètres d'installation PWA
+- sw.js : mise en cache de base
+
+Pour tester :
+Ouvrir index.html dans un navigateur pour voir l'interface. Certaines fonctions PWA (installation et fonctionnement hors ligne) nécessitent un hébergement HTTPS, par exemple GitHub Pages ou Vercel.
+
+Cette version est un prototype fonctionnel de l'accueil, des modules, de la bibliothèque, des statistiques et de la séance quotidienne. Les exercices complets, les textes et les fonctions audio seront développés dans les étapes suivantes.
