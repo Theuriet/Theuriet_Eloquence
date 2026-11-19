@@ -48,6 +48,9 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 .outline-list li{margin-bottom:6px}
 .rec-box{background:#f9fbfe;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin:10px 0}
 .rec-player{width:100%;margin-top:10px}
+.transcript-box{background:#fff;border:1px solid #d8e0ec;border-radius:12px;padding:12px;margin-top:10px;font-size:14px;line-height:1.65;color:var(--ink)}
+.word-ok{color:#166534;font-weight:600;margin-right:4px}
+.word-miss{background:#fee2e2;color:#991b1b;font-weight:700;padding:1px 5px;border-radius:5px;margin-right:4px;border-bottom:2px solid #dc2626}
 .btn-danger{background:#991b1b !important;color:#fff !important}
 .feedback{margin-top:10px;font-size:13px;font-weight:700;color:var(--navy)}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid #e7ebf1;display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
@@ -216,6 +219,8 @@ let audioChunks=[];
 let audioUrl=null;
 let isRecording=false;
 let recStatusMsg='';
+let spokenTranscript='';
+let speechRecognizer=null;
 
 function getCustomTexts(){
  try{return JSON.parse(localStorage.getItem('te_custom_texts')||'[]');}catch(e){return[];}
@@ -297,6 +302,7 @@ function openExercisesTab(){
 function showPage(id,btn){
  stopGuide();
  stopSpeechTimer();
+ stopLiveSpeechRecognition();
  if(isRecording && mediaRecorder && mediaRecorder.state==='recording'){
   mediaRecorder.stop();
  }
@@ -446,14 +452,86 @@ function updateSpeechButton(){
  if(btn)btn.textContent=speechRunning?'Pause':'Démarrer';
 }
 
+function normalizeWord(w){
+ return (w||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9']/g,'');
+}
+
+function buildReferenceWordSet(){
+ const prompt=speechPrompts[promptIndex % speechPrompts.length]||'';
+ const refText=(currentText.chunks||[]).join(' ')+' '+prompt+' '+vocabBank.map(v=>v.word).join(' ');
+ const tokens=refText.split(/\s+/).map(normalizeWord).filter(w=>w.length>=3);
+ return new Set(tokens);
+}
+
+function renderAnnotatedTranscript(transcript){
+ const cleanText=(transcript||'').trim();
+ if(!cleanText){
+  return '<span class="sub">Aucune parole détectée pour le moment.</span>';
+ }
+ const refSet=buildReferenceWordSet();
+ const rawTokens=cleanText.split(/\s+/);
+ let flaggedCount=0;
+ const htmlTokens=rawTokens.map(tok=>{
+  const norm=normalizeWord(tok);
+  if(!norm)return tok;
+  if(norm.length>=4 && !refSet.has(norm)){
+   flaggedCount++;
+   return `<span class="word-miss" title="Mot à vérifier à l'écoute">${tok}</span>`;
+  }
+  return `<span class="word-ok">${tok}</span>`;
+ });
+ const note=flaggedCount>0
+  ? `<div class="sub" style="margin-top:8px">Points surlignés (${flaggedCount}) : mots absents du texte/thème de référence ou transcrits différemment. Vérifie à l'écoute si c'est une articulation à soigner ou un autre mot choisi.</div>`
+  : `<div class="sub" style="margin-top:8px">Tous les mots longs reconnus correspondent au vocabulaire ou au thème travaillé.</div>`;
+ return `<div>${htmlTokens.join(' ')}</div>${note}`;
+}
+
+function startLiveSpeechRecognition(){
+ const SR=window.SpeechRecognition || window.webkitSpeechRecognition;
+ if(!SR)return;
+ try{
+  stopLiveSpeechRecognition();
+  speechRecognizer=new SR();
+  speechRecognizer.lang='fr-FR';
+  speechRecognizer.continuous=true;
+  speechRecognizer.interimResults=true;
+  let finalAccum=spokenTranscript ? spokenTranscript+' ' : '';
+  speechRecognizer.onresult=event=>{
+   let interim='';
+   for(let i=event.resultIndex;i<event.results.length;i++){
+    const txt=event.results[i][0].transcript;
+    if(event.results[i].isFinal){
+     finalAccum+=txt.trim()+' ';
+    } else {
+     interim+=txt;
+    }
+   }
+   spokenTranscript=(finalAccum+interim).trim();
+   const box=document.getElementById('liveTranscriptBox');
+   if(box)box.innerHTML=renderAnnotatedTranscript(spokenTranscript);
+  };
+  speechRecognizer.onerror=()=>{};
+  speechRecognizer.start();
+ }catch(e){}
+}
+
+function stopLiveSpeechRecognition(){
+ if(speechRecognizer){
+  try{speechRecognizer.stop();}catch(e){}
+  speechRecognizer=null;
+ }
+}
+
 function clearAudioRecording(){
+ stopLiveSpeechRecognition();
  if(audioUrl){
   URL.revokeObjectURL(audioUrl);
   audioUrl=null;
  }
  audioChunks=[];
+ spokenTranscript='';
  isRecording=false;
- recStatusMsg='Enregistrement supprimé.';
+ recStatusMsg='Enregistrement et transcription supprimés.';
  renderExercise();
 }
 
@@ -464,6 +542,7 @@ async function toggleAudioRecording(){
   return;
  }
  if(isRecording && mediaRecorder && mediaRecorder.state==='recording'){
+  stopLiveSpeechRecognition();
   mediaRecorder.stop();
   return;
  }
@@ -474,24 +553,28 @@ async function toggleAudioRecording(){
    audioUrl=null;
   }
   audioChunks=[];
+  spokenTranscript='';
   mediaRecorder=new MediaRecorder(stream);
   mediaRecorder.ondataavailable=e=>{
    if(e.data && e.data.size>0)audioChunks.push(e.data);
   };
   mediaRecorder.onstop=()=>{
+   stopLiveSpeechRecognition();
    stream.getTracks().forEach(t=>t.stop());
    const blob=new Blob(audioChunks,{type:mediaRecorder.mimeType||'audio/webm'});
    audioUrl=URL.createObjectURL(blob);
    isRecording=false;
-   recStatusMsg='Enregistrement prêt. Écoute-toi puis supprime-le quand tu as fini.';
+   recStatusMsg='Enregistrement terminé. Écoute-toi et compare avec la transcription ci-dessous.';
    renderExercise();
   };
   mediaRecorder.start();
+  startLiveSpeechRecognition();
   isRecording=true;
-  recStatusMsg='Enregistrement en cours... Parle clairement à voix haute.';
+  recStatusMsg='Enregistrement et transcription en cours... Parle clairement à voix haute.';
   renderExercise();
  }catch(err){
   isRecording=false;
+  stopLiveSpeechRecognition();
   recStatusMsg="Micro non autorisé ou indisponible. Vérifie les permissions du navigateur.";
   renderExercise();
  }
@@ -564,10 +647,12 @@ function renderExercise(){
     <div class="feedback" id="speechFeedback"></div>
    </div>
    <div class="rec-box">
-    <div class="sub">ENREGISTREMENT VOCAL & AUTO-ÉCOUTE</div>
-    <p style="margin:6px 0">Enregistre ta prise de parole, écoute-toi pour t'améliorer, puis supprime l'audio après écoute.</p>
+    <div class="sub">ENREGISTREMENT VOCAL, TRANSCRIPTION & AUTO-ÉCOUTE</div>
+    <p style="margin:6px 0">Enregistre ta prise de parole : ce que tu dis s'écrit en direct pendant que tu parles, puis tu peux t'écouter et tout supprimer.</p>
     <button onclick="toggleAudioRecording()">${isRecording?'Arrêter l’enregistrement':'Enregistrer ma voix'}</button>
-    ${audioUrl?`<button class="btn-danger" onclick="clearAudioRecording()">Supprimer l'enregistrement</button><audio class="rec-player" controls src="${audioUrl}"></audio>`:''}
+    ${(audioUrl || spokenTranscript)?`<button class="btn-danger" onclick="clearAudioRecording()">Supprimer l'enregistrement</button>`:''}
+    ${audioUrl?`<audio class="rec-player" controls src="${audioUrl}"></audio>`:''}
+    <div class="transcript-box" id="liveTranscriptBox">${renderAnnotatedTranscript(spokenTranscript)}</div>
     ${recStatusMsg?`<div class="feedback">${recStatusMsg}</div>`:''}
    </div>
    <p class="sub">Repère : inspire avant de commencer, garde une diction posée et ne cherche pas à aller vite.</p>
