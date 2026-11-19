@@ -42,6 +42,10 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 .word-chip{display:inline-block;border:1px solid #d8e0ec;background:#f9fbfe;color:var(--ink);padding:7px 11px;border-radius:10px;margin:4px;font-size:14px;cursor:pointer}
 .word-chip.found{background:#dcfce7;border-color:#86efac;color:#14532d;font-weight:700}
 .ex-highlight{background:#eef2f8;border-left:4px solid var(--gold);padding:12px;border-radius:10px;margin:10px 0;font-size:15px}
+.speech-box{background:#f9fbfe;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin:10px 0}
+.speech-clock{font-size:28px;font-weight:700;color:var(--navy);margin:6px 0}
+.outline-list{margin:8px 0;padding-left:18px;font-size:14px;color:#334155}
+.outline-list li{margin-bottom:6px}
 .feedback{margin-top:10px;font-size:13px;font-weight:700;color:var(--navy)}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid #e7ebf1;display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
 .bottom button{border:0;background:none;color:#718096;font-size:10px;display:grid;gap:4px;justify-items:center;cursor:pointer}.bottom button b{font-size:19px}.bottom button.selected{color:#a87822;font-weight:bold}
@@ -93,7 +97,7 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
  </section>
 
  <section id="exercisesPage" class="page">
-  <div class="section-head"><h2>Exercices interactifs</h2><span class="sub">Étape 3</span></div>
+  <div class="section-head"><h2>Exercices interactifs</h2><span class="sub">Étape 4</span></div>
   <div class="panel">
    <div class="sub">CHOISIR L'EXERCICE</div>
    <div class="tabs">
@@ -101,6 +105,7 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
     <button class="tab" id="ex-pron" onclick="setExercise('pron')">Prononciation</button>
     <button class="tab" id="ex-vocab" onclick="setExercise('vocab')">Vocabulaire</button>
     <button class="tab" id="ex-comp" onclick="setExercise('comp')">Compréhension</button>
+    <button class="tab" id="ex-oral" onclick="setExercise('oral')">Expression</button>
    </div>
    <div id="exArea"></div>
   </div>
@@ -187,10 +192,21 @@ const vocabBank=[
  {word:"articuler",def:"Prononcer nettement les sons et les syllabes d'un mot.",ex:"Prends le temps d'articuler la fin de chaque phrase."}
 ];
 
+const speechPrompts=[
+ "Explique comment la régularité aide à mieux s'exprimer.",
+ "Décris une habitude simple qui t'aide à garder ton calme.",
+ "Présente l'idée centrale du texte comme si tu parlais à un ami."
+];
+
 let externalTexts=[];
 let currentExercise='reco';
 let pronIndex=0;
 let foundWords=new Set();
+let promptIndex=0;
+let speechTargetSec=120;
+let speechRemaining=120;
+let speechInterval=null;
+let speechRunning=false;
 
 function getCustomTexts(){
  try{return JSON.parse(localStorage.getItem('te_custom_texts')||'[]');}catch(e){return[];}
@@ -271,6 +287,7 @@ function openExercisesTab(){
 
 function showPage(id,btn){
  stopGuide();
+ stopSpeechTimer();
  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
  document.getElementById(id).classList.add('active');
  document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('selected'));
@@ -348,8 +365,9 @@ function renderReader(){
 }
 
 function setExercise(ex){
+ stopSpeechTimer();
  currentExercise=ex;
- ['reco','pron','vocab','comp'].forEach(k=>{
+ ['reco','pron','vocab','comp','oral'].forEach(k=>{
   document.getElementById('ex-'+k).classList.toggle('active',k===ex);
  });
  renderExercise();
@@ -358,6 +376,62 @@ function setExercise(ex){
 function getUniqueWords(){
  const raw=currentText.chunks.join(' ').replace(/[.,!?;:«»"()’']/g,' ').split(/\s+/).filter(w=>w.length>=4);
  return [...new Set(raw.map(w=>w.toLowerCase()))].slice(0,8);
+}
+
+function formatClock(sec){
+ const m=String(Math.floor(sec/60)).padStart(2,'0');
+ const s=String(sec%60).padStart(2,'0');
+ return m+':'+s;
+}
+
+function setSpeechDuration(sec){
+ stopSpeechTimer();
+ speechTargetSec=sec;
+ speechRemaining=sec;
+ renderExercise();
+}
+
+function toggleSpeechTimer(){
+ const fb=document.getElementById('speechFeedback');
+ if(speechRunning){
+  stopSpeechTimer();
+  if(fb)fb.textContent='Prise de parole mise en pause. Respire et reprends quand tu es prêt.';
+  return;
+ }
+ if(speechRemaining<=0)speechRemaining=speechTargetSec;
+ speechRunning=true;
+ updateSpeechButton();
+ if(fb)fb.textContent='Parle à voix haute calmement, en suivant ton plan en 3 temps.';
+ speechInterval=setInterval(()=>{
+  speechRemaining--;
+  const el=document.getElementById('speechClock');
+  if(el)el.textContent=formatClock(Math.max(speechRemaining,0));
+  if(speechRemaining<=0){
+   stopSpeechTimer();
+   const doneFb=document.getElementById('speechFeedback');
+   if(doneFb)doneFb.textContent='Temps écoulé ! Bien joué pour cette prise de parole.';
+  }
+ },1000);
+}
+
+function stopSpeechTimer(){
+ speechRunning=false;
+ if(speechInterval){clearInterval(speechInterval);speechInterval=null;}
+ updateSpeechButton();
+}
+
+function resetSpeechTimer(){
+ stopSpeechTimer();
+ speechRemaining=speechTargetSec;
+ const el=document.getElementById('speechClock');
+ if(el)el.textContent=formatClock(speechRemaining);
+ const fb=document.getElementById('speechFeedback');
+ if(fb)fb.textContent='';
+}
+
+function updateSpeechButton(){
+ const btn=document.getElementById('speechToggleBtn');
+ if(btn)btn.textContent=speechRunning?'Pause':'Démarrer';
 }
 
 function renderExercise(){
@@ -400,6 +474,33 @@ function renderExercise(){
    <textarea id="compAnswer" rows="3" placeholder="Écris l'idée principale ici..."></textarea>
    <button onclick="checkComp()">Valider ma reformulation</button>
    <div class="feedback" id="compFeedback"></div>
+  `;
+ } else if(currentExercise==='oral'){
+  const prompt=speechPrompts[promptIndex % speechPrompts.length];
+  area.innerHTML=`
+   <h3>Expression orale guidée</h3>
+   <p>Sujet lié à <strong>${currentText.title}</strong> :</p>
+   <div class="ex-highlight">« ${prompt} »</div>
+   <button onclick="promptIndex++;renderExercise()">Autre amorce</button>
+   <div class="speech-box">
+    <div class="sub">PLAN EN 3 TEMPS</div>
+    <ol class="outline-list">
+     <li><strong>Idée centrale :</strong> énonce ton message en une phrase simple.</li>
+     <li><strong>Deux points clés :</strong> donne un exemple concret ou une raison claire.</li>
+     <li><strong>Conclusion :</strong> termine calmement par l'essentiel à retenir.</li>
+    </ol>
+    <div class="sub" style="margin-top:10px">DURÉE DE PRISE DE PAROLE</div>
+    <div class="tabs" style="margin-top:6px">
+     <button class="tab ${speechTargetSec===60?'active':''}" onclick="setSpeechDuration(60)">1 min</button>
+     <button class="tab ${speechTargetSec===120?'active':''}" onclick="setSpeechDuration(120)">2 min</button>
+     <button class="tab ${speechTargetSec===180?'active':''}" onclick="setSpeechDuration(180)">3 min</button>
+    </div>
+    <div class="speech-clock" id="speechClock">${formatClock(speechRemaining)}</div>
+    <button id="speechToggleBtn" onclick="toggleSpeechTimer()">Démarrer</button>
+    <button onclick="resetSpeechTimer()">Réinitialiser</button>
+    <div class="feedback" id="speechFeedback"></div>
+   </div>
+   <p class="sub">Repère : inspire avant de commencer, garde une diction posée et ne cherche pas à aller vite.</p>
   `;
  }
 }
