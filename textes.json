@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ext1",
+    "category": "Lecture & Calme",
+    "title": "Avancer sans se presser",
+    "chunks": [
+      "Lire calmement permet",
+      "de saisir le sens",
+      "de chaque phrase.",
+      "La régularité quotidienne",
+      "compte davantage",
+      "qu'une course rapide."
+    ]
+  },
+  {
+    "id": "ext2",
+    "category": "Parole & Éloquence",
+    "title": "Structurer sa prise de parole",
+    "chunks": [
+      "Avant de parler en public,",
+      "définis une idée centrale.",
+      "Appuie-la sur deux points clairs,",
+      "puis conclus avec simplicité."
+    ]
+  }
+]
