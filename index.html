@@ -33,10 +33,12 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .tab{border:1px solid #d8e0ec;background:white;color:var(--navy);padding:8px 12px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer}
 .tab.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.daily-banner{background:#fff8e7;border:1px solid #f0d594;color:#7a5412;padding:10px 12px;border-radius:12px;font-size:12px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .reader-box{background:#f9fbfe;border:1px solid #e2e8f0;border-radius:14px;padding:16px;font-size:17px;line-height:1.85;color:var(--ink);margin:12px 0}
 .chunk{display:inline-block;padding:2px 6px;margin:2px;border-radius:6px;transition:background .2s}
 .chunk.highlight{background:#fde68a;color:#101b32;font-weight:700}
 .timer-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#eef2f8;padding:10px 14px;border-radius:12px;margin-top:10px;font-size:13px}
+.add-box input,.add-box textarea{width:100%;border:1px solid #d8e0ec;border-radius:10px;padding:10px;font-family:inherit;font-size:13px;margin-top:8px;color:var(--ink)}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(10px);border-top:1px solid #e7ebf1;display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
 .bottom button{border:0;background:none;color:#718096;font-size:10px;display:grid;gap:4px;justify-items:center;cursor:pointer}.bottom button b{font-size:19px}.bottom button.selected{color:#a87822;font-weight:bold}
 .notice{font-size:11px;color:var(--muted);text-align:center;margin:17px 0}
@@ -93,9 +95,14 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
  </section>
 
  <section id="libraryPage" class="page">
-  <div class="section-head"><h2>Bibliothèque & Lecteur</h2><span class="sub">3 modes</span></div>
+  <div class="section-head"><h2>Bibliothèque & Lecteur</h2><span class="sub" id="dayLabel">Mise à jour quotidienne</span></div>
   <div class="panel">
-   <div class="sub">CHOISIR UN TEXTE</div>
+   <div class="daily-banner">
+    <span id="dailyPickText">Texte du jour sélectionné automatiquement.</span>
+    <button onclick="selectDailyText()">Ouvrir le texte du jour</button>
+   </div>
+   <div class="sub" id="sourceStatus">Source : locale</div>
+   <div class="sub" style="margin-top:8px">CHOISIR UN TEXTE</div>
    <div class="tabs" id="textSelector"></div>
    <div class="sub">MODE DE LECTURE</div>
    <div class="tabs">
@@ -113,6 +120,14 @@ h2{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
      <button onclick="stopChrono()">Terminer</button>
     </div>
    </div>
+  </div>
+  <div class="panel add-box">
+   <strong>+ Ajouter un texte sur cet appareil</strong>
+   <p>Enregistre un nouveau texte directement sur ton téléphone.</p>
+   <input type="text" id="newTitle" placeholder="Titre du texte">
+   <input type="text" id="newCategory" placeholder="Catégorie (ex. Récit, Discours, Réflexion)">
+   <textarea id="newBody" rows="3" placeholder="Écris ton texte ici..."></textarea>
+   <button onclick="addCustomText()">Enregistrer ce texte</button>
   </div>
  </section>
 
@@ -136,32 +151,73 @@ const modules={
  vitesse:["Vitesse de lecture","Automatiser la reconnaissance des mots sans forcer ta vitesse.","Mesure des mots correctement lus par minute, sans précipitation ni retours incessants."],
  vocabulaire:["Vocabulaire","Enrichir ton vocabulaire et employer les mots dans tes propres phrases.","Nouveaux mots, définitions claires, synonymes et exemples concrets."],
  expression:["Expression orale","Organiser rapidement tes idées et parler avec clarté.","Prises de parole d'une à trois minutes, structuration des idées et éloquence."],
- comprehension:["Compréhension","Comprendre un texte, dégager l'idée principale et l'expliquer.","Reformulation avec tes propres mots, idées clés et restitution claire."]
+ comprehension:["Compréhension","Comprendre un texte, en dégager l'idée principale et l'expliquer.","Reformulation avec tes propres mots, idées clés et restitution claire."]
 };
 
-const texts=[
- {
-  id:"discipline",
-  category:"Réflexion & Discipline",
-  title:"La constance plutôt que la précipitation",
-  chunks:["Lire avec aisance","ne consiste pas à courir","sur chaque ligne.","C'est d'abord reconnaître","les mots calmement,","puis laisser la voix","suivre le sens","de la phrase."]
- },
- {
-  id:"eloquence",
-  category:"Expression & Parole",
-  title:"Parler avec clarté et assurance",
-  chunks:["Une parole claire","commence par une pensée","bien ordonnée.","Avant de répondre,","prends un instant","pour respirer,","choisir tes mots","et articuler sans hâte."]
- },
- {
-  id:"recit",
-  category:"Récit & Culture",
-  title:"Le chemin de la vallée",
-  chunks:["Au lever du jour,","la lumière dorée","effleurait les collines.","Sur le sentier étroit,","chaque pas comptait","pour avancer en sécurité","vers le village","au fond de la vallée."]
- }
+const baseTexts=[
+ {id:"t1",category:"Réflexion & Discipline",title:"La constance plutôt que la précipitation",chunks:["Lire avec aisance","ne consiste pas à courir","sur chaque ligne.","C'est d'abord reconnaître","les mots calmement,","puis laisser la voix","suivre le sens","de la phrase."]},
+ {id:"t2",category:"Expression & Parole",title:"Parler avec clarté et assurance",chunks:["Une parole claire","commence par une pensée","bien ordonnée.","Avant de répondre,","prends un instant","pour respirer,","choisir tes mots","et articuler sans hâte."]},
+ {id:"t3",category:"Récit & Culture",title:"Le chemin de la vallée",chunks:["Au lever du jour,","la lumière dorée","effleurait les collines.","Sur le sentier étroit,","chaque pas comptait","pour avancer en sécurité","vers le village","au fond de la vallée."]}
 ];
 
-let currentText=texts[0], currentMode='libre', guideIndex=0, guideTimer=null;
+let externalTexts=[];
+
+function getCustomTexts(){
+ try{return JSON.parse(localStorage.getItem('te_custom_texts')||'[]');}catch(e){return[];}
+}
+function getPoolTexts(){
+ return externalTexts.length ? externalTexts : baseTexts;
+}
+function getAllTexts(){
+ return [...getPoolTexts(),...getCustomTexts()];
+}
+
+function getDayIndex(){
+ const pool=getPoolTexts();
+ const now=new Date();
+ const start=new Date(now.getFullYear(),0,0);
+ const dayOfYear=Math.floor((now-start)/86400000);
+ return dayOfYear % pool.length;
+}
+
+let dailyText=baseTexts[getDayIndex()];
+let currentText=dailyText, currentMode='libre', guideIndex=0, guideTimer=null;
 let chronoInterval=null, chronoSeconds=0, chronoRunning=false;
+
+function refreshDailyPick(){
+ const pool=getPoolTexts();
+ dailyText=pool[getDayIndex()];
+ currentText=dailyText;
+ const d=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+ document.getElementById('dayLabel').textContent=d;
+ document.getElementById('dailyPickText').textContent='Texte du jour : « '+dailyText.title+' »';
+}
+
+async function loadExternalTexts(){
+ try{
+  const res=await fetch('./textes.json',{cache:'no-store'});
+  if(!res.ok)return;
+  const data=await res.json();
+  if(Array.isArray(data)&&data.length>0){
+   externalTexts=data.filter(item=>item&&item.title&&Array.isArray(item.chunks)&&item.chunks.length>0);
+   if(externalTexts.length>0){
+    document.getElementById('sourceStatus').textContent='Source : fichier externe textes.json ('+externalTexts.length+' textes)';
+    refreshDailyPick();
+    renderSelector();
+    renderReader();
+   }
+  }
+ }catch(e){
+  document.getElementById('sourceStatus').textContent='Source : textes intégrés (mode hors ligne ou repli)';
+ }
+}
+
+function selectDailyText(){
+ currentText=dailyText;
+ stopChrono();
+ renderSelector();
+ renderReader();
+}
 
 function openModule(key){
  const m=modules[key];
@@ -172,8 +228,7 @@ function openModule(key){
 }
 
 function openLibraryTab(){
- const navBtn=document.getElementById('navLib');
- showPage('libraryPage',navBtn);
+ showPage('libraryPage',document.getElementById('navLib'));
 }
 
 function showPage(id,btn){
@@ -189,13 +244,31 @@ function showPage(id,btn){
 function renderSelector(){
  const box=document.getElementById('textSelector');
  box.innerHTML='';
- texts.forEach(t=>{
+ getAllTexts().forEach(t=>{
   const b=document.createElement('button');
   b.className='tab'+(t.id===currentText.id?' active':'');
-  b.textContent=t.title;
+  b.textContent=(t.id===dailyText.id?'★ ':'')+t.title;
   b.onclick=()=>{currentText=t;stopChrono();renderSelector();renderReader();};
   box.appendChild(b);
  });
+}
+
+function addCustomText(){
+ const title=document.getElementById('newTitle').value.trim();
+ const category=document.getElementById('newCategory').value.trim()||'Texte personnel';
+ const body=document.getElementById('newBody').value.trim();
+ if(!title||!body)return;
+ const chunks=body.split(/(?<=[.!?])\s+|\n+/).map(s=>s.trim()).filter(Boolean);
+ const item={id:'c_'+Date.now(),category,title,chunks:chunks.length?chunks:[body]};
+ const list=getCustomTexts();
+ list.push(item);
+ localStorage.setItem('te_custom_texts',JSON.stringify(list));
+ document.getElementById('newTitle').value='';
+ document.getElementById('newCategory').value='';
+ document.getElementById('newBody').value='';
+ currentText=item;
+ renderSelector();
+ renderReader();
 }
 
 function setMode(mode){
@@ -271,9 +344,11 @@ function update(){
 function resetDay(){checks.forEach(c=>c.checked=false);update();}
 try{const saved=JSON.parse(localStorage.getItem('te_checks')||'[]');checks.forEach((c,i)=>c.checked=!!saved[i]);}catch(e){}
 checks.forEach(c=>c.addEventListener('change',update));
+refreshDailyPick();
 update();
 renderSelector();
 renderReader();
+loadExternalTexts();
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 </script>
 </body>
