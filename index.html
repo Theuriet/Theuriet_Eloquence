@@ -467,7 +467,7 @@ const i18n={
   statsZero:"Tu n'as pas encore coché d'exercice aujourd'hui. Commence par une petite étape !",
   statsFull:'Bravo ! Tu as terminé ta séance du jour.',
   statsPart:function(n){return 'Tu as terminé '+n+' exercice(s) sur 5. Continue à ton rythme.';},
-  catLabel:'Catégorie',modeLabel:'Mode',
+  catLabel:'Catégorie',modeLabel:'Mode',sep:' : ',
   delBtn:'Supprimer',savedLocalSub:'TEXTES ENREGISTRÉS SUR L\'APPAREIL',
   extSourceFmt:function(n){return 'Source : fichier externe textes.json ('+n+' textes)';},
   fallbackSource:'Source : textes intégrés (mode hors ligne ou repli)'
@@ -524,7 +524,7 @@ const i18n={
   statsZero:'No exercises checked yet today. Start with one small step!',
   statsFull:"Great job! You completed today's session.",
   statsPart:function(n){return 'You completed '+n+' of 5 exercises. Keep going at your pace.';},
-  catLabel:'Category',modeLabel:'Mode',
+  catLabel:'Category',modeLabel:'Mode',sep:': ',
   delBtn:'Delete',savedLocalSub:'TEXTS SAVED ON DEVICE',
   extSourceFmt:function(n){return 'Source: textes.json ('+n+' texts)';},
   fallbackSource:'Source: built-in texts (offline fallback)'
@@ -590,6 +590,121 @@ const promptsByLang={
   "Describe a calm habit that helps you speak more clearly."
  ]
 };
+
+const phraseDictFrToEn=[
+ ["avancer sans se presser","move forward without rushing"],
+ ["structurer sa prise de parole","structuring your speaking"],
+ ["lire calmement permet","reading calmly allows"],
+ ["de saisir le sens","to grasp the meaning"],
+ ["de chaque phrase","of each sentence"],
+ ["la regularite quotidienne","daily consistency"],
+ ["compte davantage","matters more"],
+ ["qu'une course rapide","than a fast rush"],
+ ["lecture & calme","reading & calm"],
+ ["lecture et calme","reading and calm"],
+ ["prise de parole","public speaking"],
+ ["texte externe","external text"],
+ ["texte personnel","personal text"],
+ ["je veux","i want"],
+ ["il faut","we must"],
+ ["on peut","we can"],
+ ["avec calme","calmly"],
+ ["avec assurance","with confidence"],
+ ["avec clarte","with clarity"],
+ ["a voix haute","aloud"],
+ ["chaque jour","every day"],
+ ["tous les jours","every day"],
+ ["sans hate","without haste"],
+ ["sans se presser","without rushing"],
+ ["bien parler","speak well"],
+ ["mieux lire","read better"],
+ ["prendre le temps","take time"],
+ ["faire attention","pay attention"],
+ ["garder le calme","stay calm"]
+];
+
+const wordDictFrToEn={
+ "avancer":"move forward","sans":"without","se":"oneself","presser":"rush","structurer":"structure","sa":"its","prise":"speaking","de":"of","parole":"speech","lire":"read","calmement":"calmly","permet":"allows","saisir":"grasp","le":"the","la":"the","les":"the","sens":"meaning","chaque":"each","phrase":"sentence","regularite":"consistency","quotidienne":"daily","compte":"matters","davantage":"more","qu'une":"than a","course":"race","rapide":"fast","lecture":"reading","calme":"calm","et":"and","texte":"text","textes":"texts","externe":"external","personnel":"personal","mot":"word","mots":"words","voix":"voice","haute":"loud","jour":"day","jours":"days","temps":"time","idee":"idea","idees":"ideas","clair":"clear","claire":"clear","clairement":"clearly","parler":"speak","ecouter":"listen","comprendre":"understand","apprendre":"learn","progres":"progress","progresser":"progress","effort":"effort","pratique":"practice","exercice":"exercise","exercices":"exercises","sagesse":"wisdom","espoir":"hope","chemin":"path","vie":"life","coeur":"heart","esprit":"mind","force":"strength","doux":"gentle","douce":"gentle","lentement":"slowly","vite":"quickly","toujours":"always","jamais":"never","souvent":"often","aujourd'hui":"today","demain":"tomorrow","hier":"yesterday","bon":"good","bonne":"good","bien":"well","meilleur":"better","meilleure":"better","grand":"great","grande":"great","petit":"small","petite":"small","nouveau":"new","nouvelle":"new","premier":"first","premiere":"first","dernier":"last","derniere":"last"
+};
+
+const phraseDictEnToFr=[
+ ["move forward without rushing","avancer sans se presser"],
+ ["structuring your speaking","structurer sa prise de parole"],
+ ["reading calmly allows","lire calmement permet"],
+ ["to grasp the meaning","de saisir le sens"],
+ ["of each sentence","de chaque phrase"],
+ ["daily consistency","la régularité quotidienne"],
+ ["matters more","compte davantage"],
+ ["than a fast rush","qu'une course rapide"],
+ ["reading & calm","lecture & calme"],
+ ["reading and calm","lecture et calme"],
+ ["public speaking","prise de parole"],
+ ["external text","texte externe"],
+ ["personal text","texte personnel"],
+ ["every day","chaque jour"],
+ ["without rushing","sans se presser"],
+ ["speak clearly","parler clairement"],
+ ["read aloud","lire à voix haute"]
+];
+
+const wordDictEnToFr={
+ "move":"avancer","forward":"en avant","without":"sans","rushing":"se presser","rush":"hâte","structuring":"structurer","your":"ton","speaking":"prise de parole","speech":"parole","reading":"lire","calmly":"calmement","allows":"permet","grasp":"saisir","the":"le","meaning":"sens","each":"chaque","sentence":"phrase","daily":"quotidienne","consistency":"régularité","matters":"compte","more":"davantage","than":"que","fast":"rapide","read":"lire","calm":"calme","and":"et","text":"texte","texts":"textes","external":"externe","personal":"personnel","word":"mot","words":"mots","voice":"voix","loud":"haute","day":"jour","days":"jours","time":"temps","idea":"idée","ideas":"idées","clear":"clair","clearly":"clairement","speak":"parler","listen":"écouter","understand":"comprendre","learn":"apprendre","progress":"progrès","effort":"effort","practice":"pratique","exercise":"exercice","exercises":"exercices","wisdom":"sagesse","hope":"espoir","path":"chemin","life":"vie","heart":"cœur","mind":"esprit","strength":"force","gentle":"doux","slowly":"lentement","quickly":"vite","always":"toujours","never":"jamais","often":"souvent","today":"aujourd'hui","tomorrow":"demain","yesterday":"hier","good":"bon","well":"bien","better":"meilleur","great":"grand","small":"petit","new":"nouveau","first":"premier","last":"dernier"
+};
+
+const autoTransCache={};
+
+function stripAccents(s){
+ return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+
+function matchCase(src,target){
+ if(!target)return target;
+ if(src===src.toUpperCase() && src.length>1)return target.toUpperCase();
+ if(src[0]===src[0].toUpperCase())return target.charAt(0).toUpperCase()+target.slice(1);
+ return target;
+}
+
+function translateStringAuto(text,targetLang){
+ const raw=String(text||'');
+ if(!raw.trim())return raw;
+ const cacheKey=targetLang+'::'+raw;
+ if(autoTransCache[cacheKey])return autoTransCache[cacheKey];
+
+ let working=raw;
+ const pairs=targetLang==='en' ? phraseDictFrToEn : phraseDictEnToFr;
+ pairs.forEach(function(pair){
+  const esc=pair[0].replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const re=new RegExp(esc,'gi');
+  working=working.replace(re,function(m){return matchCase(m,pair[1]);});
+ });
+
+ const wordMap=targetLang==='en' ? wordDictFrToEn : wordDictEnToFr;
+ const translated=working.replace(/[A-Za-zÀ-ÖØ-öø-ÿ']+/g,function(token){
+  const low=token.toLowerCase();
+  const norm=stripAccents(low);
+  if(wordMap[low])return matchCase(token,wordMap[low]);
+  if(wordMap[norm])return matchCase(token,wordMap[norm]);
+  return token;
+ });
+
+ autoTransCache[cacheKey]=translated;
+ return translated;
+}
+
+function adaptTextObjectToLang(item,targetLang){
+ if(!item)return item;
+ if(item.lang===targetLang)return item;
+ const translatedTitle=translateStringAuto(item.title,targetLang);
+ const translatedCat=translateStringAuto(item.category,targetLang);
+ const translatedChunks=(item.chunks||[]).map(function(c){return translateStringAuto(c,targetLang);});
+ return {
+  id:item.id,
+  lang:targetLang,
+  category:translatedCat,
+  title:translatedTitle,
+  chunks:translatedChunks
+ };
+}
 
 let appLang='fr';
 try{const savedLang=localStorage.getItem('te_lang');if(savedLang==='fr'||savedLang==='en')appLang=savedLang;}catch(e){}
@@ -689,12 +804,14 @@ function getCustomTexts(){
  try{return JSON.parse(localStorage.getItem('te_custom_texts')||'[]');}catch(e){return[];}
 }
 function getPoolTexts(){
- const filteredExt=externalTexts.filter(function(t){return !t.lang || t.lang===appLang;});
- return filteredExt.length ? filteredExt : baseTextsByLang[appLang];
+ if(externalTexts.length>0){
+  return externalTexts.map(function(t){return adaptTextObjectToLang(t,appLang);});
+ }
+ return baseTextsByLang[appLang];
 }
 function getAllTexts(){
- const customForLang=getCustomTexts().filter(function(t){return !t.lang || t.lang===appLang;});
- return [].concat(getPoolTexts(),customForLang);
+ const customAdapted=getCustomTexts().map(function(t){return adaptTextObjectToLang(t,appLang);});
+ return [].concat(getPoolTexts(),customAdapted);
 }
 
 function getDayIndex(){
@@ -725,11 +842,6 @@ function syncCurrentTextToLang(){
   currentText=exact;
   return;
  }
- const oldIdx=currentText ? Number(String(currentText.id||'').replace(/\D/g,''))-1 : -1;
- if(oldIdx>=0 && oldIdx<all.length){
-  currentText=all[oldIdx];
-  return;
- }
  currentText=dailyText;
 }
 
@@ -752,8 +864,8 @@ function normalizeExternalItem(item,idx){
  if(!title || !cleanChunks.length)return null;
  return {
   id:String(item.id || ('ext_'+idx)),
-  lang:(item.lang==='en' || item.lang==='fr') ? item.lang : null,
-  category:String(item.category || (appLang==='en'?'External text':'Texte externe')).trim(),
+  lang:(item.lang==='en' || item.lang==='fr') ? item.lang : 'fr',
+  category:String(item.category || 'Texte externe').trim(),
   title:title,
   chunks:cleanChunks
  };
@@ -980,7 +1092,7 @@ function renderSelector(){
 function renderCustomTextsManager(){
  const wrap=document.getElementById('customTextsManager');
  if(!wrap)return;
- const custom=getCustomTexts();
+ const custom=getCustomTexts().map(function(t){return adaptTextObjectToLang(t,appLang);});
  if(!custom.length){
   wrap.innerHTML='';
   return;
@@ -1007,19 +1119,19 @@ function addCustomText(){
  const body=document.getElementById('newBody').value.trim();
  if(!title||!body)return;
  const chunks=body.split(/(?<=[.!?])\s+|\n+/).map(function(s){return s.trim();}).filter(Boolean);
- const item={id:'c_'+Date.now(),lang:appLang,category:category,title:title,chunks:chunks.length?chunks:[body]};
+ const rawItem={id:'c_'+Date.now(),lang:appLang,category:category,title:title,chunks:chunks.length?chunks:[body]};
  const list=getCustomTexts();
- list.push(item);
+ list.push(rawItem);
  try{localStorage.setItem('te_custom_texts',JSON.stringify(list));}catch(e){}
  document.getElementById('newTitle').value='';
  document.getElementById('newCategory').value='';
  document.getElementById('newBody').value='';
- currentText=item;
+ currentText=adaptTextObjectToLang(rawItem,appLang);
  foundWords.clear();
  renderSelector();
  renderReader();
  renderExercise();
- logActivity((appLang==='en'?'Added text: ':'Ajout d’un texte : ')+item.title);
+ logActivity((appLang==='en'?'Added text: ':'Ajout d’un texte : ')+currentText.title);
 }
 
 function setGuidePace(ms){
@@ -1054,8 +1166,9 @@ function stopGuide(){
 function renderReader(){
  stopGuide();
  const modeLabelText=i18n[appLang].modes[currentMode] || currentMode;
+ const sep=i18n[appLang].sep;
  setText('readerTitle',currentText.title);
- setText('readerMeta',i18n[appLang].catLabel+' : '+currentText.category+' • '+i18n[appLang].modeLabel+' : '+modeLabelText);
+ setText('readerMeta',i18n[appLang].catLabel+sep+currentText.category+' • '+i18n[appLang].modeLabel+sep+modeLabelText);
  const box=document.getElementById('readerContent');
  if(!box)return;
  if(currentMode==='libre'){
