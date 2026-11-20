@@ -1,4 +1,4 @@
-const CACHE_NAME = "theuriet-eloquence-v1";
+const CACHE_NAME = "theuriet-eloquence-v10";
 const ASSETS = [
   "./",
   "./index.html",
